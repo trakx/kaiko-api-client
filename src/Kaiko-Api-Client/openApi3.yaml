@@ -1,0 +1,260 @@
+﻿openapi: 3.0.0
+info:
+  title: Kaiko API
+  version: '1.0.0'
+servers:
+  - url: 'https://eu.market-api.kaiko.io/'
+    description: Kaiko base url
+  - url: 'https://reference-data-api.kaiko.io/v1/'
+    description: Override base path for all operations with the /Instruments path
+paths:
+  https://reference-data-api.kaiko.io/v1/instruments:
+    get:
+      description: This endpoint retrieves a list of supported instruments.        
+      responses:
+        "200":
+          description: Get all instruments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstrumentsResponse'
+      operationId: getAllInstruments
+  https://reference-data-api.kaiko.io/v1/exchanges:
+    get:
+      description: This endpoint retrieves a list of supported exchanges.
+      responses:
+        "200":
+          description: Get all exchanges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangesResponse'
+      operationId: getAllExchanges
+  https://eu.market-api.kaiko.io/v1/data/{commodity}.{data_version}/exchanges/{exchange_code}/{instrument_class}/{instrument_code}/aggregations/vwap/recent:
+    get:
+      description: This endpoint retrieves the most recent VWAP data points for an instrument on an exchange going 30 days back in time for up to 10000 values.
+      parameters:
+        - in: path
+          name: commodity
+          description: The data commodity
+          required: true
+          schema: 
+            $ref: "#/components/schemas/Commodity"
+            default: trades
+        - in: path
+          name: data_version
+          description: The data version
+          required: true
+          schema: 
+            type: string
+            description: The data version
+            enum:
+              - v1
+              - v2
+              - latest
+            default: 'v1'
+        - in: path
+          name: exchange_code
+          description: The code for the desired exchange
+          required: true
+          schema: 
+            type: string
+        - in: path
+          name: instrument_class
+          description: The class of the instrument.
+          required: true
+          schema: 
+            type: string
+        - in: path
+          name: instrument_code
+          description: The code of the instrument.
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: interval
+          description: the interval period
+          required: false
+          schema: 
+            type: string
+        - in: query
+          name: page_size
+          description: Maximum number of results 
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 10000
+            default: 100         
+      responses:
+        "200":
+          description: Get details about VWAP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vwap'
+      operationId: GetRecentVwap
+components:
+  schemas:
+    Commodity:
+      type: string
+      description: The chosen commodity
+      enum:
+        - trades 
+        - order_book_snapshots 
+        - instrument_metrics  
+      default: trades
+    ExchangesDef:
+      type: object
+      properties: 
+        code: 
+          type: string
+        name: 
+          type: string
+        kaiko_legacy_slug: 
+          type: string
+    Instrument:
+      type: object
+      properties: 
+        kaiko_legacy_exchange_slug: 
+          type: string
+        trade_start_time: 
+          type: string
+          nullable: true
+        trade_end_time: 
+          type: string
+          nullable: true
+        code: 
+          type: string
+          nullable: true
+        exchange_code: 
+          type: string
+          nullable: true
+        exchange_pair_code: 
+          type: string
+          nullable: true
+        base_asset: 
+          type: string
+          nullable: true
+        quote_asset: 
+          type: string
+          nullable: true
+        kaiko_legacy_symbol: 
+          type: string
+          nullable: true
+        class: 
+          type: string
+          nullable: true
+        trade_start_timestamp: 
+          type: integer
+          format: int64
+          nullable: true
+        trade_end_timestamp: 
+          type: integer
+          format: int64
+          nullable: true
+        trade_count: 
+          type: integer
+          format: int32
+          nullable: true
+        trade_compressed_size: 
+          type: integer
+          format: int64  
+          nullable: true
+    Vwap:
+      type: object
+      properties:      
+        time:
+          type: string
+          format: date-time
+        timestamp :
+          type: integer
+          format: int64      
+        result:
+          type: string
+        access: 
+          type: object
+          properties:
+            access_range: 
+              type: object
+              properties:
+                start_timestamp:
+                  type: string
+                end_timestamp:
+                  type: string
+            data_range:
+              type: object
+              properties:
+                start_timestamp:
+                  type: string
+                end_timestamp:
+                  type: string      
+        data: 
+          type: array
+          items:
+            $ref: '#/components/schemas/VwapData'
+        query: 
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Query'
+    Query:
+      type: object
+      properties: 
+        exchange: 
+          type: string
+        instrument_class: 
+          type: string
+        instrument: 
+          type: string
+        interval: 
+          type: string
+        page_size: 
+          type: integer
+          format: int32
+        aggregation: 
+          type: string
+        data_version: 
+          type: string
+        commodity: 
+          type: string
+        request_time: 
+          type: string
+    VwapData:
+      type: object
+      properties:
+        timestamp: 
+          description: Timestamp at which the interval begins.
+          type: integer
+          format: int64
+        price: 
+          description: Volume-weighted average price.
+          type: number
+          format: double
+    Exchange:
+      type: object
+      properties:
+        code: 
+          type: string
+        name: 
+          type: string
+        kaiko_legacy_slug: 
+          type: string
+    ExchangesResponse:
+      type: object
+      properties:
+        result:
+          type: string
+        data: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Exchange'
+    InstrumentsResponse:
+      type: object
+      properties:
+        result: 
+          type: string
+        data: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Instrument'          
