@@ -18,7 +18,7 @@ namespace Trakx.Kaiko.ApiClient
     using System = global::System;
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.8.2.0 (NJsonSchema v10.2.1.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial interface IAssetsClient
+    public partial interface IInstrumentsClient
     {
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Get all instruments</returns>
@@ -28,13 +28,13 @@ namespace Trakx.Kaiko.ApiClient
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.8.2.0 (NJsonSchema v10.2.1.0 (Newtonsoft.Json v12.0.0.0))")]
-    internal partial class AssetsClient : AuthorisedClient, IAssetsClient
+    internal partial class InstrumentsClient : AuthorisedClient, IInstrumentsClient
     {
         private string _baseUrl = "https://reference-data-api.kaiko.io/v1/";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public AssetsClient(ClientConfigurator configuration, System.Net.Http.HttpClient httpClient) : base(configuration)
+        public InstrumentsClient(ClientConfigurator configuration, System.Net.Http.HttpClient httpClient) : base(configuration)
         {
             _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);

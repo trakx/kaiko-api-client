@@ -7,7 +7,7 @@ namespace Trakx.Kaiko.ApiClient.Tests
 {
     public class KaikoClientTests
     {
-        private readonly IAssetsClient _assetsClient;
+        private readonly IInstrumentsClient _instrumentsClient;
         private readonly IExchangesClient _exchangesClient;
         private readonly IMarketDataClient _marketDataClient;
         public KaikoClientTests()
@@ -23,7 +23,7 @@ namespace Trakx.Kaiko.ApiClient.Tests
             serviceCollection.AddKaikoClient(configuration);
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
-            _assetsClient = serviceProvider.GetRequiredService<IAssetsClient>();
+            _instrumentsClient = serviceProvider.GetRequiredService<IInstrumentsClient>();
             _exchangesClient = serviceProvider.GetRequiredService<IExchangesClient>();
             _marketDataClient = serviceProvider.GetRequiredService<IMarketDataClient>();
         }
@@ -40,7 +40,7 @@ namespace Trakx.Kaiko.ApiClient.Tests
         //[Fact]
         public async Task GetAllAssets_should_return_all_available_exchanges()
         {
-            var assets = (await _assetsClient.GetAllInstrumentsAsync()).Result;
+            var assets = (await _instrumentsClient.GetAllInstrumentsAsync()).Result;
 
             assets.Data.Count.Should().BeGreaterThan(300);
         }

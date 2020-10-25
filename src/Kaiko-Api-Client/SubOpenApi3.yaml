@@ -18,7 +18,7 @@ paths:
                 $ref: '#/components/schemas/InstrumentsResponse'
       operationId: getAllInstruments
       tags:
-        - Assets
+        - instruments
   exchanges:
     get:
       description: This endpoint retrieves a list of supported exchanges.

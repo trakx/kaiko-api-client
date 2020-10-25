@@ -39,7 +39,7 @@ namespace Trakx.Kaiko.ApiClient
 
             services.AddSingleton(s => new ClientConfigurator(s));
 
-            services.AddHttpClient<IAssetsClient, AssetsClient>()
+            services.AddHttpClient<IInstrumentsClient, InstrumentsClient>()
                 .AddPolicyHandler((s, request) =>
                     Policy<HttpResponseMessage>.Handle<ApiException>()
                         .Or<HttpRequestException>()
@@ -50,10 +50,10 @@ namespace Trakx.Kaiko.ApiClient
                         .WaitAndRetryAsync(delay,
                             (result, timeSpan, retryCount, context) =>
                             {
-                                var logger = s.GetService<ILogger<IAssetsClient>>();
+                                var logger = s.GetService<ILogger<IInstrumentsClient>>();
                                 LogFailure(logger, result, timeSpan, retryCount, context);
                             })
-                        .WithPolicyKey("AssetClient"));
+                        .WithPolicyKey("InstrumentsClient"));
             
             services.AddHttpClient<IExchangesClient, ExchangesClient>()
                 .AddPolicyHandler((s, request) =>
