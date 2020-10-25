@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>Kaiko_Api_Client.Tests</RootNamespace>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -17,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Kaiko-Api-Client\Kaiko-Api-Client.csproj" />
+    <ProjectReference Include="..\Kaiko-Api-Client\Trakx.Kaiko.ApiClient.csproj" />
   </ItemGroup>
 
 </Project>

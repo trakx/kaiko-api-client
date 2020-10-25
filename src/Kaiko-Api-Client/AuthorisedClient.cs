@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Kaiko_Api_Client
+namespace Trakx.Kaiko.ApiClient
 {
     internal abstract class AuthorisedClient
     {

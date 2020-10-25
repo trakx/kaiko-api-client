@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Kaiko_Api_Client
+namespace Trakx.Kaiko.ApiClient
 {
     internal class ClientConfigurator
     {

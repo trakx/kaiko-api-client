@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kaiko-Api-Client", "Kaiko-Api-Client\Kaiko-Api-Client.csproj", "{1249E157-A5E6-4658-8025-86CE230CA416}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trakx.Kaiko.ApiClient", "Kaiko-Api-Client\Trakx.Kaiko.ApiClient.csproj", "{1249E157-A5E6-4658-8025-86CE230CA416}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaiko-Api-Client.Tests", "Kaiko-Api-Client.Tests\Kaiko-Api-Client.Tests.csproj", "{11085538-FCFD-461D-8B92-0A7E4FC6E69F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trakx.Kaiko.ApiClient.Tests", "Kaiko-Api-Client.Tests\Trakx.Kaiko.ApiClient.Tests.csproj", "{11085538-FCFD-461D-8B92-0A7E4FC6E69F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
