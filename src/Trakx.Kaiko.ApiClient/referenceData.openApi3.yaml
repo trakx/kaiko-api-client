@@ -5,6 +5,11 @@ info:
 servers:
   - url: 'https://reference-data-api.kaiko.io/v1/'
     description: Override base path for all operations with the /Instruments path
+tags:
+  - name: Instruments
+    description: This endpoint retrieves a list of supported instruments.
+  - name: Exchanges
+    description: This endpoint retrieves a list of supported exchanges.
 paths:
   instruments:
     get:
@@ -18,7 +23,7 @@ paths:
                 $ref: '#/components/schemas/InstrumentsResponse'
       operationId: getAllInstruments
       tags:
-        - instruments
+        - Instruments
   exchanges:
     get:
       description: This endpoint retrieves a list of supported exchanges.

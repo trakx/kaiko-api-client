@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "SubOpenApi3.yaml",
+      "url": "marketData.openApi3.yaml",
       "output": null
     }
   },
@@ -17,7 +17,7 @@
       "injectHttpClient": true,
       "disposeHttpClient": true,
       "protectedMethods": [],
-      "generateExceptionClasses": false,
+      "generateExceptionClasses": true,
       "exceptionClass": "ApiException",
       "wrapDtoExceptions": true,
       "useHttpClientCreationMethod": false,
@@ -54,7 +54,7 @@
       "responseDictionaryType": "System.Collections.Generic.IDictionary",
       "wrapResponses": true,
       "wrapResponseMethods": [],
-      "generateResponseClasses": false,
+      "generateResponseClasses": true,
       "responseClass": "Response",
       "namespace": "Trakx.Kaiko.ApiClient",
       "requiredPropertiesMustBeDefined": true,
@@ -91,7 +91,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "ReferenceDataClients.cs"
+      "output": "MarketDataClients.cs"
     }
   }
 }

@@ -1,15 +1,15 @@
 using System.Threading.Tasks;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
-using FluentAssertions;
 
-namespace Trakx.Kaiko.ApiClient.Tests
+namespace Trakx.Kaiko.ApiClient.Tests.Integration
 {
     public class KaikoClientTests
     {
         private readonly IInstrumentsClient _instrumentsClient;
         private readonly IExchangesClient _exchangesClient;
-        private readonly IMarketDataClient _marketDataClient;
+        private readonly IAggregatesClient _marketDataClient;
         public KaikoClientTests()
         {
             var configuration = new KaikoConfiguration
@@ -25,7 +25,7 @@ namespace Trakx.Kaiko.ApiClient.Tests
             var serviceProvider = serviceCollection.BuildServiceProvider();
             _instrumentsClient = serviceProvider.GetRequiredService<IInstrumentsClient>();
             _exchangesClient = serviceProvider.GetRequiredService<IExchangesClient>();
-            _marketDataClient = serviceProvider.GetRequiredService<IMarketDataClient>();
+            _marketDataClient = serviceProvider.GetRequiredService<IAggregatesClient>();
         }
 
         [Fact]

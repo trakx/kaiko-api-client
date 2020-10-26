@@ -5,9 +5,14 @@ info:
 servers:
   - url: 'https://eu.market-api.kaiko.io/'
     description: Kaiko base url
+tags:
+  - name: Aggregates
+    description: This endpoint retrieves the OHLCV history for an instrument on an exchange. The interval parameter is suffixed with s, m, h or d to specify seconds, minutes, hours or days, respectively. By making use of the sort parameter, data can be returned in ascending asc or descending desc order.
 paths:
   v1/data/{commodity}.{data_version}/exchanges/{exchange_code}/{instrument_class}/{instrument_code}/aggregations/vwap/recent:
     get:
+      tags: 
+        - Aggregates
       description: This endpoint retrieves the most recent VWAP data points for an instrument on an exchange going 30 days back in time for up to 10000 values.
       parameters:
         - in: path
@@ -71,8 +76,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Vwap'
       operationId: GetRecentVwap
-      tags:
-        - MarketData
 components:
   schemas:
     Commodity:
