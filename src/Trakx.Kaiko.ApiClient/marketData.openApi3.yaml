@@ -5,11 +5,13 @@ info:
 servers:
   - url: 'https://eu.market-api.kaiko.io/'
     description: Kaiko base url
+security:
+  - ApiKeyAuth: []
 tags:
   - name: Aggregates
-    description: This endpoint retrieves the OHLCV history for an instrument on an exchange. The interval parameter is suffixed with s, m, h or d to specify seconds, minutes, hours or days, respectively. By making use of the sort parameter, data can be returned in ascending asc or descending desc order.
+    description: "This endpoint retrieves the OHLCV history for an instrument on an exchange. The interval parameter is suffixed with s, m, h or d to specify seconds, minutes, hours or days, respectively. By making use of the sort parameter, data can be returned in ascending asc or descending desc order."
 paths:
-  v1/data/{commodity}.{data_version}/exchanges/{exchange_code}/{instrument_class}/{instrument_code}/aggregations/vwap/recent:
+  "/v1/data/{commodity}.{data_version}/exchanges/{exchange_code}/{instrument_class}/{instrument_code}/aggregations/vwap/recent":
     get:
       tags: 
         - Aggregates
@@ -21,19 +23,12 @@ paths:
           required: true
           schema: 
             $ref: "#/components/schemas/Commodity"
-            default: trades
         - in: path
           name: data_version
           description: The data version
           required: true
           schema: 
-            type: string
-            description: The data version
-            enum:
-              - v1
-              - v2
-              - latest
-            default: 'v1'
+            $ref: "#/components/schemas/DataVersion"
         - in: path
           name: exchange_code
           description: The code for the desired exchange
@@ -60,23 +55,97 @@ paths:
             type: string
         - in: query
           name: page_size
-          description: Maximum number of results 
           required: false
           schema:
-            type: integer
-            format: int32
-            minimum: 1
-            maximum: 10000
-            default: 100         
+            $ref: '#/components/schemas/PageSize'
       responses:
         "200":
           description: Get details about VWAP
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Vwap'
+                $ref: '#/components/schemas/GetRecentVwapResponse'
       operationId: GetRecentVwap
+  "/v2/data/{commodity}.{data_version}/spot_direct_exchange_rate/{base_asset}/{quote_asset}/":
+    get:
+      tags: 
+        - Aggregates
+      description: "This endpoint generates an aggregated price for an asset pair across all exchanges with spot markets for the pair. Only asset combinations which are actively being traded on one of our covered exchanges are being taken into account for the calculation of the price. Unsupported asset combinations will return no data. To return data used as input for the calculation of the aggregated price, set the sources parameter to true. Setting the sourcesparameter to false (default) will yield a faster response time. By making use of the sort parameter, data can be returned in ascending asc (default in API v1) or descending desc order (default in API v2). Regardless of page_size, one page always only returns max. one month of data. For example: A query with start_time=2020-01-27T00:00:00Z, end_time=2020-03-04T00:00:00Z, page_size=100, interval=1d and sort=asc will return 3 pages: first page will return 5 data points (2020-01-27 to 2020-01-31 included), second page will return 29 data points (2020-02-01 to 2020-02-29 included), last page will return 3 data points (2020-03-01 to 2020-03-04 excluded). This implies that pagination needs to be used for queries spanning across multiple months."
+      parameters:
+        - in: path
+          name: commodity
+          description: The data commodity
+          required: true
+          schema: 
+            $ref: "#/components/schemas/Commodity"
+        - in: path
+          name: data_version
+          description: The data version
+          required: true
+          schema: 
+            $ref: "#/components/schemas/DataVersion"
+        - in: path
+          name: base_asset
+          description: The code for the desired exchange
+          required: true
+          schema: 
+            type: string
+        - in: path
+          name: quote_asset
+          description:	The desired quote asset code. See Instruments Reference Data Endpoint.
+          required: true
+          schema: 
+            type: string
+        - in: query
+          name: include_exchanges
+          description: List of exchanges' code to include in the calculation. See Instruments Reference Data Endpoint. Only available in API v2.
+          schema:
+            type: string
+        - in: query
+          name: exclude_exchanges
+          description: List of exchanges' code to exclude from the calculation. See Instruments Reference Data Endpoint. Only available in API v2.
+          schema:
+            type: string
+        - in: query
+          name: start_time
+          schema:
+            $ref: '#/components/schemas/StartTime'
+        - in: query
+          name: end_time
+          schema:
+            $ref: '#/components/schemas/EndTime'
+        - in: query
+          name: interval
+          description: the interval period
+          required: false
+          schema: 
+            type: string
+        - in: query
+          name: page_size
+          required: false
+          schema:
+            $ref: '#/components/schemas/PageSize'
+        - in: query
+          name: sources
+          description: If true, returns all prices which were used to calculate aggregated price. Default is false.
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        "200":
+          description: Generates an aggregated price for an asset pair across all exchanges with spot markets for the pair.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDirectExchangeRateResponse'
+      operationId: GetDirectExchangeRate
 components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Api-Key
   schemas:
     Commodity:
       type: string
@@ -86,7 +155,22 @@ components:
         - order_book_snapshots 
         - instrument_metrics  
       default: trades 
-    Vwap:
+    DataVersion:
+      type: string
+      description: The data version
+      enum:
+        - v1
+        - v2
+        - latest
+      default: 'latest' 
+    PageSize:
+      description: Maximum number of results 
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 10000
+      default: 100
+    GetRecentVwapResponse:
       type: object
       properties:      
         time:
@@ -98,22 +182,7 @@ components:
         result:
           type: string
         access: 
-          type: object
-          properties:
-            access_range: 
-              type: object
-              properties:
-                start_timestamp:
-                  type: string
-                end_timestamp:
-                  type: string
-            data_range:
-              type: object
-              properties:
-                start_timestamp:
-                  type: string
-                end_timestamp:
-                  type: string      
+          $ref: '#/components/schemas/Access'
         data: 
           type: array
           items:
@@ -121,8 +190,8 @@ components:
         query: 
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/Query'
-    Query:
+            $ref: '#/components/schemas/GetRecentVwapQuery'
+    GetRecentVwapQuery:
       type: object
       properties: 
         exchange: 
@@ -133,13 +202,12 @@ components:
           type: string
         interval: 
           type: string
-        page_size: 
-          type: integer
-          format: int32
+        page_size:
+          $ref: '#/components/schemas/PageSize'
         aggregation: 
           type: string
-        data_version: 
-          type: string
+        data_version:
+          $ref: "#/components/schemas/DataVersion"
         commodity: 
           type: string
         request_time: 
@@ -154,4 +222,124 @@ components:
         price: 
           description: Volume-weighted average price.
           type: number
-          format: double          
+          format: double
+    GetDirectExchangeRateResponse:
+      type: object
+      properties:
+        query: 
+          $ref: '#/components/schemas/GetDirectExchangeRateQuery'
+        time: 
+          type: string
+          format: date-time
+          example: 2020-05-26T20:09:14.277Z
+        timestamp: 
+          type: integer
+          format: int64
+          example: 1590523754277
+        data: 
+          $ref: '#/components/schemas/DirectexchangeRateData'
+        result: 
+          type: string
+          example: success
+        access: 
+          $ref: '#/components/schemas/Access'
+    DirectexchangeRateData:
+      type: array
+      items: 
+        type: object
+        properties: 
+          timestamp: 
+            type: integer
+            format: int64
+            example: 1590451200000
+          price: 
+            type: number
+            format: double
+            example: 8847.968719074968
+          volume: 
+            type: number
+            format: double
+            example: 13589.95633007
+          count: 
+            type: integer
+            format: int32
+            example: 122143
+          sources: 
+            type: array
+            items: 
+              type: object
+              properties: 
+                exchange_code: 
+                  type: string
+                  example: cbse
+                count: 
+                  type: integer
+                  format: int32
+                  example: 66991
+                price: 
+                  type: number
+                  format: double
+                  example: 8848.388264128678
+                volume:
+                  type: number
+                  format: double
+                  example: 10187.26739386
+    GetDirectExchangeRateQuery:
+      type: object
+      properties: 
+        page_size: 
+          $ref: '#/components/schemas/PageSize'
+        interval: 
+          type: string
+          example: 1d
+        sort: 
+          type: string
+          example: desc
+        base_asset: 
+          type: string
+          example: btc
+        quote_asset: 
+          type: string
+          example: usd
+        sources: 
+          type: boolean
+        include_exchanges: 
+          type: array
+          items: 
+            type: string
+            example: cbse
+        data_version: 
+          $ref: '#/components/schemas/DataVersion'
+        commodity: 
+          $ref: '#/components/schemas/Commodity'
+        request_time: 
+          type: string
+          format: date-time
+          example: 2020-05-26T20:09:13.000Z
+        instruments: 
+          type: array
+          items: 
+            type: string
+            example: bfnx:spot:btc-usd
+    StartTime:
+      type: string
+      format: date-time
+      description: Starting time in ISO 8601 (inclusive).
+    EndTime:
+      type: string
+      format: date-time
+      description: Ending time in ISO 8601 (exclusive).
+    Access:
+      type: object
+      properties: 
+        access_range: 
+          $ref: '#/components/schemas/DateRange'
+        data_range:
+          $ref: '#/components/schemas/DateRange'
+    DateRange:
+      type: object
+      properties:
+        start_timestamp:
+          type: string
+        end_timestamp:
+          type: string
