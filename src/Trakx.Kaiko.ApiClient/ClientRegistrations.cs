@@ -17,12 +17,10 @@ namespace Trakx.Kaiko.ApiClient
                                     
             services.AddHttpClient<IAggregatesClient, AggregatesClient>()
                 .AddPolicyHandler((s, request) => 
-                    Policy<HttpResponseMessage>.Handle<ApiException>()
+                    Policy<HttpResponseMessage>
+                    .Handle<ApiException>()
                     .Or<HttpRequestException>()
                     .OrTransientHttpStatusCode()
-                    .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-                    .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.Forbidden)
                     .WaitAndRetryAsync(delay,
                         onRetry: (result, timeSpan, retryCount, context) =>
                         {
@@ -34,12 +32,10 @@ namespace Trakx.Kaiko.ApiClient
                                 
             services.AddHttpClient<IExchangesClient, ExchangesClient>()
                 .AddPolicyHandler((s, request) => 
-                    Policy<HttpResponseMessage>.Handle<ApiException>()
+                    Policy<HttpResponseMessage>
+                    .Handle<ApiException>()
                     .Or<HttpRequestException>()
                     .OrTransientHttpStatusCode()
-                    .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-                    .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.Forbidden)
                     .WaitAndRetryAsync(delay,
                         onRetry: (result, timeSpan, retryCount, context) =>
                         {
@@ -51,12 +47,10 @@ namespace Trakx.Kaiko.ApiClient
                                 
             services.AddHttpClient<IInstrumentsClient, InstrumentsClient>()
                 .AddPolicyHandler((s, request) => 
-                    Policy<HttpResponseMessage>.Handle<ApiException>()
+                    Policy<HttpResponseMessage>
+                    .Handle<ApiException>()
                     .Or<HttpRequestException>()
                     .OrTransientHttpStatusCode()
-                    .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-                    .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.Forbidden)
                     .WaitAndRetryAsync(delay,
                         onRetry: (result, timeSpan, retryCount, context) =>
                         {
