@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
 using Polly.Extensions.Http;
+using Serilog;
 
 
 namespace Trakx.Kaiko.ApiClient
@@ -26,7 +26,7 @@ namespace Trakx.Kaiko.ApiClient
                     .WaitAndRetryAsync(delay,
                         onRetry: (result, timeSpan, retryCount, context) =>
                         {
-                            var logger = s.GetService<ILogger<AggregatesClient>>();
+                            var logger = Log.Logger.ForContext<AggregatesClient>();
                             LogFailure(logger, result, timeSpan, retryCount, context);
                         })
                     .WithPolicyKey("AggregatesClient"));
@@ -43,7 +43,7 @@ namespace Trakx.Kaiko.ApiClient
                     .WaitAndRetryAsync(delay,
                         onRetry: (result, timeSpan, retryCount, context) =>
                         {
-                            var logger = s.GetService<ILogger<ExchangesClient>>();
+                            var logger = Log.Logger.ForContext<ExchangesClient>();
                             LogFailure(logger, result, timeSpan, retryCount, context);
                         })
                     .WithPolicyKey("ExchangesClient"));
@@ -60,7 +60,7 @@ namespace Trakx.Kaiko.ApiClient
                     .WaitAndRetryAsync(delay,
                         onRetry: (result, timeSpan, retryCount, context) =>
                         {
-                            var logger = s.GetService<ILogger<InstrumentsClient>>();
+                            var logger = Log.Logger.ForContext<InstrumentsClient>();
                             LogFailure(logger, result, timeSpan, retryCount, context);
                         })
                     .WithPolicyKey("InstrumentsClient"));
