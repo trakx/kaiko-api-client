@@ -1,0 +1,157 @@
+﻿openapi: 3.0.0
+info:
+  title: Kaiko API
+  version: '1.0.0'
+servers:
+  - url: 'https://eu.market-api.kaiko.io/'
+    description: Kaiko base url
+tags:
+  - name: Aggregates
+    description: This endpoint retrieves the OHLCV history for an instrument on an exchange. The interval parameter is suffixed with s, m, h or d to specify seconds, minutes, hours or days, respectively. By making use of the sort parameter, data can be returned in ascending asc or descending desc order.
+paths:
+  v1/data/{commodity}.{data_version}/exchanges/{exchange_code}/{instrument_class}/{instrument_code}/aggregations/vwap/recent:
+    get:
+      tags: 
+        - Aggregates
+      description: This endpoint retrieves the most recent VWAP data points for an instrument on an exchange going 30 days back in time for up to 10000 values.
+      parameters:
+        - in: path
+          name: commodity
+          description: The data commodity
+          required: true
+          schema: 
+            $ref: "#/components/schemas/Commodity"
+            default: trades
+        - in: path
+          name: data_version
+          description: The data version
+          required: true
+          schema: 
+            type: string
+            description: The data version
+            enum:
+              - v1
+              - v2
+              - latest
+            default: 'v1'
+        - in: path
+          name: exchange_code
+          description: The code for the desired exchange
+          required: true
+          schema: 
+            type: string
+        - in: path
+          name: instrument_class
+          description: The class of the instrument.
+          required: true
+          schema: 
+            type: string
+        - in: path
+          name: instrument_code
+          description: The code of the instrument.
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: interval
+          description: the interval period
+          required: false
+          schema: 
+            type: string
+        - in: query
+          name: page_size
+          description: Maximum number of results 
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 10000
+            default: 100         
+      responses:
+        "200":
+          description: Get details about VWAP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vwap'
+      operationId: GetRecentVwap
+components:
+  schemas:
+    Commodity:
+      type: string
+      description: The chosen commodity
+      enum:
+        - trades 
+        - order_book_snapshots 
+        - instrument_metrics  
+      default: trades 
+    Vwap:
+      type: object
+      properties:      
+        time:
+          type: string
+          format: date-time
+        timestamp :
+          type: integer
+          format: int64      
+        result:
+          type: string
+        access: 
+          type: object
+          properties:
+            access_range: 
+              type: object
+              properties:
+                start_timestamp:
+                  type: string
+                end_timestamp:
+                  type: string
+            data_range:
+              type: object
+              properties:
+                start_timestamp:
+                  type: string
+                end_timestamp:
+                  type: string      
+        data: 
+          type: array
+          items:
+            $ref: '#/components/schemas/VwapData'
+        query: 
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Query'
+    Query:
+      type: object
+      properties: 
+        exchange: 
+          type: string
+        instrument_class: 
+          type: string
+        instrument: 
+          type: string
+        interval: 
+          type: string
+        page_size: 
+          type: integer
+          format: int32
+        aggregation: 
+          type: string
+        data_version: 
+          type: string
+        commodity: 
+          type: string
+        request_time: 
+          type: string
+    VwapData:
+      type: object
+      properties:
+        timestamp: 
+          description: Timestamp at which the interval begins.
+          type: integer
+          format: int64
+        price: 
+          description: Volume-weighted average price.
+          type: number
+          format: double          
