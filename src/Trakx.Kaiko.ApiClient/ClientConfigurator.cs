@@ -8,9 +8,9 @@ namespace Trakx.Kaiko.ApiClient
     {
         public ClientConfigurator(IServiceProvider provider)
         {
-            Configuration = provider.GetService<IOptions<KaikoConfiguration>>().Value;
+            ApiConfiguration = provider.GetService<IOptions<KaikoApiConfiguration>>().Value;
         }
 
-        public KaikoConfiguration Configuration { get; }
+        public KaikoApiConfiguration ApiConfiguration { get; }
     }
 }

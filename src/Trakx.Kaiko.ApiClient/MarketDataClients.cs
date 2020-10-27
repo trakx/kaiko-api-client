@@ -42,7 +42,18 @@ namespace Trakx.Kaiko.ApiClient
         /// <param name="sources">If true, returns all prices which were used to calculate aggregated price. Default is false.</param>
         /// <returns>Generates an aggregated price for an asset pair across all exchanges with spot markets for the pair.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Response<GetDirectExchangeRateResponse>> GetDirectExchangeRateAsync(Commodity commodity, DataVersion data_version, string base_asset, string quote_asset, string include_exchanges = null, string exclude_exchanges = null, System.DateTimeOffset? start_time = null, System.DateTimeOffset? end_time = null, string interval = null, int? page_size = null, bool? sources = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Response<GetDirectExchangeRateResponse>> GetDirectExchangeRateAsync(Commodity commodity, DataVersion data_version, string base_asset, string quote_asset, string include_exchanges = null, string exclude_exchanges = null, System.DateTimeOffset? start_time = null, System.DateTimeOffset? end_time = null, string interval = null, int? page_size = null, SortOrder? sort = null, bool? sources = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <param name="base_asset">The code for the desired exchange</param>
+        /// <param name="quote_asset">The desired quote asset code. See Instruments Reference Data Endpoint.</param>
+        /// <param name="include_exchanges">List of exchanges' code to include in the calculation. See Instruments Reference Data Endpoint. Only available in API v2.</param>
+        /// <param name="exclude_exchanges">List of exchanges' code to exclude from the calculation. See Instruments Reference Data Endpoint. Only available in API v2.</param>
+        /// <param name="interval">the interval period</param>
+        /// <param name="sources">If true, returns all prices which were used to calculate aggregated price. Default is false.</param>
+        /// <returns>Generates an aggregated price for an asset pair across all exchanges with spot markets for the pair, potentially using a cross rate.</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Response<GetExchangeRateResponse>> GetExchangeRateAsync(string base_asset, string quote_asset, string include_exchanges = null, string exclude_exchanges = null, System.DateTimeOffset? start_time = null, System.DateTimeOffset? end_time = null, string interval = null, int? page_size = null, SortOrder? sort = null, bool? sources = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
     }
     
@@ -190,7 +201,7 @@ namespace Trakx.Kaiko.ApiClient
         /// <param name="sources">If true, returns all prices which were used to calculate aggregated price. Default is false.</param>
         /// <returns>Generates an aggregated price for an asset pair across all exchanges with spot markets for the pair.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Response<GetDirectExchangeRateResponse>> GetDirectExchangeRateAsync(Commodity commodity, DataVersion data_version, string base_asset, string quote_asset, string include_exchanges = null, string exclude_exchanges = null, System.DateTimeOffset? start_time = null, System.DateTimeOffset? end_time = null, string interval = null, int? page_size = null, bool? sources = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Response<GetDirectExchangeRateResponse>> GetDirectExchangeRateAsync(Commodity commodity, DataVersion data_version, string base_asset, string quote_asset, string include_exchanges = null, string exclude_exchanges = null, System.DateTimeOffset? start_time = null, System.DateTimeOffset? end_time = null, string interval = null, int? page_size = null, SortOrder? sort = null, bool? sources = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (commodity == null)
                 throw new System.ArgumentNullException("commodity");
@@ -220,11 +231,11 @@ namespace Trakx.Kaiko.ApiClient
             }
             if (start_time != null) 
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("start_time") + "=").Append(System.Uri.EscapeDataString(start_time.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("start_time") + "=").Append(System.Uri.EscapeDataString(start_time.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (end_time != null) 
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("end_time") + "=").Append(System.Uri.EscapeDataString(end_time.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("end_time") + "=").Append(System.Uri.EscapeDataString(end_time.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (interval != null) 
             {
@@ -233,6 +244,10 @@ namespace Trakx.Kaiko.ApiClient
             if (page_size != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("page_size") + "=").Append(System.Uri.EscapeDataString(ConvertToString(page_size, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sort != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("sort") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sort, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (sources != null) 
             {
@@ -276,6 +291,118 @@ namespace Trakx.Kaiko.ApiClient
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return new Response<GetDirectExchangeRateResponse>(status_, headers_, objectResponse_.Object);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <param name="base_asset">The code for the desired exchange</param>
+        /// <param name="quote_asset">The desired quote asset code. See Instruments Reference Data Endpoint.</param>
+        /// <param name="include_exchanges">List of exchanges' code to include in the calculation. See Instruments Reference Data Endpoint. Only available in API v2.</param>
+        /// <param name="exclude_exchanges">List of exchanges' code to exclude from the calculation. See Instruments Reference Data Endpoint. Only available in API v2.</param>
+        /// <param name="interval">the interval period</param>
+        /// <param name="sources">If true, returns all prices which were used to calculate aggregated price. Default is false.</param>
+        /// <returns>Generates an aggregated price for an asset pair across all exchanges with spot markets for the pair, potentially using a cross rate.</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<Response<GetExchangeRateResponse>> GetExchangeRateAsync(string base_asset, string quote_asset, string include_exchanges = null, string exclude_exchanges = null, System.DateTimeOffset? start_time = null, System.DateTimeOffset? end_time = null, string interval = null, int? page_size = null, SortOrder? sort = null, bool? sources = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (base_asset == null)
+                throw new System.ArgumentNullException("base_asset");
+    
+            if (quote_asset == null)
+                throw new System.ArgumentNullException("quote_asset");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v2/data/trades.v1/spot_exchange_rate/{base_asset}/{quote_asset}/?");
+            urlBuilder_.Replace("{base_asset}", System.Uri.EscapeDataString(ConvertToString(base_asset, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{quote_asset}", System.Uri.EscapeDataString(ConvertToString(quote_asset, System.Globalization.CultureInfo.InvariantCulture)));
+            if (include_exchanges != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("include_exchanges") + "=").Append(System.Uri.EscapeDataString(ConvertToString(include_exchanges, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (exclude_exchanges != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("exclude_exchanges") + "=").Append(System.Uri.EscapeDataString(ConvertToString(exclude_exchanges, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (start_time != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("start_time") + "=").Append(System.Uri.EscapeDataString(start_time.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (end_time != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("end_time") + "=").Append(System.Uri.EscapeDataString(end_time.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (interval != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("interval") + "=").Append(System.Uri.EscapeDataString(ConvertToString(interval, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (page_size != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("page_size") + "=").Append(System.Uri.EscapeDataString(ConvertToString(page_size, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sort != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("sort") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sort, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sources != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("sources") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sources, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<GetExchangeRateResponse>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return new Response<GetExchangeRateResponse>(status_, headers_, objectResponse_.Object);
                         }
                         else
                         {
@@ -533,7 +660,7 @@ namespace Trakx.Kaiko.ApiClient
     public partial class GetDirectExchangeRateResponse 
     {
         [Newtonsoft.Json.JsonProperty("query", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public GetDirectExchangeRateQuery Query { get; set; }
+        public GetExchangeRateQuery Query { get; set; }
     
         [Newtonsoft.Json.JsonProperty("time", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset Time { get; set; }
@@ -542,7 +669,7 @@ namespace Trakx.Kaiko.ApiClient
         public long Timestamp { get; set; }
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public DirectexchangeRateData Data { get; set; }
+        public DirectExchangeRateData Data { get; set; }
     
         [Newtonsoft.Json.JsonProperty("result", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Result { get; set; }
@@ -563,13 +690,52 @@ namespace Trakx.Kaiko.ApiClient
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class DirectexchangeRateData : System.Collections.Generic.List<Anonymous>
+    public partial class ExchangeRateData : System.Collections.Generic.List<Anonymous>
     {
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class GetDirectExchangeRateQuery 
+    public partial class DirectExchangeRateData : System.Collections.Generic.List<Anonymous2>
+    {
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class GetExchangeRateResponse 
+    {
+        [Newtonsoft.Json.JsonProperty("query", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public GetExchangeRateQuery Query { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("time", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset Time { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("timestamp", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long Timestamp { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ExchangeRateData Data { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("result", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Result { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("access", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Access Access { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class GetExchangeRateQuery 
     {
         [Newtonsoft.Json.JsonProperty("page_size", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Range(1, 10000)]
@@ -661,8 +827,44 @@ namespace Trakx.Kaiko.ApiClient
     
     }
     
+    /// <summary>DateTime order in which the data is returned.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public enum SortOrder
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"asc")]
+        Asc = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"desc")]
+        Desc = 1,
+    
+    }
+    
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Anonymous 
+    {
+        [Newtonsoft.Json.JsonProperty("timestamp", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Timestamp { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Price { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("sources", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, Anonymous3> Sources { get; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Anonymous2 
     {
         [Newtonsoft.Json.JsonProperty("timestamp", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long Timestamp { get; set; }
@@ -692,6 +894,30 @@ namespace Trakx.Kaiko.ApiClient
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Anonymous3 
+    {
+        [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Price { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("simple_price", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Simple_price { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<Data> Data { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Sources 
     {
         [Newtonsoft.Json.JsonProperty("exchange_code", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -705,6 +931,36 @@ namespace Trakx.Kaiko.ApiClient
     
         [Newtonsoft.Json.JsonProperty("volume", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double Volume { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Data 
+    {
+        [Newtonsoft.Json.JsonProperty("exchange_code", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Exchange_code { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("count", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Count { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Price { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("volume", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Volume { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("simple_price", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Simple_price { get; set; }
     
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
     
