@@ -48,7 +48,7 @@ namespace Trakx.Kaiko.ApiClient.Tests.Integration
         [Fact(Skip = "Should have apiKey but work")]
         public async Task GetChosenPriceForCurrency_should_return_price()
         {
-            var assets = (await _marketDataClient.GetRecentVwapAsync(Commodity.Trades, Data_version.V1, "bcex", "spot", "btc-usdt")).Result;
+            var assets = (await _marketDataClient.GetRecentVwapAsync(Commodity.Trades, DataVersion.V1, "bcex", "spot", "btc-usdt")).Result;
 
             assets.Data[0].Price.Should().BeGreaterThan(5000);
         }
