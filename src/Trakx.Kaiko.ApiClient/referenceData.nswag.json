@@ -32,7 +32,7 @@
       "generateContractsOutput": false,
       "contractsNamespace": null,
       "contractsOutputFilePath": null,
-      "parameterDateTimeFormat": "s",
+      "parameterDateTimeFormat": "yyyy-MM-ddTHH:mm:ssZ",
       "parameterDateFormat": "yyyy-MM-dd",
       "generateUpdateJsonSerializerSettingsMethod": true,
       "useRequestAndResponseSerializationSettings": false,

@@ -14,17 +14,17 @@ namespace Trakx.Kaiko.ApiClient
             this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions();
-            services.Configure<KaikoConfiguration>(
-                configuration.GetSection(nameof(KaikoConfiguration)));
+            services.Configure<KaikoApiConfiguration>(
+                configuration.GetSection(nameof(KaikoApiConfiguration)));
             AddCommonDependencies(services);
 
             return services;
         }
 
         public static IServiceCollection AddKaikoClient(
-            this IServiceCollection services, KaikoConfiguration configuration)
+            this IServiceCollection services, KaikoApiConfiguration apiConfiguration)
         {
-            var options = Options.Create(configuration);
+            var options = Options.Create(apiConfiguration);
             services.AddSingleton(options);
             
             AddCommonDependencies(services);

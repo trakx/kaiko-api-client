@@ -1,6 +1,6 @@
 ﻿namespace Trakx.Kaiko.ApiClient
 {
-    public class KaikoConfiguration
+    public class KaikoApiConfiguration
     {
 #nullable disable
         public string ApiKey { get; set; }

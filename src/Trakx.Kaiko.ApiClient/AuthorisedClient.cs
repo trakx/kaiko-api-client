@@ -6,13 +6,13 @@ namespace Trakx.Kaiko.ApiClient
 {
     internal abstract class AuthorisedClient
     {
-        public KaikoConfiguration Configuration { get; protected set; }
+        public KaikoApiConfiguration ApiConfiguration { get; protected set; }
 
-        private string ApiKey => Configuration!.ApiKey;
+        private string ApiKey => ApiConfiguration!.ApiKey;
 
-        public AuthorisedClient(ClientConfigurator clientConfigurator)
+        protected AuthorisedClient(ClientConfigurator clientConfigurator)
         {
-            Configuration = clientConfigurator.Configuration;
+            ApiConfiguration = clientConfigurator.ApiConfiguration;
         }
 
         protected Task<HttpRequestMessage> CreateHttpRequestMessageAsync(CancellationToken cancellationToken)

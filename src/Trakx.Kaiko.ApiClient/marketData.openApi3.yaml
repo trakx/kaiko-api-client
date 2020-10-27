@@ -13,6 +13,7 @@ tags:
 paths:
   "/v1/data/{commodity}.{data_version}/exchanges/{exchange_code}/{instrument_class}/{instrument_code}/aggregations/vwap/recent":
     get:
+      operationId: GetRecentVwap
       tags: 
         - Aggregates
       description: This endpoint retrieves the most recent VWAP data points for an instrument on an exchange going 30 days back in time for up to 10000 values.
@@ -65,9 +66,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetRecentVwapResponse'
-      operationId: GetRecentVwap
+
   "/v2/data/{commodity}.{data_version}/spot_direct_exchange_rate/{base_asset}/{quote_asset}/":
     get:
+      operationId: GetDirectExchangeRate
       tags: 
         - Aggregates
       description: "This endpoint generates an aggregated price for an asset pair across all exchanges with spot markets for the pair. Only asset combinations which are actively being traded on one of our covered exchanges are being taken into account for the calculation of the price. Unsupported asset combinations will return no data. To return data used as input for the calculation of the aggregated price, set the sources parameter to true. Setting the sourcesparameter to false (default) will yield a faster response time. By making use of the sort parameter, data can be returned in ascending asc (default in API v1) or descending desc order (default in API v2). Regardless of page_size, one page always only returns max. one month of data. For example: A query with start_time=2020-01-27T00:00:00Z, end_time=2020-03-04T00:00:00Z, page_size=100, interval=1d and sort=asc will return 3 pages: first page will return 5 data points (2020-01-27 to 2020-01-31 included), second page will return 29 data points (2020-02-01 to 2020-02-29 included), last page will return 3 data points (2020-03-01 to 2020-03-04 excluded). This implies that pagination needs to be used for queries spanning across multiple months."
@@ -92,7 +94,7 @@ paths:
             type: string
         - in: path
           name: quote_asset
-          description:	The desired quote asset code. See Instruments Reference Data Endpoint.
+          description:  The desired quote asset code. See Instruments Reference Data Endpoint.
           required: true
           schema: 
             type: string
@@ -126,6 +128,11 @@ paths:
           schema:
             $ref: '#/components/schemas/PageSize'
         - in: query
+          name: sort
+          required: false
+          schema:
+            $ref: '#/components/schemas/SortOrder'
+        - in: query
           name: sources
           description: If true, returns all prices which were used to calculate aggregated price. Default is false.
           required: false
@@ -139,7 +146,74 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetDirectExchangeRateResponse'
-      operationId: GetDirectExchangeRate
+
+  "/v2/data/trades.v1/spot_exchange_rate/{base_asset}/{quote_asset}/":
+    get:
+      operationId: GetExchangeRate
+      tags:
+        - Aggregates
+      description: "This endpoint returns the price of any asset in USD, EUR, GBP, AUD or NZD. The USD price is calculated based on the path of the highest liquidity, with an additional step using forex rates to get the EUR, GBP AUD and NZD prices. This means that, even though an asset might trade directly against USD, EUR, GBP, AUD or NZD on one or more exchanges, the price might still be established by using cross-rates1. In cases where the most liquid path changed over time, this will be taken into account in the calculation of the price for each interval. To have an overview of what data was used to calculate the price, set the sources parameter to true. Setting the sourcesparameter to false (default) will yield a faster response time. By making use of the sort parameter, data can be returned in ascending asc (default) or descending desc order."
+      parameters:
+      - in: path
+        name: base_asset
+        description: The code for the desired exchange
+        required: true
+        schema: 
+          type: string
+      - in: path
+        name: quote_asset
+        description:  The desired quote asset code. See Instruments Reference Data Endpoint.
+        required: true
+        schema: 
+          type: string
+      - in: query
+        name: include_exchanges
+        description: List of exchanges' code to include in the calculation. See Instruments Reference Data Endpoint. Only available in API v2.
+        schema:
+          type: string
+      - in: query
+        name: exclude_exchanges
+        description: List of exchanges' code to exclude from the calculation. See Instruments Reference Data Endpoint. Only available in API v2.
+        schema:
+          type: string
+      - in: query
+        name: start_time
+        schema:
+          $ref: '#/components/schemas/StartTime'
+      - in: query
+        name: end_time
+        schema:
+          $ref: '#/components/schemas/EndTime'
+      - in: query
+        name: interval
+        description: the interval period
+        required: false
+        schema: 
+          type: string
+      - in: query
+        name: page_size
+        required: false
+        schema:
+          $ref: '#/components/schemas/PageSize'
+      - in: query
+        name: sort
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortOrder'
+      - in: query
+        name: sources
+        description: If true, returns all prices which were used to calculate aggregated price. Default is false.
+        required: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: Generates an aggregated price for an asset pair across all exchanges with spot markets for the pair, potentially using a cross rate.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetExchangeRateResponse'
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -227,7 +301,7 @@ components:
       type: object
       properties:
         query: 
-          $ref: '#/components/schemas/GetDirectExchangeRateQuery'
+          $ref: '#/components/schemas/GetExchangeRateQuery'
         time: 
           type: string
           format: date-time
@@ -237,13 +311,62 @@ components:
           format: int64
           example: 1590523754277
         data: 
-          $ref: '#/components/schemas/DirectexchangeRateData'
+          $ref: '#/components/schemas/DirectExchangeRateData'
         result: 
           type: string
           example: success
         access: 
           $ref: '#/components/schemas/Access'
-    DirectexchangeRateData:
+    ExchangeRateData:
+      type: array
+      items: 
+        type: object
+        properties: 
+          timestamp: 
+            type: number
+            example: 1590451200000
+          price: 
+            type: number
+            format: double
+            example: 7208.746103202
+          sources: 
+            type: object
+            additionalProperties: 
+              type: object
+              properties: 
+                price: 
+                  type: number
+                  format: double
+                  example: 15.73908373334
+                simple_price: 
+                  type: number
+                  format: double
+                  example: 1.2273908333333334
+                data: 
+                  type: array
+                  items: 
+                    type: object
+                    properties: 
+                      exchange_code: 
+                        type: string
+                        example: cucy
+                      count: 
+                        type: number
+                        example: 108
+                      price: 
+                        type: number
+                        format: double
+                        example: 1.2273908333333334
+                      volume: 
+                        type: number
+                        format: double
+                        example: 1.2273908333333334
+                      simple_price: 
+                        type: number
+                        format: double
+                        example: 1.2273908333333334
+
+    DirectExchangeRateData:
       type: array
       items: 
         type: object
@@ -284,7 +407,27 @@ components:
                   type: number
                   format: double
                   example: 10187.26739386
-    GetDirectExchangeRateQuery:
+    GetExchangeRateResponse:
+      type: object
+      properties:
+        query: 
+          $ref: '#/components/schemas/GetExchangeRateQuery'
+        time: 
+          type: string
+          format: date-time
+          example: 2020-05-26T20:09:14.277Z
+        timestamp: 
+          type: integer
+          format: int64
+          example: 1590523754277
+        data: 
+          $ref: '#/components/schemas/ExchangeRateData'
+        result: 
+          type: string
+          example: success
+        access: 
+          $ref: '#/components/schemas/Access'
+    GetExchangeRateQuery:
       type: object
       properties: 
         page_size: 
@@ -343,3 +486,9 @@ components:
           type: string
         end_timestamp:
           type: string
+    SortOrder:
+      type: string
+      description: DateTime order in which the data is returned.
+      enum:
+        - asc
+        - desc
