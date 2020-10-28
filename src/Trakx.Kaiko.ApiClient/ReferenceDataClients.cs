@@ -18,7 +18,7 @@ namespace Trakx.Kaiko.ApiClient
     using System = global::System;
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.8.2.0 (NJsonSchema v10.2.1.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial interface IInstrumentsClient
+    public partial interface IInstrumentsClient : IFavouriteExchangesClient
     {
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Get all instruments</returns>
@@ -228,7 +228,7 @@ namespace Trakx.Kaiko.ApiClient
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.8.2.0 (NJsonSchema v10.2.1.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial interface IExchangesClient
+    public partial interface IExchangesClient : IFavouriteExchangesClient
     {
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Get all exchanges</returns>

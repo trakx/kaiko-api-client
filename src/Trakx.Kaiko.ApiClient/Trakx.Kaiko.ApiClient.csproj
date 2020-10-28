@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <GenerateApiClient>True</GenerateApiClient>
+    <GenerateApiClient>False</GenerateApiClient>
   </PropertyGroup>
 
   <Import Project="../Common.Projects.props" />

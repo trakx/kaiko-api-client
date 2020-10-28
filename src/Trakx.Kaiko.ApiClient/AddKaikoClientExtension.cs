@@ -34,7 +34,7 @@ namespace Trakx.Kaiko.ApiClient
 
         private static void AddCommonDependencies(IServiceCollection services)
         {
-            services.AddSingleton(s => new ClientConfigurator(s));
+            services.AddSingleton<ClientConfigurator>();
             AddClients(services);
         }
 

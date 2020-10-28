@@ -4,15 +4,12 @@ using System.Threading.Tasks;
 
 namespace Trakx.Kaiko.ApiClient
 {
-    internal abstract class AuthorisedClient
+    internal abstract class AuthorisedClient : FavouriteExchangesClient
     {
-        public KaikoApiConfiguration ApiConfiguration { get; protected set; }
-
         private string ApiKey => ApiConfiguration!.ApiKey;
 
-        protected AuthorisedClient(ClientConfigurator clientConfigurator)
+        protected AuthorisedClient(ClientConfigurator clientConfigurator) : base(clientConfigurator)
         {
-            ApiConfiguration = clientConfigurator.ApiConfiguration;
         }
 
         protected Task<HttpRequestMessage> CreateHttpRequestMessageAsync(CancellationToken cancellationToken)

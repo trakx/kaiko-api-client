@@ -29,7 +29,7 @@ namespace Trakx.Kaiko.ApiClient.Tests.Integration
             var exchangeRate = await _aggregatesClient.GetDirectExchangeRateAsync(
                 Commodity.Trades, DataVersion.Latest, "btc",
                 "usdc",
-                "bnce",
+                _aggregatesClient.Top12ExchangeIdsAsCsv,
                 start_time: DateTimeOffset.UtcNow.Subtract(TimeSpan.FromMinutes(5)),
                 interval: "5m",
                 sort: SortOrder.Desc,
