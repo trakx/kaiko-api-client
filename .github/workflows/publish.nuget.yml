@@ -12,9 +12,11 @@ on:
       - master
 
 env:
+  SOLUTION_PATH: "src/Trakx.Kaiko.ApiClient.sln"
   PACKAGE_NAME: Trakx.Kaiko.ApiClient
   PROJECT_PATH: "src/Trakx.Kaiko.ApiClient/Trakx.Kaiko.ApiClient.csproj"
   TEST_PROJECT_PATH: "src/Trakx.Kaiko.ApiClient.Tests/Trakx.Kaiko.ApiClient.Tests.csproj"
+  KaikoApiConfiguration__ApiKey: ${{secrets.KAIKO_API_KEY}}
 
 jobs:
   
@@ -59,16 +61,16 @@ jobs:
       run: dotnet nuget add source "https://nuget.pkg.github.com/trakx/index.json" --name "github" --username "trakx-bot" --password ${{secrets.TRAKX_BOT_PAT}} --store-password-in-clear-text
 
     - name: Install dependencies
-      run: dotnet restore ${{env.TEST_PROJECT_PATH}}
+      run: dotnet restore ${{env.SOLUTION_PATH}}
     
     - name: Remove github source
       run: dotnet nuget remove source "github"
     
     - name: Build
-      run: dotnet build ${{env.TEST_PROJECT_PATH}} --configuration Release --no-restore
+      run: dotnet build ${{env.SOLUTION_PATH}} --configuration Release --no-restore
     
     - name: Test
-      run: dotnet test ${{env.TEST_PROJECT_PATH}} --no-restore --verbosity normal
+      run: dotnet test ${{env.SOLUTION_PATH}} --no-restore --verbosity normal
 
     - name: Package
       run: dotnet pack ${{env.PROJECT_PATH}} --no-build --configuration Release --output ./nuget/ -p:PackageVersion=${{ steps.bumpSemver.outputs.new_tag }}
