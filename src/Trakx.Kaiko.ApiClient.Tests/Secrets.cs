@@ -10,7 +10,7 @@ namespace Trakx.Kaiko.ApiClient.Tests
             var srcPath = new DirectoryInfo(Environment.CurrentDirectory).Parent?.Parent?.Parent?.Parent;
             try
             {
-                DotNetEnv.Env.Load(Path.Combine(srcPath?.FullName, ".env"));
+                DotNetEnv.Env.Load(Path.Combine(srcPath?.FullName ?? string.Empty, ".env"));
             }
             catch (Exception)
             {
