@@ -29,4 +29,4 @@ jobs:
     - name: Build
       run: dotnet build ${{env.SOLUTION_PATH}} --configuration Release --no-restore
     - name: Test
-      run: dotnet test ${{env.SOLUTION_PATH}} --no-restore --verbosity normal
+      run: dotnet test ${{env.SOLUTION_PATH}} --no-restore --logger GitHubActions --verbosity normal
