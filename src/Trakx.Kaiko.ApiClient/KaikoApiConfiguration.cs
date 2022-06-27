@@ -6,6 +6,7 @@ namespace Trakx.Kaiko.ApiClient
     {
 #nullable disable
         public string ApiKey { get; set; }
+        public string TargetChannel { get; set; }
         public List<string> FavouriteExchanges { get; set; }
 #nullable restore
     }

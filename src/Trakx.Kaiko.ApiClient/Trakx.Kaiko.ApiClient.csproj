@@ -5,6 +5,14 @@
     <GenerateApiClient>False</GenerateApiClient>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+
   <Import Project="../Common.Projects.props" />
   <Import Project="../Packable.Projects.props" />
 
