@@ -1,5 +1,5 @@
 # kaiko-api-client
-C# implementation of a (Kaiko Stream)[https://sdk.kaiko.com/#kaiko-stream] api client
+C# implementation of a [Kaiko Stream](https://sdk.kaiko.com/#kaiko-stream) api client
 
 
 ## Creating your local .env file
