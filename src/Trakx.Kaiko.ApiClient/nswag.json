@@ -1,9 +1,9 @@
 ﻿{
-  "runtime": "NetCore31",
+  "runtime": "Net60",
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "marketData.openApi3.yaml",
+      "url": "openApi3.yaml",
       "output": null
     }
   },
@@ -22,9 +22,9 @@
       "wrapDtoExceptions": true,
       "useHttpClientCreationMethod": false,
       "httpClientType": "System.Net.Http.HttpClient",
-      "useHttpRequestMessageCreationMethod": true,
+      "useHttpRequestMessageCreationMethod": false,
       "useBaseUrl": true,
-      "generateBaseUrlProperty": true,
+      "generateBaseUrlProperty": false,
       "generateSyncMethods": false,
       "exposeJsonSerializerSettings": false,
       "clientClassAccessModifier": "internal",
@@ -37,12 +37,13 @@
       "generateUpdateJsonSerializerSettingsMethod": true,
       "useRequestAndResponseSerializationSettings": false,
       "serializeTypeInformation": false,
-      "queryNullValue": "",
+      "queryNullValue": "null",
       "className": "{controller}Client",
       "operationGenerationMode": "MultipleClientsFromFirstTagAndOperationId",
       "additionalNamespaceUsages": [
         "Microsoft.AspNetCore.Mvc",
-        "System.Threading"
+        "System.Threading",
+        "Trakx.Utils.Apis"
       ],
       "additionalContractNamespaceUsages": [],
       "generateOptionalParameters": true,
@@ -54,7 +55,7 @@
       "responseDictionaryType": "System.Collections.Generic.IDictionary",
       "wrapResponses": true,
       "wrapResponseMethods": [],
-      "generateResponseClasses": true,
+      "generateResponseClasses": false,
       "responseClass": "Response",
       "namespace": "Trakx.Kaiko.ApiClient",
       "requiredPropertiesMustBeDefined": true,
@@ -91,7 +92,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "MarketDataClients.cs"
+      "output": "ApiClients.cs"
     }
   }
 }

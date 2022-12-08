@@ -1,12 +1,17 @@
 ﻿using System.Collections.Generic;
+using Trakx.Utils.Attributes;
 
-namespace Trakx.Kaiko.ApiClient
+namespace Trakx.Kaiko.ApiClient;
+
+public record KaikoApiConfiguration
 {
-    public class KaikoApiConfiguration
-    {
 #nullable disable
-        public string ApiKey { get; set; }
-        public List<string> FavouriteExchanges { get; set; }
+    public string BaseUrl { get; init; }
+
+    [AwsParameter]
+    [SecretEnvironmentVariable]
+    public string ApiKey { get; init; }
+
+    public List<string> FavouriteExchanges { get; init; }
 #nullable restore
-    }
 }

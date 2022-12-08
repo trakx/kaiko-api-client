@@ -5,18 +5,18 @@ using Polly;
 using Polly.Contrib.WaitAndRetry;
 using Polly.Extensions.Http;
 using Serilog;
-
+using Trakx.Utils.Apis;
 
 namespace Trakx.Kaiko.ApiClient
 {
-    public static partial class AddKaikoClientExtension
+    public static partial class AddKaikoClientExtensions
     {
         private static void AddClients(this IServiceCollection services)
         {
             var delay = Backoff.DecorrelatedJitterBackoffV2(medianFirstRetryDelay: TimeSpan.FromMilliseconds(100), retryCount: 10, fastFirst: true);
-                                    
-            services.AddHttpClient<IAggregatesClient, AggregatesClient>()
-                .AddPolicyHandler((s, request) => 
+            
+            services.AddHttpClient<IMarketDataClient, MarketDataClient>("Trakx.Kaiko.ApiClient.MarketDataClient")
+                .AddPolicyHandler((s, request) =>
                     Policy<HttpResponseMessage>
                     .Handle<ApiException>()
                     .Or<HttpRequestException>()
@@ -24,14 +24,14 @@ namespace Trakx.Kaiko.ApiClient
                     .WaitAndRetryAsync(delay,
                         onRetry: (result, timeSpan, retryCount, context) =>
                         {
-                            var logger = Log.Logger.ForContext<AggregatesClient>();
-                            LogFailure(logger, result, timeSpan, retryCount, context);
+                            var logger = Log.Logger.ForContext<MarketDataClient>();
+                            logger.LogApiFailure(result, timeSpan, retryCount, context);
                         })
-                    .WithPolicyKey("AggregatesClient"));
+                    .WithPolicyKey("Trakx.Kaiko.ApiClient.MarketDataClient"));
 
-                                
-            services.AddHttpClient<IExchangesClient, ExchangesClient>()
-                .AddPolicyHandler((s, request) => 
+            
+            services.AddHttpClient<IAccountsClient, AccountsClient>("Trakx.Kaiko.ApiClient.AccountsClient")
+                .AddPolicyHandler((s, request) =>
                     Policy<HttpResponseMessage>
                     .Handle<ApiException>()
                     .Or<HttpRequestException>()
@@ -39,26 +39,11 @@ namespace Trakx.Kaiko.ApiClient
                     .WaitAndRetryAsync(delay,
                         onRetry: (result, timeSpan, retryCount, context) =>
                         {
-                            var logger = Log.Logger.ForContext<ExchangesClient>();
-                            LogFailure(logger, result, timeSpan, retryCount, context);
+                            var logger = Log.Logger.ForContext<AccountsClient>();
+                            logger.LogApiFailure(result, timeSpan, retryCount, context);
                         })
-                    .WithPolicyKey("ExchangesClient"));
+                    .WithPolicyKey("Trakx.Kaiko.ApiClient.AccountsClient"));
 
-                                
-            services.AddHttpClient<IInstrumentsClient, InstrumentsClient>()
-                .AddPolicyHandler((s, request) => 
-                    Policy<HttpResponseMessage>
-                    .Handle<ApiException>()
-                    .Or<HttpRequestException>()
-                    .OrTransientHttpStatusCode()
-                    .WaitAndRetryAsync(delay,
-                        onRetry: (result, timeSpan, retryCount, context) =>
-                        {
-                            var logger = Log.Logger.ForContext<InstrumentsClient>();
-                            LogFailure(logger, result, timeSpan, retryCount, context);
-                        })
-                    .WithPolicyKey("InstrumentsClient"));
-
-        }
+                    }
     }
 }

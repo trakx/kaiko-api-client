@@ -1,23 +1,15 @@
-﻿using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Trakx.Utils.Apis;
 
-namespace Trakx.Kaiko.ApiClient
+namespace Trakx.Kaiko.ApiClient;
+
+public abstract class AuthorisedClient : FavouriteExchangesClient
 {
-    internal abstract class AuthorisedClient : FavouriteExchangesClient
+    protected readonly ICredentialsProvider CredentialProvider;
+    protected string BaseUrl { get; }
+
+    protected AuthorisedClient(ClientConfigurator configurator) : base(configurator)
     {
-        private string ApiKey => ApiConfiguration!.ApiKey;
-
-        protected AuthorisedClient(ClientConfigurator clientConfigurator) : base(clientConfigurator)
-        {
-        }
-
-        protected Task<HttpRequestMessage> CreateHttpRequestMessageAsync(CancellationToken cancellationToken)
-        {
-            var msg = new HttpRequestMessage();
-            msg.Headers.Add("Accept", "application/json");
-            msg.Headers.Add("X-Api-Key", ApiKey);
-            return Task.FromResult(msg);
-        }
+        CredentialProvider = configurator.GetCredentialProvider(GetType());
+        BaseUrl = configurator.ApiConfiguration.BaseUrl;
     }
 }
