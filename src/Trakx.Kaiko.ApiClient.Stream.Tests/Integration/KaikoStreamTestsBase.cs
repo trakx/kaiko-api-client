@@ -1,12 +1,8 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using Trakx.Kaiko.ApiClient.Config;
-using Trakx.Utils.Testing;
-using Xunit;
-using Xunit.Abstractions;
 
-namespace Trakx.Kaiko.ApiClient.Tests.Integration;
+namespace Trakx.Kaiko.ApiClient.Stream.Tests.Integration;
 
 [Collection(nameof(ApiTestCollection))]
 public class KaikoClientTestsBase
@@ -40,9 +36,10 @@ public class KaikoApiFixture : IDisposable
     {
 
         var configuration = ConfigurationHelper.GetConfigurationFromAws<KaikoApiConfiguration>()
-            with {
-                BaseUrl = "https://api.shrimpy.io"
-            };
+            with
+        {
+            BaseUrl = "https://api.Kaiko.io"
+        };
 
         var serviceCollection = new ServiceCollection();
 

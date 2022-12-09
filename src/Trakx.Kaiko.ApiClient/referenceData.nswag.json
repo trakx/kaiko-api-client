@@ -92,7 +92,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "Generated/ReferenceDataClients.cs"
+      "output": "ReferenceDataClients.cs"
     }
   }
 }

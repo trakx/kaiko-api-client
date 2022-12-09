@@ -18,7 +18,7 @@ public class ClientConfigurator
     {
         return clientType.Name switch
         {
-            nameof(MarketDataClient) => new NoCredentialsProvider(),
+            nameof(ReferenceDataClient) => new NoCredentialsProvider(),
             _ => _credentialsProvider
         };
     }

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <GenerateApiClient>false</GenerateApiClient>
+    <GenerateApiClient>true</GenerateApiClient>
   </PropertyGroup>
 
   <Import Project="../Common.Projects.props" />
@@ -18,7 +18,6 @@
     </PackageReference>
     <PackageReference Include="Serilog" Version="2.12.0" />
     <PackageReference Include="Trakx.Utils" Version="0.6.12" />
-    <PackageReference Include="KaikoSdk" Version="1.6.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,13 +25,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Generated\ClientRegistrations.tt">
+    <None Update="ClientRegistrations.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ClientRegistrations.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Generated\ClientRegistrations.cs">
+    <Compile Update="ClientRegistrations.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ClientRegistrations.tt</DependentUpon>
