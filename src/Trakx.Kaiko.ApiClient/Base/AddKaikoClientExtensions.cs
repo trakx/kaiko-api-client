@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Trakx.Kaiko.ApiClient.Utils;
 using Trakx.Utils.DateTimeHelpers;
 
 namespace Trakx.Kaiko.ApiClient;

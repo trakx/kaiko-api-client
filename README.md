@@ -12,7 +12,9 @@ KaikoApiConfiguration__ApiKey=********
 In order to be able to run some integration tests you should ensure that you have access to the following AWS parameters :
 ```awsParams
 /[environment]/Trakx/Kaiko/ApiClient/KaikoApiConfiguration/ApiKey
+/[environment]/Trakx/Kaiko/ApiClient/KaikoApiConfiguration/ApiKey
 /CiCd/Trakx/Kaiko/ApiClient/KaikoApiConfiguration/ApiKey
+
 ```
 
 ## How to regenerate C# API clients

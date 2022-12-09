@@ -1,4 +1,9 @@
-﻿using System;
+﻿
+
+
+
+
+using System;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
@@ -6,6 +11,7 @@ using Polly.Contrib.WaitAndRetry;
 using Polly.Extensions.Http;
 using Serilog;
 using Trakx.Utils.Apis;
+
 
 namespace Trakx.Kaiko.ApiClient
 {
@@ -15,7 +21,8 @@ namespace Trakx.Kaiko.ApiClient
         {
             var delay = Backoff.DecorrelatedJitterBackoffV2(medianFirstRetryDelay: TimeSpan.FromMilliseconds(100), retryCount: 10, fastFirst: true);
             
-            services.AddHttpClient<IMarketDataClient, MarketDataClient>("Trakx.Kaiko.ApiClient.MarketDataClient")
+
+            services.AddHttpClient<IAggregatesClient, AggregatesClient>("Trakx.Kaiko.ApiClient.AggregatesClient")
                 .AddPolicyHandler((s, request) =>
                     Policy<HttpResponseMessage>
                     .Handle<ApiException>()
@@ -24,13 +31,14 @@ namespace Trakx.Kaiko.ApiClient
                     .WaitAndRetryAsync(delay,
                         onRetry: (result, timeSpan, retryCount, context) =>
                         {
-                            var logger = Log.Logger.ForContext<MarketDataClient>();
+                            var logger = Log.Logger.ForContext<AggregatesClient>();
                             logger.LogApiFailure(result, timeSpan, retryCount, context);
                         })
-                    .WithPolicyKey("Trakx.Kaiko.ApiClient.MarketDataClient"));
+                    .WithPolicyKey("Trakx.Kaiko.ApiClient.AggregatesClient"));
 
             
-            services.AddHttpClient<IAccountsClient, AccountsClient>("Trakx.Kaiko.ApiClient.AccountsClient")
+
+            services.AddHttpClient<IExchangesClient, ExchangesClient>("Trakx.Kaiko.ApiClient.ExchangesClient")
                 .AddPolicyHandler((s, request) =>
                     Policy<HttpResponseMessage>
                     .Handle<ApiException>()
@@ -39,11 +47,12 @@ namespace Trakx.Kaiko.ApiClient
                     .WaitAndRetryAsync(delay,
                         onRetry: (result, timeSpan, retryCount, context) =>
                         {
-                            var logger = Log.Logger.ForContext<AccountsClient>();
+                            var logger = Log.Logger.ForContext<ExchangesClient>();
                             logger.LogApiFailure(result, timeSpan, retryCount, context);
                         })
-                    .WithPolicyKey("Trakx.Kaiko.ApiClient.AccountsClient"));
+                    .WithPolicyKey("Trakx.Kaiko.ApiClient.ExchangesClient"));
 
-                    }
+            
+        }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Trakx.Kaiko.ApiClient.Utils;
-using Trakx.Utils.Apis;
+﻿using Trakx.Utils.Apis;
 
 namespace Trakx.Kaiko.ApiClient;
 

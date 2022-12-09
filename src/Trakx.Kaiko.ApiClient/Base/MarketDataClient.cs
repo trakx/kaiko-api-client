@@ -2,12 +2,14 @@
 
 namespace Trakx.Kaiko.ApiClient;
 
-public abstract class AuthorisedClient : FavouriteExchangesClient
+public interface IMarketDataClient { }
+
+public abstract class MarketDataClient : IMarketDataClient
 {
     protected readonly ICredentialsProvider CredentialProvider;
     protected string BaseUrl { get; }
 
-    protected AuthorisedClient(ClientConfigurator configurator) : base(configurator)
+    protected MarketDataClient(ClientConfigurator configurator)
     {
         CredentialProvider = configurator.GetCredentialProvider(GetType());
         BaseUrl = configurator.ApiConfiguration.BaseUrl;

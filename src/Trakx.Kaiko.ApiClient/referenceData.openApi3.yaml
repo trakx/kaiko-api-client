@@ -1,0 +1,153 @@
+﻿openapi: 3.0.0
+info:
+  title: Kaiko Reference Data API
+  version: '1.0.0'
+servers:
+  - url: 'https://reference-data-api.kaiko.io/v1/'
+    description: Base url for the Reference Data API
+tags:
+  - name: Instruments
+    description: This endpoint retrieves a list of supported instruments.
+  - name: Exchanges
+    description: This endpoint retrieves a list of supported exchanges.
+  - name: Assets
+    description: This endpoint retrieves a list of supported assets.
+paths:
+  exchanges:
+    get:
+      description: This endpoint retrieves a list of supported exchanges.
+      responses:
+        "200":
+          description: Get all exchanges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangesResponse'
+      operationId: getAllExchanges
+      tags:
+        - Exchanges
+  instruments:
+    get:
+      description: This endpoint retrieves a list of supported instruments.
+      responses:
+        "200":
+          description: Get all instruments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstrumentsResponse'
+      operationId: getAllInstruments
+      tags:
+        - Instruments
+  assets:
+    get:
+      description: This endpoint retrieves a list of supported assets.
+      responses:
+        "200":
+          description: Get all assets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetsResponse'
+      operationId: getAllAssets
+      tags:
+        - Assets
+components:
+  schemas:
+    Instrument:
+      type: object
+      properties: 
+        kaiko_legacy_exchange_slug: 
+          type: string
+        trade_start_time: 
+          type: string
+          nullable: true
+        trade_end_time: 
+          type: string
+          nullable: true
+        code: 
+          type: string
+          nullable: true
+        exchange_code: 
+          type: string
+          nullable: true
+        exchange_pair_code: 
+          type: string
+          nullable: true
+        base_asset: 
+          type: string
+          nullable: true
+        quote_asset: 
+          type: string
+          nullable: true
+        kaiko_legacy_symbol: 
+          type: string
+          nullable: true
+        class: 
+          type: string
+          nullable: true
+        trade_start_timestamp: 
+          type: integer
+          format: int64
+          nullable: true
+        trade_end_timestamp: 
+          type: integer
+          format: int64
+          nullable: true
+        trade_count: 
+          type: integer
+          format: int32
+          nullable: true
+        trade_compressed_size: 
+          type: integer
+          format: int64  
+          nullable: true   
+    Exchange:
+      type: object
+      properties:
+        code: 
+          type: string
+        name: 
+          type: string
+        kaiko_legacy_slug: 
+          type: string
+    Asset:
+      type: object
+      properties:
+        code: 
+          type: string
+        name: 
+          type: string
+        asset_class: 
+          type: string
+        asset_classes: 
+          type: array
+          items:
+            type: string
+    InstrumentsResponse:
+      type: object
+      properties:
+        result: 
+          type: string
+        data: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Instrument'
+    ExchangesResponse:
+      type: object
+      properties:
+        result:
+          type: string
+        data: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Exchange'
+    AssetsResponse:
+      type: object
+      properties:
+        result:
+          type: string
+        data: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Asset'

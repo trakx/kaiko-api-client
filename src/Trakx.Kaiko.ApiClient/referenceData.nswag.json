@@ -3,17 +3,17 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "openApi3.yaml",
+      "url": "referenceData.openApi3.yaml",
       "output": null
     }
   },
   "codeGenerators": {
     "openApiToCSharpClient": {
-      "clientBaseClass": "AuthorisedClient",
+      "clientBaseClass": "ReferenceDataClient",
       "configurationClass": "ClientConfigurator",
       "generateClientClasses": true,
       "generateClientInterfaces": true,
-      "clientBaseInterface": "IFavouriteExchangesClient",
+      "clientBaseInterface": null,
       "injectHttpClient": true,
       "disposeHttpClient": true,
       "protectedMethods": [],
@@ -37,7 +37,7 @@
       "generateUpdateJsonSerializerSettingsMethod": true,
       "useRequestAndResponseSerializationSettings": false,
       "serializeTypeInformation": false,
-      "queryNullValue": "null",
+      "queryNullValue": "",
       "className": "{controller}Client",
       "operationGenerationMode": "MultipleClientsFromFirstTagAndOperationId",
       "additionalNamespaceUsages": [
@@ -92,7 +92,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "ApiClients.cs"
+      "output": "Generated/ReferenceDataClients.cs"
     }
   }
 }

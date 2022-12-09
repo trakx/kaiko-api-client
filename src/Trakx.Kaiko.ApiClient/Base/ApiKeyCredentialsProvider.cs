@@ -1,32 +1,22 @@
-﻿using System;
-using System.Globalization;
-using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Serilog;
+﻿using Serilog;
 using Trakx.Utils.Apis;
-using Trakx.Utils.DateTimeHelpers;
 
-namespace Trakx.Kaiko.ApiClient.Utils;
+namespace Trakx.Kaiko.ApiClient;
 
-public interface IKaikoCredentialsProvider : ICredentialsProvider {}
+public interface IKaikoCredentialsProvider : ICredentialsProvider { }
+
 public class ApiKeyCredentialsProvider : IKaikoCredentialsProvider, IDisposable
 {
     private const string ApiKeyHeader = "X-Api-Key";
 
     private readonly KaikoApiConfiguration _configuration;
-    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly CancellationTokenSource _tokenSource;
 
     private static readonly ILogger Logger = Log.Logger.ForContext<ApiKeyCredentialsProvider>();
 
-    public ApiKeyCredentialsProvider(KaikoApiConfiguration configuration, IDateTimeProvider dateTimeProvider)
+    public ApiKeyCredentialsProvider(KaikoApiConfiguration configuration)
     {
         _configuration = configuration;
-        _dateTimeProvider = dateTimeProvider;
-
         _tokenSource = new CancellationTokenSource();
     }
 
