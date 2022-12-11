@@ -11,6 +11,12 @@
   <ItemGroup>
     <PackageReference Include="DotNetEnv" Version="2.3.0" />
     <PackageReference Include="FluentAssertions" Version="6.8.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.21.11" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.50.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.51.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
     <PackageReference Include="Trakx.Utils.Testing" Version="0.6.12" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />

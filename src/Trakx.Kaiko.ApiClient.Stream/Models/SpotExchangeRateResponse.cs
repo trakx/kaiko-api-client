@@ -9,7 +9,6 @@ namespace Trakx.Kaiko.ApiClient.Stream.Models
 {
     public class SpotExchangeRateResponse
     {
-
         [JsonPropertyName("code")]
         public string Code { get; set; }
 
@@ -18,6 +17,5 @@ namespace Trakx.Kaiko.ApiClient.Stream.Models
 
         [JsonPropertyName("code")]
         public DateTime Timestamp { get; set; }
-
     }
 }

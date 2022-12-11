@@ -1,10 +1,6 @@
-﻿using MathNet.Numerics;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Polly.Contrib.WaitAndRetry;
-using Polly;
-using Trakx.Utils.DateTimeHelpers;
 
 namespace Trakx.Kaiko.ApiClient.Stream;
 
@@ -17,10 +13,11 @@ public static partial class AddKaikoStreamExtensions
         return services;
     }
 
-    public static IServiceCollection AddKaikoStream(this IServiceCollection services, KaikoStreamConfiguration streamConfiguration)
+    public static IServiceCollection AddKaikoStream(this IServiceCollection services, KaikoStreamConfiguration config)
     {
-        services.AddSingleton(streamConfiguration);
-        services.AddSingleton<IKaikoStreamHandler, KaikoStreamHandler>();
+        services.AddSingleton(config);
+        services.AddGrpcClients(config);
+        services.AddSingleton<IKaikoStreamClient, KaikoStreamClient>();
         return services;
     }
 }
