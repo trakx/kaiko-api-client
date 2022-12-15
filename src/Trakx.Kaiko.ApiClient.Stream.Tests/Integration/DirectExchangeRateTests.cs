@@ -5,18 +5,18 @@ using Serilog;
 
 namespace Trakx.Kaiko.ApiClient.Stream.Tests
 {
-    public class SpotExchangeRateTests : KaikoStreamTestsBase
+    public class DirectExchangeRateTests : KaikoStreamTestsBase
     {
-        private readonly ISpotExchangeRatesClient _client;
+        private readonly IDirectExchangeRatesClient _client;
 
-        public SpotExchangeRateTests(KaikoStreamFixture fixture, ITestOutputHelper output) : base(fixture, output)
+        public DirectExchangeRateTests(KaikoStreamFixture fixture, ITestOutputHelper output) : base(fixture, output)
         {
-            _client = fixture.Services.GetRequiredService<ISpotExchangeRatesClient>();
+            _client = fixture.Services.GetRequiredService<IDirectExchangeRatesClient>();
         }
 
         [Theory]
-        [InlineData("btc", "usd")]
-        [InlineData("eth", "eur")]
+        [InlineData("btc", "eur")]
+        [InlineData("eth", "usd")]
         public async Task Stream_should_return_prices(string symbol, string currency)
         {
             var seconds = 3;
