@@ -14,7 +14,8 @@ public class ConfigTests
     public void Config_should_have_channel_url()
     {
         _config.Should().NotBeNull();
-        _config.ChannelUrl.Should().StartWith("https://");
+        _config.ChannelUrl.Should().NotBeNull();
+        _config.ChannelUrl.OriginalString.Should().StartWith("https://");
     }
 
     [Fact]

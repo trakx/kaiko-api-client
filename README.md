@@ -8,7 +8,6 @@ Kaiko currently provides two HTTP APIs:
 In addition, Kaiko also offers a Stream product for real-time, low latency data:
 -   Real-Time Stream SDK (Authenticated)
 
-
 ## Creating your local .env file
 In order to be able to run some integration tests, you should create a `.env` file in the `src` folder with the following variables:
 ```secretsEnvVariables

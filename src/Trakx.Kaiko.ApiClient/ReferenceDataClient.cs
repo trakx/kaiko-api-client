@@ -8,6 +8,6 @@ public abstract class ReferenceDataClient : IReferenceDataClient
 
     protected ReferenceDataClient(ClientConfigurator configurator)
     {
-        BaseUrl = configurator.ApiConfiguration.BaseUrl;
+        BaseUrl = configurator.ApiConfiguration.BaseUrl.OriginalString;
     }
 }

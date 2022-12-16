@@ -7,13 +7,12 @@ namespace Trakx.Kaiko.ApiClient.Stream;
 
 /// Trakx client implementation for
 /// <see cref="StreamAggregatesDirectExchangeRateServiceV1Client"/>
-public partial class DirectExchangeRatesClient : KaikoStreamClientBase<ExchangeRateRequest, ExchangeRateResponse>, IDirectExchangeRatesClient
+public class DirectExchangeRatesClient : KaikoStreamClientBase<ExchangeRateRequest, ExchangeRateResponse>, IDirectExchangeRatesClient
 {
     private readonly StreamAggregatesDirectExchangeRateServiceV1Client _client;
     private readonly CancellationTokenSource _cancellationTokenSource;
 
     public DirectExchangeRatesClient(StreamAggregatesDirectExchangeRateServiceV1Client client)
-        : base()
     {
         _client = client;
         _cancellationTokenSource = new CancellationTokenSource();

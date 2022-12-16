@@ -16,10 +16,11 @@ public class ClientConfigurator
 
     public ICredentialsProvider GetCredentialProvider(Type clientType)
     {
-        return clientType.Name switch
+        if (clientType.Name == nameof(ReferenceDataClient))
         {
-            nameof(ReferenceDataClient) => new NoCredentialsProvider(),
-            _ => _credentialsProvider
+            return new NoCredentialsProvider();
         };
+
+        return _credentialsProvider;
     }
 }

@@ -12,6 +12,6 @@ public abstract class MarketDataClient : IMarketDataClient
     protected MarketDataClient(ClientConfigurator configurator)
     {
         CredentialProvider = configurator.GetCredentialProvider(GetType());
-        BaseUrl = configurator.ApiConfiguration.BaseUrl;
+        BaseUrl = configurator.ApiConfiguration.BaseUrl.OriginalString;
     }
 }

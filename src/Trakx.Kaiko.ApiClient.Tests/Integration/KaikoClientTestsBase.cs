@@ -39,9 +39,10 @@ public class KaikoApiFixture : IDisposable
     {
 
         var configuration = ConfigurationHelper.GetConfigurationFromAws<KaikoApiConfiguration>()
-            with {
-                BaseUrl = "https://eu.market-api.kaiko.io"
-            };
+            with
+        {
+            BaseUrl = new Uri("https://eu.market-api.kaiko.io")
+        };
 
         var serviceCollection = new ServiceCollection();
 

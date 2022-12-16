@@ -5,7 +5,7 @@ namespace Trakx.Kaiko.ApiClient;
 public record KaikoApiConfiguration
 {
 #nullable disable
-    public string BaseUrl { get; init; }
+    public Uri BaseUrl { get; init; }
 
     [AwsParameter]
     [SecretEnvironmentVariable]

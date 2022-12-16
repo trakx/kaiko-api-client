@@ -9,13 +9,12 @@ namespace Trakx.Kaiko.ApiClient.Stream;
 
 /// Trakx client implementation for
 /// <see cref="StreamAggregatesSpotExchangeRateServiceV1Client"/>
-public partial class SpotExchangeRatesClient : KaikoStreamClientBase<ExchangeRateRequest, ExchangeRateResponse>, ISpotExchangeRatesClient
+public class SpotExchangeRatesClient : KaikoStreamClientBase<ExchangeRateRequest, ExchangeRateResponse>, ISpotExchangeRatesClient
 {
     private readonly StreamAggregatesSpotExchangeRateServiceV1Client _client;
     private readonly CancellationTokenSource _cancellationTokenSource;
 
     public SpotExchangeRatesClient(StreamAggregatesSpotExchangeRateServiceV1Client client)
-        : base()
     {
         _client = client;
         _cancellationTokenSource = new CancellationTokenSource();

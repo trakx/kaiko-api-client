@@ -35,7 +35,7 @@ internal static class AggregateIntervalExtensions
     /// <summary>
     /// Convert <see cref="AggregateInterval"/> into the expected parameter string.
     /// </summary>
-    public static string ToApiParameter(this AggregateInterval interval)
+    internal static string ToApiParameter(this AggregateInterval interval)
     {
         return interval switch
         {

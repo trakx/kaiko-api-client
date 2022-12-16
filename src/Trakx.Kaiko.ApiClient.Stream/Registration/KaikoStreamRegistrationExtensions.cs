@@ -3,49 +3,49 @@ using Grpc.Net.Client.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Trakx.Kaiko.ApiClient.Stream;
-
-/// <summary>
-/// Configure Kaiko Stream services from configuration.
-/// </summary>
-public static partial class KaikoStreamRegistrationExtensions
+namespace Trakx.Kaiko.ApiClient.Stream
 {
-    /// <inheritdoc/>
-    public static IServiceCollection AddKaikoStream(this IServiceCollection services, IConfiguration configuration)
+    /// <summary>
+    /// Configure Kaiko Stream services from configuration.
+    /// </summary>
+    public static partial class KaikoStreamRegistrationExtensions
     {
-        var config = configuration.GetSection(nameof(KaikoStreamConfiguration)).Get<KaikoStreamConfiguration>();
-        services.AddKaikoStream(config);
-        return services;
-    }
-
-    /// <inheritdoc/>
-    public static IServiceCollection AddKaikoStream(this IServiceCollection services, KaikoStreamConfiguration config)
-    {
-        services.AddSingleton(config);
-        services.AddGrpcClients(config);
-        services.AddSingleton<IDirectExchangeRatesClient, DirectExchangeRatesClient>();
-        services.AddSingleton<ISpotExchangeRatesClient, SpotExchangeRatesClient>();
-        return services;
-    }
-
-    private static ChannelCredentials CreateCredentials(string apiKey)
-    {
-        var interceptor = CallCredentials.FromInterceptor((_, metadata) =>
+        /// <inheritdoc/>
+        public static IServiceCollection AddKaikoStream(this IServiceCollection services, IConfiguration configuration)
         {
-            metadata.Add("Authorization", $"Bearer {apiKey}");
-            return Task.CompletedTask;
-        });
+            var config = configuration.GetSection(nameof(KaikoStreamConfiguration)).Get<KaikoStreamConfiguration>();
+            services.AddKaikoStream(config);
+            return services;
+        }
 
-        var ssl = new SslCredentials();
-        var credentials = ChannelCredentials.Create(ssl, interceptor);
-        return credentials;
-    }
-
-    private static ServiceConfig ConfigService()
-    {
-        return new ServiceConfig
+        /// <inheritdoc/>
+        public static IServiceCollection AddKaikoStream(this IServiceCollection services, KaikoStreamConfiguration config)
         {
-            MethodConfigs =
+            services.AddSingleton(config);
+            services.AddGrpcClients(config);
+            services.AddSingleton<IDirectExchangeRatesClient, DirectExchangeRatesClient>();
+            services.AddSingleton<ISpotExchangeRatesClient, SpotExchangeRatesClient>();
+            return services;
+        }
+
+        internal static ChannelCredentials CreateCredentials(string apiKey)
+        {
+            var interceptor = CallCredentials.FromInterceptor((_, metadata) =>
+            {
+                metadata.Add("Authorization", $"Bearer {apiKey}");
+                return Task.CompletedTask;
+            });
+
+            var ssl = new SslCredentials();
+            var credentials = ChannelCredentials.Create(ssl, interceptor);
+            return credentials;
+        }
+
+        internal static ServiceConfig ConfigService()
+        {
+            return new ServiceConfig
+            {
+                MethodConfigs =
             {
                 new MethodConfig
                 {
@@ -53,23 +53,24 @@ public static partial class KaikoStreamRegistrationExtensions
                     RetryPolicy = CreateRetryPolicy()
                 }
             }
-        };
-    }
+            };
+        }
 
-    private static RetryPolicy CreateRetryPolicy()
-    {
-        return new RetryPolicy
+        private static RetryPolicy CreateRetryPolicy()
         {
-            MaxAttempts = 5,
-            InitialBackoff = TimeSpan.FromSeconds(1),
-            MaxBackoff = TimeSpan.FromSeconds(5),
-            BackoffMultiplier = 1.5,
-            RetryableStatusCodes =
+            return new RetryPolicy
+            {
+                MaxAttempts = 5,
+                InitialBackoff = TimeSpan.FromSeconds(1),
+                MaxBackoff = TimeSpan.FromSeconds(5),
+                BackoffMultiplier = 1.5,
+                RetryableStatusCodes =
             {
                 StatusCode.Unavailable,
                 StatusCode.Internal,
                 StatusCode.ResourceExhausted,
             }
-        };
+            };
+        }
     }
 }

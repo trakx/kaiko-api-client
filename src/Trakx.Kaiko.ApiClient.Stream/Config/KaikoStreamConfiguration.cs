@@ -12,7 +12,7 @@ public record KaikoStreamConfiguration
     /// <summary>
     /// The live url is currently <see cref="https://gateway-v0-grpc.kaiko.ovh"/>
     /// </summary>
-    public string ChannelUrl { get; init; }
+    public Uri ChannelUrl { get; init; }
 
     [AwsParameter]
     [SecretEnvironmentVariable]

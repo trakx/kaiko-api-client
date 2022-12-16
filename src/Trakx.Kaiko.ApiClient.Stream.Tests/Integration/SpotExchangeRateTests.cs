@@ -14,7 +14,7 @@ public class SpotExchangeRateTests : KaikoStreamTestsBase
     [InlineData("eth", "eur")]
     public async Task Stream_should_return_prices(string symbol, string currency)
     {
-        var seconds = 3;
+        const int seconds = 3;
         var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(seconds));
 
         var replies = 0;
