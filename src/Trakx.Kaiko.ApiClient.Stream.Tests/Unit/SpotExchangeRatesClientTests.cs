@@ -1,71 +1,66 @@
-using System.Runtime.InteropServices;
-using Grpc.Core;
-using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 using static KaikoSdk.StreamAggregatesSpotExchangeRateServiceV1;
 
-namespace Trakx.Kaiko.ApiClient.Stream.Tests
+namespace Trakx.Kaiko.ApiClient.Stream.Tests;
+
+public class SpotExchangeRatesClientTests
 {
-    public class SpotExchangeRatesClientTests
+    [Fact]
+    public void StreamAsync_expects_request()
     {
-        [Fact]
-        public void StreamAsync_expects_request()
+        ExpectException(client =>
         {
-            ExpectException(client =>
-            {
-                client.StreamAsync(null);
-            }
-            , exception =>
-            {
-                exception.Should().BeOfType<ArgumentNullException>();
-                exception.As<ArgumentNullException>().ParamName.Should().Be("request");
-            });
+            client.StreamAsync(null);
         }
-
-        [Fact]
-        public void StreamAsync_expects_symbol()
+        , exception =>
         {
-            ExpectException(client =>
-            {
-                var request = new ExchangeRateRequest();
-                client.StreamAsync(request);
-            }
-            , exception =>
-            {
-                exception.Should().BeOfType<ArgumentException>();
-                exception.As<ArgumentException>().ParamName.Should().Be("request");
-                exception.Message.Should().ContainEquivalentOf("symbol");
-            });
+            exception.Should().BeOfType<ArgumentNullException>();
+            exception.As<ArgumentNullException>().ParamName.Should().Be("request");
+        });
+    }
+
+    [Fact]
+    public void StreamAsync_expects_symbol()
+    {
+        ExpectException(client =>
+        {
+            var request = new ExchangeRateRequest();
+            client.StreamAsync(request);
         }
-
-        [Fact]
-        public void StreamAsync_expects_currency()
+        , exception =>
         {
-            ExpectException(client =>
-            {
-                var request = new ExchangeRateRequest { Symbol = "btc" };
-                client.StreamAsync(request);
-            }
-            , exception =>
-            {
-                exception.Should().BeOfType<ArgumentException>();
-                exception.As<ArgumentException>().ParamName.Should().Be("request");
-                exception.Message.Should().ContainEquivalentOf("currency");
-            });
+            exception.Should().BeOfType<ArgumentException>();
+            exception.As<ArgumentException>().ParamName.Should().Be("request");
+            exception.Message.Should().ContainEquivalentOf("symbol");
+        });
+    }
+
+    [Fact]
+    public void StreamAsync_expects_currency()
+    {
+        ExpectException(client =>
+        {
+            var request = new ExchangeRateRequest { Symbol = "btc" };
+            client.StreamAsync(request);
         }
-
-        private static void ExpectException(Action<SpotExchangeRatesClient> operation, Action<Exception> assertions)
+        , exception =>
         {
-            try
-            {
-                var sdkClient = Substitute.For<StreamAggregatesSpotExchangeRateServiceV1Client>();
-                var client = new SpotExchangeRatesClient(sdkClient);
-                operation(client);
-            }
-            catch (Exception x)
-            {
-                assertions(x);
-            }
+            exception.Should().BeOfType<ArgumentException>();
+            exception.As<ArgumentException>().ParamName.Should().Be("request");
+            exception.Message.Should().ContainEquivalentOf("currency");
+        });
+    }
+
+    private static void ExpectException(Action<SpotExchangeRatesClient> operation, Action<Exception> assertions)
+    {
+        try
+        {
+            var sdkClient = Substitute.For<StreamAggregatesSpotExchangeRateServiceV1Client>();
+            var client = new SpotExchangeRatesClient(sdkClient);
+            operation(client);
+        }
+        catch (Exception x)
+        {
+            assertions(x);
         }
     }
 }

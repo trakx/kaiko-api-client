@@ -22,7 +22,7 @@ public static partial class KaikoStreamRegistrationExtensions
             {
                 options.Address = new Uri(config.ChannelUrl);
                 options.ChannelOptionsActions.Add(o => o.Credentials = CreateCredentials(config.ApiKey));
-                options.ChannelOptionsActions.Add(o => o.ServiceConfig = ConfigService(config.RetryPolicy));
+                options.ChannelOptionsActions.Add(o => o.ServiceConfig = ConfigService());
             });
         }
 
@@ -32,13 +32,15 @@ public static partial class KaikoStreamRegistrationExtensions
 
         add<StreamAggregatesDirectExchangeRateServiceV1.StreamAggregatesDirectExchangeRateServiceV1Client>();
         add<StreamAggregatesSpotExchangeRateServiceV1.StreamAggregatesSpotExchangeRateServiceV1Client>();
-        
-        //add<StreamAggregatedPriceServiceV1.StreamAggregatedPriceServiceV1Client>();
-        //add<StreamAggregatesOHLCVServiceV1.StreamAggregatesOHLCVServiceV1Client>();
-        //add<StreamAggregatesVWAPServiceV1.StreamAggregatesVWAPServiceV1Client>();
 
-        //add<StreamIndexServiceV1.StreamIndexServiceV1Client>();
-        //add<StreamTradesServiceV1.StreamTradesServiceV1Client>();
-        //add<StreamMarketUpdateServiceV1.StreamMarketUpdateServiceV1Client>();
+        /* other services we can register if/when we are granted access:
+         * 
+         * StreamAggregatedPriceServiceV1.StreamAggregatedPriceServiceV1Client
+         * StreamAggregatesOHLCVServiceV1.StreamAggregatesOHLCVServiceV1Client
+         * StreamAggregatesVWAPServiceV1.StreamAggregatesVWAPServiceV1Client
+         * StreamIndexServiceV1.StreamIndexServiceV1Client
+         * StreamTradesServiceV1.StreamTradesServiceV1Client
+         * StreamMarketUpdateServiceV1.StreamMarketUpdateServiceV1Client
+         */
     }
 }

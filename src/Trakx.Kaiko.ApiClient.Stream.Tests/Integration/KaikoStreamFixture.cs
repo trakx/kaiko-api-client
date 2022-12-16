@@ -1,19 +1,27 @@
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using Serilog;
-
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
 public class KaikoStreamFixture : IDisposable
 {
     public ServiceProvider Services { get; }
+    public KaikoStreamConfiguration Config { get; }
 
     public KaikoStreamFixture()
     {
-        var configuration = ConfigurationHelper.GetConfigurationFromEnv<KaikoStreamConfiguration>();
+        Config = BuildConfiguration();
         var serviceCollection = new ServiceCollection();
-        serviceCollection.AddKaikoStream(configuration);
+        serviceCollection.AddKaikoStream(Config);
         Services = serviceCollection.BuildServiceProvider();
+    }
+
+    public static KaikoStreamConfiguration BuildConfiguration()
+    {
+        var env = ConfigurationHelper.GetConfigurationFromEnv<KaikoStreamConfiguration>();
+        var aws = ConfigurationHelper.GetConfigurationFromAws<KaikoStreamConfiguration>();
+        return new KaikoStreamConfiguration
+        {
+            ApiKey = aws?.ApiKey ?? env?.ApiKey,
+            ChannelUrl = aws?.ChannelUrl ?? env?.ChannelUrl,
+        };
     }
 
     protected virtual void Dispose(bool disposing)

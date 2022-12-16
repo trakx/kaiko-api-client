@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{F9183CBB-5B9E-4E27-A07E-261D68E1A66A}"
 	ProjectSection(SolutionItems) = preProject
 		.env = .env
+		.env.sample = .env.sample
 		..\.gitattributes = ..\.gitattributes
 		..\.gitignore = ..\.gitignore
 		Common.Projects.props = Common.Projects.props

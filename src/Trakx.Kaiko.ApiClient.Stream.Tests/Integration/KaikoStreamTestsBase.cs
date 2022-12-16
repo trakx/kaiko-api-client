@@ -1,8 +1,4 @@
-using System;
-using FluentAssertions.Common;
-using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using static KaikoSdk.StreamAggregatesSpotExchangeRateServiceV1;
 
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 

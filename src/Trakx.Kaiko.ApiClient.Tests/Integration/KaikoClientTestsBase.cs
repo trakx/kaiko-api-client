@@ -40,7 +40,7 @@ public class KaikoApiFixture : IDisposable
 
         var configuration = ConfigurationHelper.GetConfigurationFromAws<KaikoApiConfiguration>()
             with {
-                BaseUrl = "https://api.shrimpy.io"
+                BaseUrl = "https://eu.market-api.kaiko.io"
             };
 
         var serviceCollection = new ServiceCollection();

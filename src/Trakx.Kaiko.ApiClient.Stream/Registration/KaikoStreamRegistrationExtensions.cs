@@ -41,7 +41,7 @@ public static partial class KaikoStreamRegistrationExtensions
         return credentials;
     }
 
-    private static ServiceConfig ConfigService(RetryPolicy retryPolicy)
+    private static ServiceConfig ConfigService()
     {
         return new ServiceConfig
         {
@@ -50,8 +50,25 @@ public static partial class KaikoStreamRegistrationExtensions
                 new MethodConfig
                 {
                     Names = { MethodName.Default },
-                    //RetryPolicy = retryPolicy
+                    RetryPolicy = CreateRetryPolicy()
                 }
+            }
+        };
+    }
+
+    private static RetryPolicy CreateRetryPolicy()
+    {
+        return new RetryPolicy
+        {
+            MaxAttempts = 5,
+            InitialBackoff = TimeSpan.FromSeconds(1),
+            MaxBackoff = TimeSpan.FromSeconds(5),
+            BackoffMultiplier = 1.5,
+            RetryableStatusCodes =
+            {
+                StatusCode.Unavailable,
+                StatusCode.Internal,
+                StatusCode.ResourceExhausted,
             }
         };
     }

@@ -1,20 +1,29 @@
 # kaiko-api-client
-C# implementation of a Kaiko api client
+C# implementation of clients for Kaiko APIs.
+
+Kaiko currently provides two HTTP APIs:
+-   Reference Data (Public)
+-   Market Data (Authenticated)
+
+In addition, Kaiko also offers a Stream product for real-time, low latency data:
+-   Real-Time Stream SDK (Authenticated)
 
 
 ## Creating your local .env file
 In order to be able to run some integration tests, you should create a `.env` file in the `src` folder with the following variables:
 ```secretsEnvVariables
 KaikoApiConfiguration__ApiKey=********
+KaikoStreamConfiguration__ApiKey=********
+KaikoStreamConfiguration__ChannelUrl=https://gateway-v0-grpc.kaiko.ovh
 ```
 
 ## AWS Parameters
-In order to be able to run some integration tests you should ensure that you have access to the following AWS parameters :
+In order to be able to run some integration tests, you should ensure that you have access to the AWS parameters starting in `/CiCd`.
+In order for the applications in this solution to run correctly on AWS, please ensure that variables starting in `/[environment]` 
+ are defined for all 3 environments (_Production_, _Staging_, _Development_) :
 ```awsParams
 /[environment]/Trakx/Kaiko/ApiClient/KaikoApiConfiguration/ApiKey
-/[environment]/Trakx/Kaiko/ApiClient/KaikoApiConfiguration/ApiKey
-/CiCd/Trakx/Kaiko/ApiClient/KaikoApiConfiguration/ApiKey
-
+/[environment]/Trakx/Kaiko/ApiClient/KaikoStreamConfiguration/ApiKey
 ```
 
 ## How to regenerate C# API clients
