@@ -52,6 +52,13 @@ jobs:
     - name: Build
       run: dotnet build ${{env.SOLUTION_PATH}} --configuration Release --no-restore
 
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+        aws-secret-access-key: ${{secrets.AWS_ACCESS_KEY_SECRET}}
+        aws-region: eu-west-3
+        
     - name: Test
       run: dotnet test ${{env.SOLUTION_PATH}} --no-restore --verbosity normal
 
