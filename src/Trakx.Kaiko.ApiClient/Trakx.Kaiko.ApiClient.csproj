@@ -40,8 +40,10 @@
 
   <Target Name="NSwag" BeforeTargets="Build" Condition="'$(GenerateApiClient)'=='True' ">
     <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
-    <Exec Command="$(NSwagExe_Net60) run referenceData.nswag.json /variables:Configuration=$(Configuration) /runtime:Net60" />
-    <Exec Command="$(NSwagExe_Net60) run marketData.nswag.json /variables:Configuration=$(Configuration) /runtime:Net60" />
+    <Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development"
+          Command="$(NSwagExe_Net60) run referenceData.nswag.json /variables:Configuration=$(Configuration) /runtime:Net60" />
+    <Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development"
+          Command="$(NSwagExe_Net60) run marketData.nswag.json /variables:Configuration=$(Configuration) /runtime:Net60" />
     <RemoveDir Directories="$(OutDir)References" />
   </Target>
 
