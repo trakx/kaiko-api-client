@@ -1,5 +1,4 @@
 ﻿using Trakx.Utils.Testing.ReadmeUpdater;
-using Xunit.Abstractions;
 
 namespace Trakx.Kaiko.ApiClient.Tests.Integration;
 

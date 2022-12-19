@@ -1,6 +1,4 @@
-﻿using Xunit.Abstractions;
-
-namespace Trakx.Kaiko.ApiClient.Tests.Integration;
+﻿namespace Trakx.Kaiko.ApiClient.Tests.Integration;
 
 public class OpenApiGeneratedCodeModifier : Trakx.Utils.Testing.OpenApiGeneratedCodeModifier
 {

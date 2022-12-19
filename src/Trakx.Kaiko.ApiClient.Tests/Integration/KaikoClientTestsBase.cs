@@ -1,9 +1,5 @@
 using System;
-using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using Trakx.Utils.Testing;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace Trakx.Kaiko.ApiClient.Tests.Integration;
 

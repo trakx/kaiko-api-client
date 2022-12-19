@@ -8,7 +8,6 @@ public record KaikoApiConfiguration
     public Uri BaseUrl { get; init; }
 
     [AwsParameter]
-    [SecretEnvironmentVariable]
     public string ApiKey { get; init; }
 #nullable restore
 }

@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Configuration;
+
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
 public class KaikoStreamFixture : IDisposable
@@ -15,14 +17,20 @@ public class KaikoStreamFixture : IDisposable
 
     public static KaikoStreamConfiguration BuildConfiguration()
     {
+        var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        var json = config.GetRequiredSection("KaikoStreamConfiguration").Get<KaikoStreamConfiguration>();
         var env = ConfigurationHelper.GetConfigurationFromEnv<KaikoStreamConfiguration>();
         var aws = ConfigurationHelper.GetConfigurationFromAws<KaikoStreamConfiguration>();
         return new KaikoStreamConfiguration
         {
-            ApiKey = aws?.ApiKey ?? env?.ApiKey,
-            ChannelUrl = aws?.ChannelUrl ?? env?.ChannelUrl,
+            ApiKey = aws?.ApiKey ?? env?.ApiKey ?? json?.ApiKey,
+            ChannelUrl = aws?.ChannelUrl ?? env?.ChannelUrl ?? json?.ChannelUrl,
         };
     }
+
 
     protected virtual void Dispose(bool disposing)
     {

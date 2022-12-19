@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trakx.Kaiko.ApiClient", "Tr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trakx.Kaiko.ApiClient.Tests", "Trakx.Kaiko.ApiClient.Tests\Trakx.Kaiko.ApiClient.Tests.csproj", "{11085538-FCFD-461D-8B92-0A7E4FC6E69F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{F9183CBB-5B9E-4E27-A07E-261D68E1A66A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{F9183CBB-5B9E-4E27-A07E-261D68E1A66A}"
 	ProjectSection(SolutionItems) = preProject
 		.env = .env
 		.env.sample = .env.sample
@@ -36,6 +36,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trakx.Kaiko.ApiClient.Strea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trakx.Kaiko.ApiClient.Stream.Tests", "Trakx.Kaiko.ApiClient.Stream.Tests\Trakx.Kaiko.ApiClient.Stream.Tests.csproj", "{138A15DB-08BC-4AC6-B092-6E5CF121C8A9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stream", "Stream", "{7ADE6839-E6AB-42E2-99F2-14790A7CD1E5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "REST", "REST", "{08C8469C-084B-4DF3-B2EF-109F9E4657B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,8 +67,12 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{1249E157-A5E6-4658-8025-86CE230CA416} = {08C8469C-084B-4DF3-B2EF-109F9E4657B0}
+		{11085538-FCFD-461D-8B92-0A7E4FC6E69F} = {08C8469C-084B-4DF3-B2EF-109F9E4657B0}
 		{02EBA6A7-CCC3-4919-A39B-8C9053F64C27} = {F9183CBB-5B9E-4E27-A07E-261D68E1A66A}
 		{3E562CF2-591E-4389-BDE2-525C7BF583B3} = {02EBA6A7-CCC3-4919-A39B-8C9053F64C27}
+		{A3FA5159-EDA2-4B69-9708-318BE1458471} = {7ADE6839-E6AB-42E2-99F2-14790A7CD1E5}
+		{138A15DB-08BC-4AC6-B092-6E5CF121C8A9} = {7ADE6839-E6AB-42E2-99F2-14790A7CD1E5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1B8CE014-A9EF-4AC3-B0EE-BE721274FA40}
