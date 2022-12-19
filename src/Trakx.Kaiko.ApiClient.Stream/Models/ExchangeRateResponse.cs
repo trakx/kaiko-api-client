@@ -17,6 +17,6 @@ public class ExchangeRateResponse
     [JsonPropertyName("price")]
     public decimal Price { get; set; }
 
-    [JsonPropertyName("code")]
-    public DateTime Timestamp { get; set; }
+    [JsonPropertyName("timestamp")]
+    public DateTimeOffset Timestamp { get; set; }
 }

@@ -59,7 +59,7 @@ public class DirectExchangeRatesClient : KaikoStreamClientBase<ExchangeRateReque
                 Price = price.Value,
                 Symbol = codeParts.ElementAtOrDefault(0),
                 Currency = codeParts.ElementAtOrDefault(1),
-                Timestamp = current.Timestamp.ToDateTime(),
+                Timestamp = current.Timestamp.ToDateTimeOffset(),
             };
 
             yield return item;
