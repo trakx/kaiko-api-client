@@ -5,37 +5,19 @@ using static KaikoSdk.StreamAggregatesDirectExchangeRateServiceV1;
 
 namespace Trakx.Kaiko.ApiClient.Stream;
 
-/// Trakx client implementation for
-/// <see cref="StreamAggregatesDirectExchangeRateServiceV1Client"/>
-public class DirectExchangeRatesClient : KaikoStreamClientBase<ExchangeRateRequest, ExchangeRateResponse>, IDirectExchangeRatesClient
+/// Trakx client implementation for <see cref="StreamAggregatesDirectExchangeRateServiceV1Client"/>
+public class DirectExchangeRatesClient : ExchangeRateClientBase<StreamAggregatesDirectExchangeRateResponseV1>, IDirectExchangeRatesClient
 {
     private readonly StreamAggregatesDirectExchangeRateServiceV1Client _client;
-    private readonly CancellationTokenSource _cancellationTokenSource;
 
     public DirectExchangeRatesClient(StreamAggregatesDirectExchangeRateServiceV1Client client)
+        : base()
     {
         _client = client;
-        _cancellationTokenSource = new CancellationTokenSource();
     }
 
-    protected override void ValidateRequest(ExchangeRateRequest request)
-    {
-        if (request == null)
-        {
-            throw new ArgumentNullException(nameof(request));
-        }
-        if (string.IsNullOrWhiteSpace(request.Symbol))
-        {
-            throw new ArgumentException($"{nameof(request.Symbol)} property cannot be null or empty", nameof(request));
-        }
-        if (string.IsNullOrWhiteSpace(request.Currency))
-        {
-            throw new ArgumentException($"{nameof(request.Currency)} property cannot be null or empty", nameof(request));
-        }
-    }
-
-    internal override async IAsyncEnumerable<ExchangeRateResponse> StreamInternalAsync(
-        ExchangeRateRequest request, CancellationToken? cancellationToken)
+    protected override AsyncServerStreamingCall<StreamAggregatesDirectExchangeRateResponseV1> Subscribe(
+        ExchangeRateRequest request, CancellationToken token)
     {
         var apiRequest = new StreamAggregatesDirectExchangeRateRequestV1
         {
@@ -43,26 +25,25 @@ public class DirectExchangeRatesClient : KaikoStreamClientBase<ExchangeRateReque
             Aggregate = request.Interval.ToApiParameter()
         };
 
-        var token = cancellationToken ?? _cancellationTokenSource.Token;
-
         var subscription = _client.Subscribe(apiRequest, cancellationToken: token);
+        return subscription;
+    }
 
-        await foreach (var current in subscription.ResponseStream.ReadAllAsync(cancellationToken: token))
+    protected override ExchangeRateResponse? BuildResponse(StreamAggregatesDirectExchangeRateResponseV1 current)
+    {
+        if (current == null) return null;
+
+        var price = TryParseDecimal(current.Price);
+        if (price == null) return null;
+
+        var codeParts = current.Code.Split('-');
+
+        return new ExchangeRateResponse
         {
-            var price = TryParseDecimal(current.Price);
-            if (price == null) continue;
-
-            var codeParts = current.Code.Split('-');
-
-            var item = new ExchangeRateResponse
-            {
-                Price = price.Value,
-                Symbol = codeParts.ElementAtOrDefault(0),
-                Currency = codeParts.ElementAtOrDefault(1),
-                Timestamp = current.Timestamp.ToDateTimeOffset(),
-            };
-
-            yield return item;
-        }
+            Price = price.Value,
+            Symbol = codeParts.ElementAtOrDefault(0),
+            Currency = codeParts.ElementAtOrDefault(1),
+            Timestamp = current.Timestamp.ToDateTimeOffset(),
+        };
     }
 }

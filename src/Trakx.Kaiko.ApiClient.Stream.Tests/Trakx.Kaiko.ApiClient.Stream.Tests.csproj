@@ -19,6 +19,7 @@
     </PackageReference>
     <PackageReference Include="KaikoSdk" Version="1.6.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="Microsoft.Reactive.Testing" Version="5.0.0" />
     <PackageReference Include="Trakx.Utils.Testing" Version="0.6.12" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
     <PackageReference Include="xunit" Version="2.4.2" />

@@ -11,7 +11,7 @@ public class SpotExchangeRatesClientTests
     {
         ExpectException(client =>
         {
-            client.StreamAsync(null);
+            client.Stream(null);
         }
         , exception =>
         {
@@ -26,7 +26,7 @@ public class SpotExchangeRatesClientTests
         ExpectException(client =>
         {
             var request = new ExchangeRateRequest();
-            client.StreamAsync(request);
+            client.Stream(request);
         }
         , exception =>
         {
@@ -42,7 +42,7 @@ public class SpotExchangeRatesClientTests
         ExpectException(client =>
         {
             var request = new ExchangeRateRequest { Symbol = "btc" };
-            client.StreamAsync(request);
+            client.Stream(request);
         }
         , exception =>
         {
