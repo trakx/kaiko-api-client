@@ -22,7 +22,6 @@ In order for the applications in this solution to run correctly on AWS, please e
  are defined for all 3 environments (_Production_, _Staging_, _Development_) :
 ```awsParams
 /[environment]/Trakx/Kaiko/ApiClient/KaikoApiConfiguration/ApiKey
-/[environment]/Trakx/Kaiko/ApiClient/Stream/KaikoStreamConfiguration/ApiKey
 ```
 
 ## AWS Parameters for Stream Client
