@@ -15,7 +15,7 @@ using Trakx.Utils.Apis;
 
 namespace Trakx.Kaiko.ApiClient
 {
-    public static partial class AddKaikoClientExtensions
+    public partial class AddKaikoClientExtensions
     {
         private static void AddClients(this IServiceCollection services)
         {

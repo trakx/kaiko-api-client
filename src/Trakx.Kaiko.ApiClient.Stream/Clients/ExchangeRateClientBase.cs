@@ -108,17 +108,11 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IDisposable
 
     #region IDisposable
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!disposing) return;
-        _cancellationSource.Cancel();
-        _cancellationSource?.Dispose();
-    }
-
     /// <inheritdoc />
     public void Dispose()
     {
-        Dispose(true);
+        _cancellationSource.Cancel();
+        _cancellationSource.Dispose();
         GC.SuppressFinalize(this);
     }
 
