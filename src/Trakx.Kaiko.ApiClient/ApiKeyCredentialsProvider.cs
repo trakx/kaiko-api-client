@@ -10,14 +10,14 @@ public class ApiKeyCredentialsProvider : IKaikoCredentialsProvider, IDisposable
     private const string ApiKeyHeader = "X-Api-Key";
 
     private readonly KaikoApiConfiguration _configuration;
-    private readonly CancellationTokenSource _tokenSource;
+    private readonly CancellationTokenSource _cancellationSource;
 
     private static readonly ILogger Logger = Log.Logger.ForContext<ApiKeyCredentialsProvider>();
 
     public ApiKeyCredentialsProvider(KaikoApiConfiguration configuration)
     {
         _configuration = configuration;
-        _tokenSource = new CancellationTokenSource();
+        _cancellationSource = new CancellationTokenSource();
     }
 
 
@@ -43,8 +43,8 @@ public class ApiKeyCredentialsProvider : IKaikoCredentialsProvider, IDisposable
     protected virtual void Dispose(bool disposing)
     {
         if (!disposing) return;
-        _tokenSource.Cancel();
-        _tokenSource?.Dispose();
+        _cancellationSource.Cancel();
+        _cancellationSource?.Dispose();
     }
 
     /// <inheritdoc />
