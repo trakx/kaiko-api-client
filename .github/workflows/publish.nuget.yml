@@ -57,8 +57,14 @@ jobs:
         aws-secret-access-key: ${{secrets.AWS_ACCESS_KEY_SECRET}}
         aws-region: eu-west-3
         
-    - name: Test
-      run: dotnet test ${{env.SOLUTION_PATH}} --no-restore --verbosity normal
+    - name: Test and cover solutions
+        id: test
+        uses: trakx/github-actions/test-dotnet@v9.1.5
+        with:
+          packageReadonlyPat: ${{secrets.TRAKX_BOT_READONLY_PAT}}
+          codacyToken: ${{secrets.CODACY_TOKEN}}
+          awsAccessKeyId: ${{secrets.AWS_ACCESS_KEY_ID}}
+          awsAccessKeySecret: ${{secrets.AWS_ACCESS_KEY_SECRET}}
 
     - name: Package API
       run: dotnet pack ${{env.API_PROJECT_PATH}} --no-build --configuration Release --output ./nuget/ -p:PackageVersion=${{ steps.bumpVersion.outputs.fullVersion }} --include-symbols --include-source
