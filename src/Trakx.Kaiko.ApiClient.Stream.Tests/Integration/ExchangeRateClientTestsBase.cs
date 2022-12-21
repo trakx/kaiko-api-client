@@ -12,14 +12,14 @@ public partial class ExchangeRateClientTestsBase<TClient>
     protected readonly ITestOutputHelper Output;
     protected readonly ILogger Logger;
     protected readonly ServiceProvider Services;
-    protected readonly IDirectExchangeRatesClient _client;
+    protected readonly TClient _client;
 
     public ExchangeRateClientTestsBase(KaikoStreamFixture fixture, ITestOutputHelper output)
     {
         Output = output;
         Logger = new LoggerConfiguration().WriteTo.TestOutput(output).CreateLogger();
         Services = fixture.Services;
-        _client = fixture.Services.GetRequiredService<IDirectExchangeRatesClient>();
+        _client = fixture.Services.GetRequiredService<TClient>();
     }
 
     protected async Task<int> StreamAsync(string symbol, string currency, StatusCode expectedStatus)
