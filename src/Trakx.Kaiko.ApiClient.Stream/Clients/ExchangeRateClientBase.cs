@@ -17,7 +17,6 @@ namespace Trakx.Kaiko.ApiClient.Stream;
 public abstract class ExchangeRateClientBase<TKaikoResponse> : IDisposable
 {
     private readonly CancellationTokenSource _cancellationSource;
-    private bool disposedValue;
 
     protected ExchangeRateClientBase()
     {
@@ -107,23 +106,13 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IDisposable
         return value;
     }
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!disposedValue)
-        {
-            if (disposing)
-            {
-                _cancellationSource.Dispose();
-            }
+    #region IDisposable
 
-            disposedValue = true;
-        }
-    }
-
+    /// <inheritdoc />
     public void Dispose()
     {
-        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
+        _cancellationSource?.Dispose();
     }
+
+    #endregion
 }

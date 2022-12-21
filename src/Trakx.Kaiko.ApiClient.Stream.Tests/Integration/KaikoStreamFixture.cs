@@ -18,20 +18,11 @@ public class KaikoStreamFixture : IDisposable
     public static KaikoStreamConfiguration BuildConfiguration()
     {
         var aws = ConfigurationHelper.GetConfigurationFromAws<KaikoStreamConfiguration>();
-        var env = ConfigurationHelper.GetConfigurationFromEnv<KaikoStreamConfiguration>();
         var json = GetConfigurationFromAppSettings();
-        return BuildConfiguration(aws, env, json);
-    }
-
-    private static KaikoStreamConfiguration BuildConfiguration(
-        KaikoStreamConfiguration? aws,
-        KaikoStreamConfiguration? env,
-        KaikoStreamConfiguration? json)
-    {
         return new KaikoStreamConfiguration
         {
-            ApiKey = aws?.ApiKey ?? env?.ApiKey ?? json?.ApiKey,
-            ChannelUrl = aws?.ChannelUrl ?? env?.ChannelUrl ?? json?.ChannelUrl,
+            ApiKey = aws?.ApiKey,
+            ChannelUrl = json?.ChannelUrl,
         };
     }
 
