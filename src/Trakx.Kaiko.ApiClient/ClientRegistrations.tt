@@ -17,7 +17,7 @@ var nameSpace = "Trakx.Kaiko.ApiClient";
 #>
 namespace <#= nameSpace #>
 {
-    public partial class AddKaikoClientExtensions
+    public static partial class AddKaikoClientExtensions
     {
         private static void AddClients(this IServiceCollection services)
         {

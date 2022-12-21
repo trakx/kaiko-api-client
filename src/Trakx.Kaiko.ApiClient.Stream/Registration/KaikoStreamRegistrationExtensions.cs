@@ -8,7 +8,7 @@ namespace Trakx.Kaiko.ApiClient.Stream
     /// <summary>
     /// Configure Kaiko Stream services from configuration.
     /// </summary>
-    public partial class KaikoStreamRegistrationExtensions
+    public static partial class KaikoStreamRegistrationExtensions
     {
         /// <inheritdoc/>
         public static IServiceCollection AddKaikoStream(this IServiceCollection services, IConfiguration configuration)
