@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
@@ -17,10 +17,17 @@ public class KaikoStreamFixture : IDisposable
 
     public static KaikoStreamConfiguration BuildConfiguration()
     {
-        var json = GetConfigurationFromAppSettings<KaikoStreamConfiguration>();
-        var env = ConfigurationHelper.GetConfigurationFromEnv<KaikoStreamConfiguration>();
         var aws = ConfigurationHelper.GetConfigurationFromAws<KaikoStreamConfiguration>();
+        var env = ConfigurationHelper.GetConfigurationFromEnv<KaikoStreamConfiguration>();
+        var json = GetConfigurationFromAppSettings();
+        return BuildConfiguration(aws, env, json);
+    }
 
+    private static KaikoStreamConfiguration BuildConfiguration(
+        KaikoStreamConfiguration? aws,
+        KaikoStreamConfiguration? env,
+        KaikoStreamConfiguration? json)
+    {
         return new KaikoStreamConfiguration
         {
             ApiKey = aws?.ApiKey ?? env?.ApiKey ?? json?.ApiKey,
@@ -28,13 +35,13 @@ public class KaikoStreamFixture : IDisposable
         };
     }
 
-    private static T GetConfigurationFromAppSettings<T>()
+    private static KaikoStreamConfiguration GetConfigurationFromAppSettings()
     {
         var config = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
             .Build();
 
-        var result = config.GetRequiredSection("KaikoStreamConfiguration").Get<T>();
+        var result = config.GetRequiredSection("KaikoStreamConfiguration").Get<KaikoStreamConfiguration>();
         return result;
     }
 

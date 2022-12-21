@@ -4,10 +4,10 @@ public interface IReferenceDataClient { }
 
 public abstract class ReferenceDataClient : IReferenceDataClient
 {
-    protected string BaseUrl { get; }
+    protected Uri BaseUrl { get; }
 
     protected ReferenceDataClient(ClientConfigurator configurator)
     {
-        BaseUrl = configurator.ApiConfiguration.BaseUrl.OriginalString;
+        BaseUrl = configurator.ApiConfiguration.BaseUrl;
     }
 }

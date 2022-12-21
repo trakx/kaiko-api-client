@@ -73,17 +73,13 @@ public class StreamSubscription<T> : IDisposable
         {
             if (disposing)
             {
-                // TODO: dispose managed state (managed objects)
+                if (!_completed && !_cancellationSource.IsCancellationRequested)
+                {
+                    _cancellationSource.Cancel();
+                }
+                _cancellationSource.Dispose();
+                _task.Dispose();
             }
-
-            if (!_completed && !_cancellationSource.IsCancellationRequested)
-            {
-                _cancellationSource.Cancel();
-            }
-
-            _cancellationSource.Dispose();
-            _task.Dispose();
-
             disposedValue = true;
         }
     }
