@@ -17,13 +17,10 @@ public class KaikoStreamFixture : IDisposable
 
     public static KaikoStreamConfiguration BuildConfiguration()
     {
-        var config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")
-            .Build();
-
-        var json = config.GetRequiredSection("KaikoStreamConfiguration").Get<KaikoStreamConfiguration>();
+        var json = GetConfigurationFromAppSettings<KaikoStreamConfiguration>();
         var env = ConfigurationHelper.GetConfigurationFromEnv<KaikoStreamConfiguration>();
         var aws = ConfigurationHelper.GetConfigurationFromAws<KaikoStreamConfiguration>();
+
         return new KaikoStreamConfiguration
         {
             ApiKey = aws?.ApiKey ?? env?.ApiKey ?? json?.ApiKey,
@@ -31,6 +28,15 @@ public class KaikoStreamFixture : IDisposable
         };
     }
 
+    private static T GetConfigurationFromAppSettings<T>()
+    {
+        var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        var result = config.GetRequiredSection("KaikoStreamConfiguration").Get<T>();
+        return result;
+    }
 
     protected virtual void Dispose(bool disposing)
     {

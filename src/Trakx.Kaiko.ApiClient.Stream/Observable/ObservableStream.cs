@@ -27,7 +27,7 @@ public class ObservableStream<T> : IObservable<T>
 
     #region Subscribe once
 
-    private int _used = 0;
+    private int _used;
 
     private bool CanSubscribeOnce() => Interlocked.Exchange(ref _used, 1) == 0;
 

@@ -16,7 +16,7 @@ namespace Trakx.Kaiko.ApiClient.Stream
         /// <inheritdoc/>
         internal static void AddGrpcClients(this IServiceCollection services, KaikoStreamConfiguration config)
         {
-            void add<T>() where T : class
+            void Add<T>() where T : class
             {
                 services.AddGrpcClient<T>(options =>
                 {
@@ -30,8 +30,8 @@ namespace Trakx.Kaiko.ApiClient.Stream
             // Unfortunately, as of 2022-12-15, we can't use .NET 6 assemblies in T4 templates
             // https://stackoverflow.com/questions/60153842/using-net-core-assemblies-in-t4-templates
 
-            add<StreamAggregatesDirectExchangeRateServiceV1.StreamAggregatesDirectExchangeRateServiceV1Client>();
-            add<StreamAggregatesSpotExchangeRateServiceV1.StreamAggregatesSpotExchangeRateServiceV1Client>();
+            Add<StreamAggregatesDirectExchangeRateServiceV1.StreamAggregatesDirectExchangeRateServiceV1Client>();
+            Add<StreamAggregatesSpotExchangeRateServiceV1.StreamAggregatesSpotExchangeRateServiceV1Client>();
 
             /* other services we can register if/when we are granted access:
              * 

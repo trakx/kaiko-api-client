@@ -11,7 +11,6 @@ public class DirectExchangeRatesClient : ExchangeRateClientBase<StreamAggregates
     private readonly StreamAggregatesDirectExchangeRateServiceV1Client _client;
 
     public DirectExchangeRatesClient(StreamAggregatesDirectExchangeRateServiceV1Client client)
-        : base()
     {
         _client = client;
     }

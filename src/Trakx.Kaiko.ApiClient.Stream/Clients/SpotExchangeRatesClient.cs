@@ -11,7 +11,6 @@ public class SpotExchangeRatesClient : ExchangeRateClientBase<StreamAggregatesSp
     private readonly StreamAggregatesSpotExchangeRateServiceV1Client _client;
 
     public SpotExchangeRatesClient(StreamAggregatesSpotExchangeRateServiceV1Client client)
-        : base()
     {
         _client = client;
     }

@@ -1,4 +1,4 @@
-name: Publish nuget package
+name: Publish nuget packages
 
 on:
   workflow_dispatch:
@@ -13,10 +13,8 @@ on:
 
 env:
   SOLUTION_PATH: "src/Trakx.Kaiko.ApiClient.sln"
-  PACKAGE_NAME: Trakx.Kaiko.ApiClient.Stream
-  PROJECT_PATH: "src/Trakx.Kaiko.ApiClient.Stream/Trakx.Kaiko.ApiClient.Stream.csproj"
-  TEST_PROJECT_PATH: "src/Trakx.Kaiko.ApiClient.Stream.Tests/Trakx.Kaiko.ApiClient.Stream.Tests.csproj"
-  KaikoStreamConfiguration__ApiKey: ${{secrets.KAIKO_API_KEY}}
+  API_PROJECT_PATH: "src/Trakx.Kaiko.ApiClient/Trakx.Kaiko.ApiClient.csproj"
+  STREAM_PROJECT_PATH: "src/Trakx.Kaiko.ApiClient.Stream/Trakx.Kaiko.ApiClient.Stream.csproj"
 
 jobs:
 
@@ -62,9 +60,12 @@ jobs:
     - name: Test
       run: dotnet test ${{env.SOLUTION_PATH}} --no-restore --verbosity normal
 
-    - name: Package
-      run: dotnet pack ${{env.PROJECT_PATH}} --no-build --configuration Release --output ./nuget/ -p:PackageVersion=${{ steps.bumpVersion.outputs.fullVersion }} --include-symbols --include-source
+    - name: Package API
+      run: dotnet pack ${{env.API_PROJECT_PATH}} --no-build --configuration Release --output ./nuget/ -p:PackageVersion=${{ steps.bumpVersion.outputs.fullVersion }} --include-symbols --include-source
 
+    - name: Package Stream
+      run: dotnet pack ${{env.STREAM_PROJECT_PATH}} --no-build --configuration Release --output ./nuget/ -p:PackageVersion=${{ steps.bumpVersion.outputs.fullVersion }} --include-symbols --include-source
+      
     - name: Publish
       # https://github.com/NuGet/Home/issues/8580
       run: dotnet nuget push ./nuget/*.symbols.nupkg --api-key ${{secrets.GITHUB_TOKEN}} --source "https://nuget.pkg.github.com/trakx/index.json"

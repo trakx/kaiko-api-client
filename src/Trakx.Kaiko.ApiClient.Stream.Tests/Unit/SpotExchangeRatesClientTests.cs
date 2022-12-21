@@ -1,7 +1,5 @@
 using static KaikoSdk.StreamAggregatesSpotExchangeRateServiceV1;
 
-#pragma warning disable 8625 // Disable "CS8625 Cannot convert null literal to non-nullable reference type"
-
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
 public class SpotExchangeRatesClientTests
@@ -11,7 +9,8 @@ public class SpotExchangeRatesClientTests
     {
         ExpectException(client =>
         {
-            client.Stream(null);
+            ExchangeRateRequest? request = null;
+            client.Stream(request!);
         }
         , exception =>
         {
@@ -54,15 +53,20 @@ public class SpotExchangeRatesClientTests
 
     private static void ExpectException(Action<SpotExchangeRatesClient> operation, Action<Exception> assertions)
     {
+        SpotExchangeRatesClient? client = null;
         try
         {
             var sdkClient = Substitute.For<StreamAggregatesSpotExchangeRateServiceV1Client>();
-            var client = new SpotExchangeRatesClient(sdkClient);
+            client = new SpotExchangeRatesClient(sdkClient);
             operation(client);
         }
         catch (Exception x)
         {
             assertions(x);
+        }
+        finally
+        {
+            client?.Dispose();
         }
     }
 }

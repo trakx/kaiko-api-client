@@ -19,7 +19,7 @@ public class ClientConfigurator
         if (clientType.Name == nameof(ReferenceDataClient))
         {
             return new NoCredentialsProvider();
-        };
+        }
 
         return _credentialsProvider;
     }

@@ -17,6 +17,7 @@ public class StreamSubscription<T> : IDisposable
     private readonly Task _task;
 
     private bool _completed;
+    private bool disposedValue;
 
     public StreamSubscription(IAsyncStreamReader<T> reader, IObserver<T> observer, CancellationToken token = default)
     {
@@ -31,19 +32,29 @@ public class StreamSubscription<T> : IDisposable
 
     private async Task Run(CancellationToken token)
     {
-        while (!token.IsCancellationRequested)
+        bool IsStopped() => _completed || token.IsCancellationRequested;
+
+        while (!IsStopped())
         {
             try
             {
-                if (!await _reader.MoveNext(token)) break;
+                var hasCurrent = await _reader.MoveNext(token);
+                if (hasCurrent)
+                {
+                    _observer.OnNext(_reader.Current);
+                }
+                else
+                {
+                    _completed = true;
+                }
             }
             catch (RpcException e) when (e.StatusCode == StatusCode.NotFound)
             {
-                break;
+                _completed = true;
             }
             catch (OperationCanceledException)
             {
-                break;
+                _completed = true;
             }
             catch (Exception e)
             {
@@ -51,24 +62,36 @@ public class StreamSubscription<T> : IDisposable
                 _completed = true;
                 return;
             }
-
-            _observer.OnNext(_reader.Current);
         }
 
-        _completed = true;
         _observer.OnCompleted();
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposedValue)
+        {
+            if (disposing)
+            {
+                // TODO: dispose managed state (managed objects)
+            }
+
+            if (!_completed && !_cancellationSource.IsCancellationRequested)
+            {
+                _cancellationSource.Cancel();
+            }
+
+            _cancellationSource.Dispose();
+            _task.Dispose();
+
+            disposedValue = true;
+        }
     }
 
     public void Dispose()
     {
-        if (!_completed && !_cancellationSource.IsCancellationRequested)
-        {
-            _cancellationSource.Cancel();
-        }
-
-        _cancellationSource.Dispose();
-        _task.Dispose();
-
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        Dispose(disposing: true);
         GC.SuppressFinalize(this);
     }
 }

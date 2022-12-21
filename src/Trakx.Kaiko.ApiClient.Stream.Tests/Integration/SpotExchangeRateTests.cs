@@ -54,13 +54,13 @@ public class SpotExchangeRateTests : ExchangeRateClientTestsBase
 
         try
         {
-            void onNext(ExchangeRateResponse response)
+            void OnNext(ExchangeRateResponse response)
             {
                 AssertResponse(response, symbol, currency);
                 replies++;
             }
 
-            void onError(Exception x)
+            void OnError(Exception x)
             {
                 Output.WriteLine(x.Message);
             }
@@ -68,7 +68,7 @@ public class SpotExchangeRateTests : ExchangeRateClientTestsBase
             var request = new ExchangeRateRequest(symbol, currency, interval: AggregateInterval.OneSecond);
             await _client
                 .Observe(request, cancellation.Token)
-                .Do(onNext, onError)
+                .Do(OnNext, OnError)
                 .LastOrDefaultAsync();
         }
         catch (RpcException x)

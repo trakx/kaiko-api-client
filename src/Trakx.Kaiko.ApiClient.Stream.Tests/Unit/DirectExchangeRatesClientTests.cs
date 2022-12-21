@@ -1,7 +1,5 @@
 using static KaikoSdk.StreamAggregatesDirectExchangeRateServiceV1;
 
-#pragma warning disable 8625 // Disable "CS8625 Cannot convert null literal to non-nullable reference type"
-
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
 public class DirectExchangeRatesClientTests
@@ -11,7 +9,8 @@ public class DirectExchangeRatesClientTests
     {
         ExpectException(client =>
         {
-            client.Stream(null);
+            ExchangeRateRequest? request = null;
+            client.Stream(request!);
         }
         , exception =>
         {
