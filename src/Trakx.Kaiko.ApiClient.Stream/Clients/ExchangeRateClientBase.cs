@@ -14,7 +14,7 @@ namespace Trakx.Kaiko.ApiClient.Stream;
 /// Base class for all implementations for Kaiko Stream Aggregate Exchange Rate services.
 /// </summary>
 /// <typeparam name="TKaikoResponse">The Response type received from the Kaiko SDK client.</typeparam>
-public abstract class ExchangeRateClientBase<TKaikoResponse> : IDisposable
+public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClientBase, IDisposable
 {
     private readonly CancellationTokenSource _cancellationSource;
 
@@ -87,7 +87,7 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IDisposable
 
         var stream = subscription.ResponseStream;
 
-        await foreach (var current in stream.ReadAllAsync(cancellationToken: token))
+        await foreach (var current in stream.ReadAllAsync(token).ConfigureAwait(false))
         {
             var response = BuildResponse(current);
             if (response == null) continue;

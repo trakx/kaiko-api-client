@@ -38,7 +38,7 @@ public class StreamSubscription<T> : IDisposable
         {
             try
             {
-                var hasCurrent = await _reader.MoveNext(token);
+                var hasCurrent = await _reader.MoveNext(token).ConfigureAwait(false);
                 if (hasCurrent)
                 {
                     _observer.OnNext(_reader.Current);
