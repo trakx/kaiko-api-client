@@ -4,7 +4,7 @@ using Serilog;
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
 [Collection(nameof(ApiTestCollection))]
-public partial class ExchangeRateClientTestsBase<TClient>
+public class ExchangeRateClientTestsBase<TClient>
     where TClient : IExchangeRateClientBase
 {
     private const int RunSeconds = 2;
