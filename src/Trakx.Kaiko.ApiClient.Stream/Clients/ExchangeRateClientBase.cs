@@ -16,7 +16,7 @@ namespace Trakx.Kaiko.ApiClient.Stream;
 /// <typeparam name="TKaikoResponse">The Response type received from the Kaiko SDK client.</typeparam>
 public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClientBase
 {
-    private readonly CancellationTokenSource _cancellationSource;
+    private readonly CancellationTokenSource? _cancellationSource;
 
     protected ExchangeRateClientBase()
     {
@@ -28,7 +28,7 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
     {
         ValidateRequest(request);
 
-        var token = cancellationToken ?? _cancellationSource.Token;
+        var token = cancellationToken ?? _cancellationSource!.Token;
 
         var serverSubscription = Subscribe(request, token);
         var serverStream = serverSubscription.ResponseStream;
@@ -81,7 +81,7 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
     internal virtual async IAsyncEnumerable<ExchangeRateResponse> StreamInternalAsync(
         ExchangeRateRequest request, CancellationToken? cancellationToken)
     {
-        var token = cancellationToken ?? _cancellationSource.Token;
+        var token = cancellationToken ?? _cancellationSource!.Token;
 
         var subscription = Subscribe(request, token);
 
@@ -107,32 +107,20 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
     }
 
 
-    #region IDisposable
-
-    //private bool _wasDisposed;
-
-    //protected virtual void Dispose(bool disposing)
-    //{
-    //    if (_wasDisposed) return;
-    //    if (disposing)
-    //    {
-    //        if (!_cancellationSource.IsCancellationRequested)
-    //        {
-    //            _cancellationSource.Cancel();
-    //        }
-    //        _cancellationSource.Dispose();
-    //    }
-    //    _wasDisposed = true;
-    //}
+    protected virtual void InternalDispose()
+    {
+    }
 
     public void Dispose()
     {
-        if (!_cancellationSource.IsCancellationRequested)
+        InternalDispose();
+        if (_cancellationSource is not null)
         {
-            _cancellationSource.Cancel();
+            if (!_cancellationSource.IsCancellationRequested)
+            {
+                _cancellationSource.Cancel();
+            }
+            _cancellationSource.Dispose();
         }
-        _cancellationSource.Dispose();
     }
-
-    #endregion
 }
