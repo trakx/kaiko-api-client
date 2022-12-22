@@ -1,8 +1,6 @@
 ﻿using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using KaikoSdk.Stream.AggregatesSpotExchangeRateV1;
-using Microsoft.Reactive.Testing;
 
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
