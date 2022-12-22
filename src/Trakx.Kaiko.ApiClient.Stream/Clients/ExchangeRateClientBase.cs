@@ -16,8 +16,7 @@ namespace Trakx.Kaiko.ApiClient.Stream;
 /// <typeparam name="TKaikoResponse">The Response type received from the Kaiko SDK client.</typeparam>
 public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClientBase
 {
-    // Even being instantiated in the constructor, we left this as nullable to avoid Codacy Sonar errors. C'est la vie. ¯\_(ツ)_/¯
-    private readonly CancellationTokenSource? _cancellationSource;
+    private readonly CancellationTokenSource _cancellationSource;
 
     protected ExchangeRateClientBase()
     {
@@ -29,7 +28,7 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
     {
         ValidateRequest(request);
 
-        var token = cancellationToken ?? _cancellationSource!.Token;
+        var token = cancellationToken ?? _cancellationSource.Token;
 
         var serverSubscription = Subscribe(request, token);
         var serverStream = serverSubscription.ResponseStream;
@@ -82,7 +81,7 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
     internal virtual async IAsyncEnumerable<ExchangeRateResponse> StreamInternalAsync(
         ExchangeRateRequest request, CancellationToken? cancellationToken)
     {
-        var token = cancellationToken ?? _cancellationSource!.Token;
+        var token = cancellationToken ?? _cancellationSource.Token;
 
         var subscription = Subscribe(request, token);
 
@@ -108,14 +107,14 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
     }
 
 
-    protected virtual void InternalDispose()
-    {
-    }
+    #region IDisposable
 
-    public void Dispose()
+    private bool _wasDisposed;
+
+    protected virtual void Dispose(bool disposing)
     {
-        InternalDispose();
-        if (_cancellationSource is not null)
+        if (_wasDisposed) return;
+        if (disposing)
         {
             if (!_cancellationSource.IsCancellationRequested)
             {
@@ -123,5 +122,15 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
             }
             _cancellationSource.Dispose();
         }
+        _wasDisposed = true;
     }
+
+    public void Dispose()
+    {
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+
+    #endregion
 }
