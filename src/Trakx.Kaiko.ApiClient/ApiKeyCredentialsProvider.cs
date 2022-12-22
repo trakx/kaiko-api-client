@@ -40,11 +40,14 @@ public class ApiKeyCredentialsProvider : IKaikoCredentialsProvider, IDisposable
 
     #region IDisposable
 
+    private bool _wasDisposed;
+
     protected virtual void Dispose(bool disposing)
     {
         if (!disposing) return;
         _cancellationSource.Cancel();
         _cancellationSource?.Dispose();
+        _wasDisposed = true;
     }
 
     /// <inheritdoc />

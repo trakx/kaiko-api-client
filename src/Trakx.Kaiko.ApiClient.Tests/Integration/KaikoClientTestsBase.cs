@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 
 namespace Trakx.Kaiko.ApiClient.Tests.Integration;
@@ -33,17 +34,31 @@ public class KaikoApiFixture : IDisposable
 
     public KaikoApiFixture()
     {
-
-        var configuration = ConfigurationHelper.GetConfigurationFromAws<KaikoApiConfiguration>()
-            with
-        {
-            BaseUrl = new Uri("https://eu.market-api.kaiko.io")
-        };
-
+        var config = BuildConfiguration();
         var serviceCollection = new ServiceCollection();
-
-        serviceCollection.AddKaikoClient(configuration);
+        serviceCollection.AddKaikoClient(config);
         ServiceProvider = serviceCollection.BuildServiceProvider();
+    }
+
+    public static KaikoApiConfiguration BuildConfiguration()
+    {
+        var aws = ConfigurationHelper.GetConfigurationFromAws<KaikoApiConfiguration>();
+        var json = GetConfigurationFromAppSettings();
+        return new KaikoApiConfiguration
+        {
+            ApiKey = aws?.ApiKey,
+            BaseUrl = json?.BaseUrl,
+        };
+    }
+
+    private static KaikoApiConfiguration GetConfigurationFromAppSettings()
+    {
+        var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        var result = config.GetRequiredSection("KaikoApiConfiguration").Get<KaikoApiConfiguration>();
+        return result;
     }
 
     protected virtual void Dispose(bool disposing)

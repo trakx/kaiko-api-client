@@ -109,18 +109,18 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
 
     #region IDisposable
 
-    private bool wasDisposed;
+    private bool _wasDisposed;
 
     protected virtual void Dispose(bool disposing)
     {
-        if (wasDisposed) return;
+        if (_wasDisposed) return;
         if (disposing)
         {
             _cancellationSource.Cancel();
             _cancellationSource.Dispose();
         }
 
-        wasDisposed = true;
+        _wasDisposed = true;
     }
 
     public void Dispose()

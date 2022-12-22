@@ -20,38 +20,39 @@ namespace Trakx.Kaiko.ApiClient
         private static void AddClients(this IServiceCollection services)
         {
             var delay = Backoff.DecorrelatedJitterBackoffV2(medianFirstRetryDelay: TimeSpan.FromMilliseconds(100), retryCount: 10, fastFirst: true);
+            var currentNamespace = typeof(AddKaikoClientExtensions).Namespace;
             
-
-            services.AddHttpClient<IAggregatesClient, AggregatesClient>("Trakx.Kaiko.ApiClient.AggregatesClient")
+            var nameOfAggregatesClient = currentNamespace + nameof(AggregatesClient);
+            services
+                .AddHttpClient<IAggregatesClient, AggregatesClient>(nameOfAggregatesClient)
                 .AddPolicyHandler((s, request) =>
                     Policy<HttpResponseMessage>
-                    .Handle<ApiException>()
-                    .Or<HttpRequestException>()
-                    .OrTransientHttpStatusCode()
-                    .WaitAndRetryAsync(delay,
-                        onRetry: (result, timeSpan, retryCount, context) =>
-                        {
-                            var logger = Log.Logger.ForContext<AggregatesClient>();
-                            logger.LogApiFailure(result, timeSpan, retryCount, context);
-                        })
-                    .WithPolicyKey("Trakx.Kaiko.ApiClient.AggregatesClient"));
-
+                        .Handle<ApiException>()
+                        .Or<HttpRequestException>()
+                        .OrTransientHttpStatusCode()
+                        .WaitAndRetryAsync(delay,
+                            onRetry: (result, timeSpan, retryCount, context) =>
+                            {
+                                var logger = Log.Logger.ForContext<AggregatesClient>();
+                                logger.LogApiFailure(result, timeSpan, retryCount, context);
+                            })
+                        .WithPolicyKey(nameOfAggregatesClient));
             
-
-            services.AddHttpClient<IExchangesClient, ExchangesClient>("Trakx.Kaiko.ApiClient.ExchangesClient")
+            var nameOfExchangesClient = currentNamespace + nameof(ExchangesClient);
+            services
+                .AddHttpClient<IExchangesClient, ExchangesClient>(nameOfExchangesClient)
                 .AddPolicyHandler((s, request) =>
                     Policy<HttpResponseMessage>
-                    .Handle<ApiException>()
-                    .Or<HttpRequestException>()
-                    .OrTransientHttpStatusCode()
-                    .WaitAndRetryAsync(delay,
-                        onRetry: (result, timeSpan, retryCount, context) =>
-                        {
-                            var logger = Log.Logger.ForContext<ExchangesClient>();
-                            logger.LogApiFailure(result, timeSpan, retryCount, context);
-                        })
-                    .WithPolicyKey("Trakx.Kaiko.ApiClient.ExchangesClient"));
-
+                        .Handle<ApiException>()
+                        .Or<HttpRequestException>()
+                        .OrTransientHttpStatusCode()
+                        .WaitAndRetryAsync(delay,
+                            onRetry: (result, timeSpan, retryCount, context) =>
+                            {
+                                var logger = Log.Logger.ForContext<ExchangesClient>();
+                                logger.LogApiFailure(result, timeSpan, retryCount, context);
+                            })
+                        .WithPolicyKey(nameOfExchangesClient));
             
         }
     }
