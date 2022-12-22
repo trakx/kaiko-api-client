@@ -109,27 +109,29 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
 
     #region IDisposable
 
-    private bool _wasDisposed;
+    //private bool _wasDisposed;
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (_wasDisposed) return;
-        if (disposing)
-        {
-            if (!_cancellationSource.IsCancellationRequested)
-            {
-                _cancellationSource.Cancel();
-            }
-            _cancellationSource.Dispose();
-        }
-        _wasDisposed = true;
-    }
+    //protected virtual void Dispose(bool disposing)
+    //{
+    //    if (_wasDisposed) return;
+    //    if (disposing)
+    //    {
+    //        if (!_cancellationSource.IsCancellationRequested)
+    //        {
+    //            _cancellationSource.Cancel();
+    //        }
+    //        _cancellationSource.Dispose();
+    //    }
+    //    _wasDisposed = true;
+    //}
 
     public void Dispose()
     {
-        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
+        if (!_cancellationSource.IsCancellationRequested)
+        {
+            _cancellationSource.Cancel();
+        }
+        _cancellationSource.Dispose();
     }
 
     #endregion
