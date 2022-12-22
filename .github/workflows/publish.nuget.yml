@@ -13,8 +13,6 @@ on:
 
 env:
   SOLUTION_PATH: "src/Trakx.Kaiko.ApiClient.sln"
-  API_PROJECT_PATH: "src/Trakx.Kaiko.ApiClient/Trakx.Kaiko.ApiClient.csproj"
-  STREAM_PROJECT_PATH: "src/Trakx.Kaiko.ApiClient.Stream/Trakx.Kaiko.ApiClient.Stream.csproj"
 
 jobs:
 
@@ -60,11 +58,8 @@ jobs:
     - name: Test
       run: dotnet test ${{env.SOLUTION_PATH}} --no-restore --verbosity normal
 
-    - name: Package API
-      run: dotnet pack ${{env.API_PROJECT_PATH}} --no-build --configuration Release --output ./nuget/ -p:PackageVersion=${{ steps.bumpVersion.outputs.fullVersion }} --include-symbols --include-source
-
-    - name: Package Stream
-      run: dotnet pack ${{env.STREAM_PROJECT_PATH}} --no-build --configuration Release --output ./nuget/ -p:PackageVersion=${{ steps.bumpVersion.outputs.fullVersion }} --include-symbols --include-source
+    - name: Package
+      run: dotnet pack ${{env.SOLUTION_PATH}} --no-build --configuration Release --output ./nuget/ -p:PackageVersion=${{ steps.bumpVersion.outputs.fullVersion }} --include-symbols --include-source
       
     - name: Publish
       # https://github.com/NuGet/Home/issues/8580
