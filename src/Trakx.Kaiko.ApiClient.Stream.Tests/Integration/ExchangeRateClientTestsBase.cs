@@ -22,7 +22,7 @@ public class ExchangeRateClientTestsBase<TClient>
 
     protected async Task<int> StreamAsync(string symbol, string currency, StatusCode expectedStatus)
     {
-        var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(RunSeconds));
+        using var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(RunSeconds));
         var replies = 0;
 
         try
@@ -45,7 +45,7 @@ public class ExchangeRateClientTestsBase<TClient>
 
     protected async Task<int> ObserveAsync(string symbol, string currency, StatusCode expectedStatus)
     {
-        var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(RunSeconds));
+        using var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(RunSeconds));
         var replies = 0;
 
         try

@@ -17,7 +17,6 @@ public class StreamSubscription<T> : IDisposable
     private readonly Task _task;
 
     private bool _completed;
-    private bool disposedValue;
 
     public StreamSubscription(IAsyncStreamReader<T> reader, IObserver<T> observer, CancellationToken token = default)
     {
@@ -67,21 +66,23 @@ public class StreamSubscription<T> : IDisposable
         _observer.OnCompleted();
     }
 
+    #region IDisposable
+
+    private bool _wasDisposed;
+
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposedValue)
+        if (_wasDisposed) return;
+        if (disposing)
         {
-            if (disposing)
+            if (!_completed && !_cancellationSource.IsCancellationRequested)
             {
-                if (!_completed && !_cancellationSource.IsCancellationRequested)
-                {
-                    _cancellationSource.Cancel();
-                }
-                _cancellationSource.Dispose();
-                _task.Dispose();
+                _cancellationSource.Cancel();
             }
-            disposedValue = true;
+            _cancellationSource.Dispose();
+            _task.Dispose();
         }
+        _wasDisposed = true;
     }
 
     public void Dispose()
@@ -90,4 +91,6 @@ public class StreamSubscription<T> : IDisposable
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
     }
+
+    #endregion
 }

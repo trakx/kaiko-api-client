@@ -35,6 +35,7 @@ public class ApiKeyCredentialsProvider : IKaikoCredentialsProvider, IDisposable
         AddCredentials(msg);
         return Task.CompletedTask;
     }
+
     #endregion
 
 
@@ -44,16 +45,22 @@ public class ApiKeyCredentialsProvider : IKaikoCredentialsProvider, IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposing) return;
-        _cancellationSource.Cancel();
-        _cancellationSource?.Dispose();
+        if (_wasDisposed) return;
+        if (disposing)
+        {
+            if (!_cancellationSource.IsCancellationRequested)
+            {
+                _cancellationSource.Cancel();
+            }
+            _cancellationSource.Dispose();
+        }
         _wasDisposed = true;
     }
 
-    /// <inheritdoc />
     public void Dispose()
     {
-        Dispose(true);
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        Dispose(disposing: true);
         GC.SuppressFinalize(this);
     }
 

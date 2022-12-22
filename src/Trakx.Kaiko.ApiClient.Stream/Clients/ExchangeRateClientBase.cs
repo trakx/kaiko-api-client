@@ -116,10 +116,12 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
         if (_wasDisposed) return;
         if (disposing)
         {
-            _cancellationSource.Cancel();
+            if (!_cancellationSource.IsCancellationRequested)
+            {
+                _cancellationSource.Cancel();
+            }
             _cancellationSource.Dispose();
         }
-
         _wasDisposed = true;
     }
 
