@@ -16,7 +16,8 @@ namespace Trakx.Kaiko.ApiClient.Stream;
 /// <typeparam name="TKaikoResponse">The Response type received from the Kaiko SDK client.</typeparam>
 public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClientBase
 {
-    private readonly CancellationTokenSource _cancellationSource;
+    // Even being instantiated in the constructor, we left this as nullable to avoid Codacy Sonar errors. C'est la vie. ¯\_(ツ)_/¯
+    private readonly CancellationTokenSource? _cancellationSource;
 
     protected ExchangeRateClientBase()
     {
@@ -28,7 +29,7 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
     {
         ValidateRequest(request);
 
-        var token = cancellationToken ?? _cancellationSource.Token;
+        var token = cancellationToken ?? _cancellationSource!.Token;
 
         var serverSubscription = Subscribe(request, token);
         var serverStream = serverSubscription.ResponseStream;
@@ -81,7 +82,7 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
     internal virtual async IAsyncEnumerable<ExchangeRateResponse> StreamInternalAsync(
         ExchangeRateRequest request, CancellationToken? cancellationToken)
     {
-        var token = cancellationToken ?? _cancellationSource.Token;
+        var token = cancellationToken ?? _cancellationSource!.Token;
 
         var subscription = Subscribe(request, token);
 
@@ -114,11 +115,14 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
     public void Dispose()
     {
         DisposeInternal();
-        
-        if (!_cancellationSource.IsCancellationRequested)
+
+        if (_cancellationSource is not null)
         {
-            _cancellationSource.Cancel();
+            if (!_cancellationSource.IsCancellationRequested)
+            {
+                _cancellationSource.Cancel();
+            }
+            _cancellationSource.Dispose();
         }
-        _cancellationSource.Dispose();
     }
 }
