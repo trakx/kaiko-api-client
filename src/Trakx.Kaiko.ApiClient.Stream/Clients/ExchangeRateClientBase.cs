@@ -14,7 +14,7 @@ namespace Trakx.Kaiko.ApiClient.Stream;
 /// Base class for all implementations for Kaiko Stream Aggregate Exchange Rate services.
 /// </summary>
 /// <typeparam name="TKaikoResponse">The Response type received from the Kaiko SDK client.</typeparam>
-public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClientBase, IDisposable
+public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClientBase
 {
     private readonly CancellationTokenSource _cancellationSource;
 
@@ -106,19 +106,27 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
         return value;
     }
 
+
     #region IDisposable
+
+    private bool wasDisposed;
 
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposing) return;
-        _cancellationSource.Cancel();
-        _cancellationSource?.Dispose();
+        if (wasDisposed) return;
+        if (disposing)
+        {
+            _cancellationSource.Cancel();
+            _cancellationSource.Dispose();
+        }
+
+        wasDisposed = true;
     }
 
-    /// <inheritdoc />
     public void Dispose()
     {
-        Dispose(true);
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        Dispose(disposing: true);
         GC.SuppressFinalize(this);
     }
 

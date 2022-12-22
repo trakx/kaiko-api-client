@@ -12,14 +12,12 @@ public class ExchangeRateClientTestsBase<TClient>
     protected readonly ITestOutputHelper Output;
     protected readonly ILogger Logger;
     protected readonly ServiceProvider Services;
-    protected readonly TClient _client;
 
     public ExchangeRateClientTestsBase(KaikoStreamFixture fixture, ITestOutputHelper output)
     {
         Output = output;
         Logger = new LoggerConfiguration().WriteTo.TestOutput(output).CreateLogger();
         Services = fixture.Services;
-        _client = fixture.Services.GetRequiredService<TClient>();
     }
 
     protected async Task<int> StreamAsync(string symbol, string currency, StatusCode expectedStatus)
@@ -29,8 +27,9 @@ public class ExchangeRateClientTestsBase<TClient>
 
         try
         {
+            using var client = Services.GetRequiredService<TClient>();
             var request = new ExchangeRateRequest(symbol, currency, interval: AggregateInterval.OneSecond);
-            await foreach (var response in _client.Stream(request, cancellation.Token).ConfigureAwait(false))
+            await foreach (var response in client.Stream(request, cancellation.Token).ConfigureAwait(false))
             {
                 AssertResponse(response, symbol, currency);
                 replies++;
@@ -62,8 +61,10 @@ public class ExchangeRateClientTestsBase<TClient>
                 Output.WriteLine(x.Message);
             }
 
+            using var client = Services.GetRequiredService<TClient>();
+
             var request = new ExchangeRateRequest(symbol, currency, interval: AggregateInterval.OneSecond);
-            await _client
+            await client
                 .Observe(request, cancellation.Token)
                 .Do(OnNext, OnError)
                 .LastOrDefaultAsync();
