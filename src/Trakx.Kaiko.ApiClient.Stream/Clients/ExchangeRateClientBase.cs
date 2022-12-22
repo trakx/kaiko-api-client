@@ -14,7 +14,7 @@ namespace Trakx.Kaiko.ApiClient.Stream;
 /// Base class for all implementations for Kaiko Stream Aggregate Exchange Rate services.
 /// </summary>
 /// <typeparam name="TKaikoResponse">The Response type received from the Kaiko SDK client.</typeparam>
-public class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClientBase
+public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClientBase
 {
     private readonly CancellationTokenSource _cancellationSource;
 
@@ -95,15 +95,9 @@ public class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClientBase
         }
     }
 
-    protected virtual AsyncServerStreamingCall<TKaikoResponse> Subscribe(ExchangeRateRequest request, CancellationToken token)
-    {
-        throw new NotImplementedException();
-    }
+    protected abstract AsyncServerStreamingCall<TKaikoResponse> Subscribe(ExchangeRateRequest request, CancellationToken token);
 
-    protected virtual ExchangeRateResponse? BuildResponse(TKaikoResponse current)
-    {
-        throw new NotImplementedException();
-    }
+    protected abstract ExchangeRateResponse? BuildResponse(TKaikoResponse current);
 
     protected static decimal? TryParseDecimal(string text)
     {
@@ -115,27 +109,29 @@ public class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClientBase
 
     #region IDisposable
 
-    private bool _wasDisposed;
+    //private bool _wasDisposed;
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (_wasDisposed) return;
-        if (disposing)
-        {
-            if (!_cancellationSource.IsCancellationRequested)
-            {
-                _cancellationSource.Cancel();
-            }
-            _cancellationSource.Dispose();
-        }
-        _wasDisposed = true;
-    }
+    //protected virtual void Dispose(bool disposing)
+    //{
+    //    if (_wasDisposed) return;
+    //    if (disposing)
+    //    {
+    //        if (!_cancellationSource.IsCancellationRequested)
+    //        {
+    //            _cancellationSource.Cancel();
+    //        }
+    //        _cancellationSource.Dispose();
+    //    }
+    //    _wasDisposed = true;
+    //}
 
     public void Dispose()
     {
-        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
+        if (!_cancellationSource.IsCancellationRequested)
+        {
+            _cancellationSource.Cancel();
+        }
+        _cancellationSource.Dispose();
     }
 
     #endregion
