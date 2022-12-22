@@ -108,14 +108,13 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
     }
 
 
-    protected virtual void DisposeInternal()
+    protected virtual void InternalDispose()
     {
     }
 
     public void Dispose()
     {
-        DisposeInternal();
-
+        InternalDispose();
         if (_cancellationSource is not null)
         {
             if (!_cancellationSource.IsCancellationRequested)
