@@ -7,7 +7,7 @@ namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 public class ExchangeRateClientTestsBase<TClient>
     where TClient : IExchangeRateClientBase
 {
-    private const int RunSeconds = 2;
+    private const int RunSeconds = 3;
 
     protected readonly ITestOutputHelper Output;
     protected readonly ILogger Logger;
@@ -87,7 +87,7 @@ public class ExchangeRateClientTestsBase<TClient>
 }
 
 
-[CollectionDefinition(nameof(ApiTestCollection))]
+[CollectionDefinition(nameof(ApiTestCollection), DisableParallelization = true)]
 public class ApiTestCollection : ICollectionFixture<KaikoStreamFixture>
 {
     // This class has no code, and is never created. Its purpose is simply
