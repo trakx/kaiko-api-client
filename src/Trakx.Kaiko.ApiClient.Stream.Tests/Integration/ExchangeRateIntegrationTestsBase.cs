@@ -4,7 +4,7 @@ using Serilog;
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
 [Collection(nameof(ApiTestCollection))]
-public class ExchangeRateClientTestsBase<TClient>
+public class ExchangeRateIntegrationTestsBase<TClient>
     where TClient : IExchangeRateClientBase
 {
     private const int RunSeconds = 3;
@@ -13,7 +13,7 @@ public class ExchangeRateClientTestsBase<TClient>
     protected readonly ILogger Logger;
     protected readonly ServiceProvider Services;
 
-    public ExchangeRateClientTestsBase(KaikoStreamFixture fixture, ITestOutputHelper output)
+    public ExchangeRateIntegrationTestsBase(KaikoStreamFixture fixture, ITestOutputHelper output)
     {
         Output = output;
         Logger = new LoggerConfiguration().WriteTo.TestOutput(output).CreateLogger();

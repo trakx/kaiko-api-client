@@ -1,12 +1,13 @@
 ﻿using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Reactive.Testing;
 
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
-public class SpotExchangeRateTests : ExchangeRateClientTestsBase<ISpotExchangeRatesClient>
+public class DirectExchangeRateIntegrationTests : ExchangeRateIntegrationTestsBase<IDirectExchangeRatesClient>
 {
-    public SpotExchangeRateTests(KaikoStreamFixture fixture, ITestOutputHelper output)
+    public DirectExchangeRateIntegrationTests(KaikoStreamFixture fixture, ITestOutputHelper output)
         : base(fixture, output)
     {
     }
