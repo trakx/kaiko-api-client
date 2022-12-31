@@ -1,6 +1,6 @@
 ﻿openapi: 3.0.0
 info:
-  title: Kaiko API
+  title: Kaiko Market Data API (needs review)
   version: '1.0.0'
 servers:
   - url: 'https://eu.market-api.kaiko.io/'

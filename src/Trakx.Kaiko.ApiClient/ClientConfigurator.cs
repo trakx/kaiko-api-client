@@ -1,14 +1,26 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Trakx.Utils.Apis;
 
-namespace Trakx.Kaiko.ApiClient
+namespace Trakx.Kaiko.ApiClient;
+
+public class ClientConfigurator
 {
-    internal class ClientConfigurator
+    public KaikoApiConfiguration ApiConfiguration { get; }
+    private readonly IKaikoCredentialsProvider _credentialsProvider;
+
+    public ClientConfigurator(KaikoApiConfiguration apiConfiguration,
+        IKaikoCredentialsProvider credentialsProvider)
     {
-        public ClientConfigurator(IOptions<KaikoApiConfiguration> configuration)
+        ApiConfiguration = apiConfiguration;
+        _credentialsProvider = credentialsProvider;
+    }
+
+    public ICredentialsProvider GetCredentialProvider(Type clientType)
+    {
+        if (clientType.Name == nameof(ReferenceDataClient))
         {
-            ApiConfiguration = configuration.Value;
+            return new NoCredentialsProvider();
         }
 
-        public KaikoApiConfiguration ApiConfiguration { get; }
+        return _credentialsProvider;
     }
 }
