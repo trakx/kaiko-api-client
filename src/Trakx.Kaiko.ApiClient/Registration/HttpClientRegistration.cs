@@ -12,7 +12,7 @@ namespace Trakx.Kaiko.ApiClient;
 
 internal static class HttpClientRegistration
 {
-    internal static IServiceCollection ConfigureHttpClient<TClient, // NOSONAR
+    internal static IServiceCollection ConfigureHttpClient<TClient,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TImplementation>(
         this IServiceCollection services)
         where TClient : class
@@ -36,7 +36,7 @@ internal static class HttpClientRegistration
         });
     }
 
-    private static IHttpClientBuilder AddPolicyHandler<TImplementation>(this IHttpClientBuilder http) // NOSONAR
+    private static IHttpClientBuilder AddPolicyHandler<TImplementation>(this IHttpClientBuilder http)
     {
         var medianFirstRetryDelay = TimeSpan.FromMilliseconds(100);
         var delay = Backoff.DecorrelatedJitterBackoffV2(medianFirstRetryDelay, retryCount: 10, fastFirst: true);
