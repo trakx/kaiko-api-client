@@ -96,7 +96,7 @@ components:
           nullable: true
         trade_count: 
           type: integer
-          format: int32
+          format: int64
           nullable: true
         trade_compressed_size: 
           type: integer

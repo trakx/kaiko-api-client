@@ -30,7 +30,7 @@ public class GenerateApiClientChecker
             .FirstOrDefault();
         csproj.Should().NotBeNull(because: $"project {clientProject} should exist");
 
-        var content = File.ReadAllText(csproj!.FullName);
+        var content = await File.ReadAllTextAsync(csproj!.FullName);
 
         var generateApiClient = content.Contains("<GenerateApiClient>true", StringComparison.OrdinalIgnoreCase);
         generateApiClient.Should().BeFalse(because: "API client generation should be disabled when not needed");

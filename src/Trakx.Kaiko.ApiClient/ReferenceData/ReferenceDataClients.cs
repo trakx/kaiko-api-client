@@ -703,7 +703,7 @@ namespace Trakx.Kaiko.ApiClient
         public long? Trade_end_timestamp { get; set; }
 
         [Newtonsoft.Json.JsonProperty("trade_count", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Trade_count { get; set; }
+        public long? Trade_count { get; set; }
 
         [Newtonsoft.Json.JsonProperty("trade_compressed_size", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long? Trade_compressed_size { get; set; }
