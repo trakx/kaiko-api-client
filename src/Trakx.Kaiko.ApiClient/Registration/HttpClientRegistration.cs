@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
@@ -11,7 +12,9 @@ namespace Trakx.Kaiko.ApiClient;
 
 internal static class HttpClientRegistration
 {
-    internal static IServiceCollection ConfigureHttpClient<TClient, TImplementation>(this IServiceCollection services)
+    internal static IServiceCollection ConfigureHttpClient<TClient,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TImplementation>(
+        this IServiceCollection services)
         where TClient : class
         where TImplementation : class, TClient
     {
@@ -38,7 +41,7 @@ internal static class HttpClientRegistration
         var medianFirstRetryDelay = TimeSpan.FromMilliseconds(100);
         var delay = Backoff.DecorrelatedJitterBackoffV2(medianFirstRetryDelay, retryCount: 10, fastFirst: true);
 
-        return http.AddPolicyHandler((s, request) =>
+        return http.AddPolicyHandler((_, request) =>
             Policy<HttpResponseMessage>
             .Handle<ApiException>()
             .Or<HttpRequestException>()

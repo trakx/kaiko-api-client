@@ -23,12 +23,11 @@ public class GenerateApiClientChecker
         }
         src.Should().NotBeNull(because: "src folder is always expected");
 
-        var testProject = Assembly.GetExecutingAssembly().GetName().Name!;
-        var clientProject = testProject[..^".Tests".Length] + ".csproj";
+        var projectFile = typeof(ClientBase).Assembly.GetName().Name! + ".csproj";
         var csproj = src!
-            .EnumerateFiles(clientProject, SearchOption.AllDirectories)
+            .EnumerateFiles(projectFile, SearchOption.AllDirectories)
             .FirstOrDefault();
-        csproj.Should().NotBeNull(because: $"project {clientProject} should exist");
+        csproj.Should().NotBeNull(because: $"project {projectFile} should exist");
 
         var content = await File.ReadAllTextAsync(csproj!.FullName);
 

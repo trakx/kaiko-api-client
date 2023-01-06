@@ -14,12 +14,10 @@ internal abstract class ClientBase
         BaseUrl = baseUrl;
     }
 
-    protected void PrepareRequestBase(HttpRequestMessage request, StringBuilder urlBuilder)
+    protected void PrepareRequestBase(HttpClient client, HttpRequestMessage request, StringBuilder _)
     {
+        client.BaseAddress = BaseUrl;
         CredentialProvider.AddCredentials(request);
-
-        var urlStart = BaseUrl.OriginalString.TrimEnd('/') + "/";
-        urlBuilder.Insert(0, urlStart);
     }
 }
 

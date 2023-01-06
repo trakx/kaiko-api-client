@@ -1,10 +1,12 @@
-﻿namespace Trakx.Kaiko.ApiClient;
+﻿using System.Text;
+
+namespace Trakx.Kaiko.ApiClient;
 
 internal partial class AssetsClient
 {
-    partial void PrepareRequest(HttpClient client, HttpRequestMessage request, System.Text.StringBuilder urlBuilder)
+    partial void PrepareRequest(HttpClient client, HttpRequestMessage request, StringBuilder urlBuilder)
     {
-        PrepareRequestBase(request, urlBuilder);
+        PrepareRequestBase(client, request, urlBuilder);
     }
 }
 
