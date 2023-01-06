@@ -9,7 +9,7 @@
   },
   "codeGenerators": {
     "openApiToCSharpClient": {
-      "clientBaseClass": "ReferenceDataClient",
+      "clientBaseClass": "ReferenceDataClientBase",
       "configurationClass": "ClientConfigurator",
       "generateClientClasses": true,
       "generateClientInterfaces": true,
@@ -92,7 +92,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "ReferenceDataClients.cs"
+      "output": "ReferenceData/ReferenceDataClients.cs"
     }
   }
 }

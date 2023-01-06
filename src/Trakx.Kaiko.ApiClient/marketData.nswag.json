@@ -9,7 +9,7 @@
     },
     "codeGenerators": {
         "openApiToCSharpClient": {
-            "clientBaseClass": "MarketDataClient",
+            "clientBaseClass": "MarketDataClientBase",
             "configurationClass": "ClientConfigurator",
             "generateClientClasses": true,
             "generateClientInterfaces": true,
@@ -92,7 +92,7 @@
             "enumNameGeneratorType": null,
             "serviceHost": null,
             "serviceSchemes": null,
-            "output": "MarketDataClients.cs"
+            "output": "MarketData/MarketDataClients.cs"
         }
     }
 }

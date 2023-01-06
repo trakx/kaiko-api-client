@@ -36,7 +36,7 @@ namespace Trakx.Kaiko.ApiClient
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ExchangesClient : ReferenceDataClient, IExchangesClient
+    internal partial class ExchangesClient : ReferenceDataClientBase, IExchangesClient
     {
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
@@ -71,7 +71,7 @@ namespace Trakx.Kaiko.ApiClient
         public virtual async System.Threading.Tasks.Task<Response<ExchangesResponse>> GetAllExchangesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("exchanges");
+            urlBuilder_.Append("v1/exchanges");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -250,7 +250,7 @@ namespace Trakx.Kaiko.ApiClient
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class InstrumentsClient : ReferenceDataClient, IInstrumentsClient
+    internal partial class InstrumentsClient : ReferenceDataClientBase, IInstrumentsClient
     {
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
@@ -285,7 +285,7 @@ namespace Trakx.Kaiko.ApiClient
         public virtual async System.Threading.Tasks.Task<Response<InstrumentsResponse>> GetAllInstrumentsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("instruments");
+            urlBuilder_.Append("v1/instruments");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -464,7 +464,7 @@ namespace Trakx.Kaiko.ApiClient
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class AssetsClient : ReferenceDataClient, IAssetsClient
+    internal partial class AssetsClient : ReferenceDataClientBase, IAssetsClient
     {
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
@@ -499,7 +499,7 @@ namespace Trakx.Kaiko.ApiClient
         public virtual async System.Threading.Tasks.Task<Response<AssetsResponse>> GetAllAssetsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("assets");
+            urlBuilder_.Append("v1/assets");
 
             var client_ = _httpClient;
             var disposeClient_ = false;

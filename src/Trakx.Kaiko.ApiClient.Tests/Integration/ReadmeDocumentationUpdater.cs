@@ -1,6 +1,6 @@
 ﻿using Trakx.Utils.Testing.ReadmeUpdater;
 
-namespace Trakx.Kaiko.ApiClient.Tests.Integration;
+namespace Trakx.Kaiko.ApiClient.Tests;
 
 public class ReadmeDocumentationUpdater : ReadmeDocumentationUpdaterBase
 {
