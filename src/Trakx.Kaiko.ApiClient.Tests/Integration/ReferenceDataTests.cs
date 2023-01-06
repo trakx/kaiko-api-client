@@ -40,4 +40,15 @@ public class ReferenceDataTests : IntegrationTestsBase
             Output.WriteLine($"[{item.Code}] {item.Name}");
         }
     }
+
+    [Fact]
+    public async Task InstrumentsClient_should_return_list_of_instruments()
+    {
+        var client = ServiceProvider.GetRequiredService<IInstrumentsClient>();
+        var response = await client.GetAllInstrumentsAsync();
+        response.Should().NotBeNull();
+        response.Result.Should().NotBeNull();
+        response.Result.Data.Should().NotBeNull();
+        response.Result.Data.Should().HaveCountGreaterThan(0);
+    }
 }

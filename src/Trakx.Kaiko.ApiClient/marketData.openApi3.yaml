@@ -36,11 +36,41 @@ paths:
 
       responses:
         "200":
-          description: Get Aggregate
+          description: Aggregate OHLCV Response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AggregateOhlcvResponse'
+
+  "/v2/data/{commodity}.{data_version}/exchanges/{exchange}/{instrument_class}/{instrument}/aggregations/vwap":
+    get:
+      operationId: GetAggregateVwap
+      tags:
+        - Aggregates
+      description: |
+        This endpoint retrieves aggregated VWAP (volume-weighted average price) history for an instrument on an exchange.
+        The interval parameter is suffixed with s, m, h or d to specify seconds, minutes, hours or days, respectively.
+        By making use of the sort parameter, data can be returned in ascending asc or descending desc (default) order.
+      parameters:
+        - $ref: '#/components/parameters/commodity'
+        - $ref: '#/components/parameters/data_version'
+        - $ref: '#/components/parameters/exchange'
+        - $ref: '#/components/parameters/instrument_class'
+        - $ref: '#/components/parameters/instrument'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start_time'
+        - $ref: '#/components/parameters/end_time'
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/continuation_token'
+
+      responses:
+        "200":
+          description: Aggregate VWAP Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AggregateVwapResponse'
 
 components:
 
@@ -80,13 +110,13 @@ components:
       required: true
       schema:
         type: string
-    aggregation:
-      in: path
-      name: aggregation
-      description: The aggregation dimension.
-      required: true
-      schema:
-        $ref: '#/components/schemas/Aggregation'
+    #aggregation:
+    #  in: path
+    #  name: aggregation
+    #  description: The aggregation dimension.
+    #  required: true
+    #  schema:
+    #    $ref: '#/components/schemas/Aggregation'
     interval:
       in: query
       name: interval
@@ -231,6 +261,10 @@ components:
         timestamp:
           $ref: '#/components/schemas/Timestamp'
           description: The current time at our endpoint.
+        continuation_token:
+          type: string
+        next_url:
+          type: string
         query:
           type: object
           description: All handled query parameters echoed back.
@@ -238,6 +272,28 @@ components:
             - $ref: '#/components/schemas/AggregateQuery'
         data:
           type: array
+
+    AggregateQuery:
+      type: object
+      properties:
+        commodity:
+          $ref: "#/components/schemas/Commodity"
+        data_version:
+          $ref: "#/components/schemas/DataVersion"
+        exchange:
+          type: string
+        instrument_class:
+          type: string
+        instrument:
+          type: string
+        interval:
+          $ref: '#/components/schemas/Interval'
+        page_size:
+          $ref: '#/components/schemas/PageSize'
+        aggregation:
+          $ref: '#/components/schemas/Aggregation'
+        request_time:
+          $ref: '#/components/schemas/DateTime'
 
     AggregateOhlcvResponse:
       allOf:
@@ -277,24 +333,26 @@ components:
           format: double
           nullable: true
 
-    AggregateQuery:
+    AggregateVwapResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            query:
+              $ref: '#/components/schemas/AggregateQuery'
+            data:
+              type: array
+              description: Response result data.
+              items:
+                $ref: '#/components/schemas/AggregateVwapData'
+    AggregateVwapData:
       type: object
       properties:
-        commodity:
-          $ref: "#/components/schemas/Commodity"
-        data_version:
-          $ref: "#/components/schemas/DataVersion"
-        exchange:
-          type: string
-        instrument_class:
-          type: string
-        instrument:
-          type: string
-        interval:
-          $ref: '#/components/schemas/Interval'
-        page_size:
-          $ref: '#/components/schemas/PageSize'
-        aggregation:
-          $ref: '#/components/schemas/Aggregation'
-        request_time:
-          $ref: '#/components/schemas/DateTime'
+        timestamp:
+          description: Timestamp at which the interval begins.
+          $ref: '#/components/schemas/Timestamp'
+        price:
+          description: Volume-weighted average price. null when no trades reported.
+          type: number
+          format: float
+          nullable: true

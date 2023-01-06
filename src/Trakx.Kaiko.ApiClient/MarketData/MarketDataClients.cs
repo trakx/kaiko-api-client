@@ -37,9 +37,25 @@ namespace Trakx.Kaiko.ApiClient
         /// <param name="instrument_class">The class of the instrument.</param>
         /// <param name="instrument">The code of the instrument.</param>
         /// <param name="interval">The interval period.</param>
-        /// <returns>Get Aggregate</returns>
+        /// <returns>Aggregate OHLCV Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Response<AggregateOhlcvResponse>> GetAggregateOhlcvAsync(Commodity commodity, DataVersion data_version, string exchange, string instrument_class, string instrument, Interval? interval = null, System.DateTimeOffset? start_time = null, System.DateTimeOffset? end_time = null, int? page_size = null, SortOrder? sort = null, string continuation_token = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <remarks>
+        /// This endpoint retrieves aggregated VWAP (volume-weighted average price) history for an instrument on an exchange.
+        /// <br/>The interval parameter is suffixed with s, m, h or d to specify seconds, minutes, hours or days, respectively.
+        /// <br/>By making use of the sort parameter, data can be returned in ascending asc or descending desc (default) order.
+        /// </remarks>
+        /// <param name="commodity">The data commodity.</param>
+        /// <param name="data_version">The data version</param>
+        /// <param name="exchange">The code for the desired exchange.</param>
+        /// <param name="instrument_class">The class of the instrument.</param>
+        /// <param name="instrument">The code of the instrument.</param>
+        /// <param name="interval">The interval period.</param>
+        /// <returns>Aggregate VWAP Response</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Response<AggregateVwapResponse>> GetAggregateVwapAsync(Commodity commodity, DataVersion data_version, string exchange, string instrument_class, string instrument, Interval? interval = null, System.DateTimeOffset? start_time = null, System.DateTimeOffset? end_time = null, int? page_size = null, SortOrder? sort = null, string continuation_token = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
 
@@ -82,7 +98,7 @@ namespace Trakx.Kaiko.ApiClient
         /// <param name="instrument_class">The class of the instrument.</param>
         /// <param name="instrument">The code of the instrument.</param>
         /// <param name="interval">The interval period.</param>
-        /// <returns>Get Aggregate</returns>
+        /// <returns>Aggregate OHLCV Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<Response<AggregateOhlcvResponse>> GetAggregateOhlcvAsync(Commodity commodity, DataVersion data_version, string exchange, string instrument_class, string instrument, Interval? interval = null, System.DateTimeOffset? start_time = null, System.DateTimeOffset? end_time = null, int? page_size = null, SortOrder? sort = null, string continuation_token = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
@@ -172,6 +188,129 @@ namespace Trakx.Kaiko.ApiClient
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return new Response<AggregateOhlcvResponse>(status_, headers_, objectResponse_.Object);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <remarks>
+        /// This endpoint retrieves aggregated VWAP (volume-weighted average price) history for an instrument on an exchange.
+        /// <br/>The interval parameter is suffixed with s, m, h or d to specify seconds, minutes, hours or days, respectively.
+        /// <br/>By making use of the sort parameter, data can be returned in ascending asc or descending desc (default) order.
+        /// </remarks>
+        /// <param name="commodity">The data commodity.</param>
+        /// <param name="data_version">The data version</param>
+        /// <param name="exchange">The code for the desired exchange.</param>
+        /// <param name="instrument_class">The class of the instrument.</param>
+        /// <param name="instrument">The code of the instrument.</param>
+        /// <param name="interval">The interval period.</param>
+        /// <returns>Aggregate VWAP Response</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<Response<AggregateVwapResponse>> GetAggregateVwapAsync(Commodity commodity, DataVersion data_version, string exchange, string instrument_class, string instrument, Interval? interval = null, System.DateTimeOffset? start_time = null, System.DateTimeOffset? end_time = null, int? page_size = null, SortOrder? sort = null, string continuation_token = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (commodity == null)
+                throw new System.ArgumentNullException("commodity");
+
+            if (data_version == null)
+                throw new System.ArgumentNullException("data_version");
+
+            if (exchange == null)
+                throw new System.ArgumentNullException("exchange");
+
+            if (instrument_class == null)
+                throw new System.ArgumentNullException("instrument_class");
+
+            if (instrument == null)
+                throw new System.ArgumentNullException("instrument");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("v2/data/{commodity}.{data_version}/exchanges/{exchange}/{instrument_class}/{instrument}/aggregations/vwap?");
+            urlBuilder_.Replace("{commodity}", System.Uri.EscapeDataString(ConvertToString(commodity, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{data_version}", System.Uri.EscapeDataString(ConvertToString(data_version, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{exchange}", System.Uri.EscapeDataString(ConvertToString(exchange, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{instrument_class}", System.Uri.EscapeDataString(ConvertToString(instrument_class, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{instrument}", System.Uri.EscapeDataString(ConvertToString(instrument, System.Globalization.CultureInfo.InvariantCulture)));
+            if (interval != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("interval") + "=").Append(System.Uri.EscapeDataString(ConvertToString(interval, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (start_time != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("start_time") + "=").Append(System.Uri.EscapeDataString(start_time.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (end_time != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("end_time") + "=").Append(System.Uri.EscapeDataString(end_time.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (page_size != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("page_size") + "=").Append(System.Uri.EscapeDataString(ConvertToString(page_size, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sort != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("sort") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sort, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (continuation_token != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("continuation_token") + "=").Append(System.Uri.EscapeDataString(ConvertToString(continuation_token, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<AggregateVwapResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return new Response<AggregateVwapResponse>(status_, headers_, objectResponse_.Object);
                         }
                         else
                         {
@@ -474,6 +613,12 @@ namespace Trakx.Kaiko.ApiClient
         [Newtonsoft.Json.JsonProperty("timestamp", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long Timestamp { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("continuation_token", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Continuation_token { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("next_url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Next_url { get; set; }
+
         /// <summary>
         /// All handled query parameters echoed back.
         /// </summary>
@@ -482,6 +627,52 @@ namespace Trakx.Kaiko.ApiClient
 
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.List<object> Data { get; set; }
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class AggregateQuery
+    {
+        [Newtonsoft.Json.JsonProperty("commodity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public Commodity Commodity { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("data_version", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public DataVersion Data_version { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("exchange", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Exchange { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("instrument_class", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Instrument_class { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("instrument", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Instrument { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("interval", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public Interval Interval { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("page_size", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(1, 10000)]
+        public int Page_size { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("aggregation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public Aggregation Aggregation { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("request_time", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset Request_time { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -541,39 +732,33 @@ namespace Trakx.Kaiko.ApiClient
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class AggregateQuery
+    public partial class AggregateVwapResponse : ApiResponse
     {
-        [Newtonsoft.Json.JsonProperty("commodity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public Commodity Commodity { get; set; }
+        [Newtonsoft.Json.JsonProperty("query", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public AggregateQuery Query { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("data_version", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public DataVersion Data_version { get; set; }
+        /// <summary>
+        /// Response result data.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<AggregateVwapData> Data { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("exchange", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Exchange { get; set; }
+    }
 
-        [Newtonsoft.Json.JsonProperty("instrument_class", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Instrument_class { get; set; }
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class AggregateVwapData
+    {
+        /// <summary>
+        /// Timestamp at which the interval begins.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("timestamp", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long Timestamp { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("instrument", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Instrument { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("interval", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public Interval Interval { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("page_size", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Range(1, 10000)]
-        public int Page_size { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("aggregation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public Aggregation Aggregation { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("request_time", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset Request_time { get; set; }
+        /// <summary>
+        /// Volume-weighted average price. null when no trades reported.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? Price { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 

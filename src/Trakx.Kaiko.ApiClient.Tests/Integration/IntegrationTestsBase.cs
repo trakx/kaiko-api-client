@@ -19,7 +19,6 @@ public class IntegrationTestsBase
     }
 }
 
-
 [CollectionDefinition(nameof(ApiTestCollection))]
 public class ApiTestCollection : ICollectionFixture<KaikoApiFixture>
 {
