@@ -3,7 +3,7 @@ info:
   title: Kaiko Reference Data API
   version: '1.0.0'
 servers:
-  - url: 'https://reference-data-api.kaiko.io/v1/'
+  - url: 'https://reference-data-api.kaiko.io/'
     description: Base url for the Reference Data API
 tags:
   - name: Instruments
@@ -13,7 +13,7 @@ tags:
   - name: Assets
     description: This endpoint retrieves a list of supported assets.
 paths:
-  exchanges:
+  "v1/exchanges":
     get:
       description: This endpoint retrieves a list of supported exchanges.
       responses:
@@ -26,7 +26,7 @@ paths:
       operationId: getAllExchanges
       tags:
         - Exchanges
-  instruments:
+  "v1/instruments":
     get:
       description: This endpoint retrieves a list of supported instruments.
       responses:
@@ -39,7 +39,7 @@ paths:
       operationId: getAllInstruments
       tags:
         - Instruments
-  assets:
+  "v1/assets":
     get:
       description: This endpoint retrieves a list of supported assets.
       responses:
@@ -96,7 +96,7 @@ components:
           nullable: true
         trade_count: 
           type: integer
-          format: int32
+          format: int64
           nullable: true
         trade_compressed_size: 
           type: integer

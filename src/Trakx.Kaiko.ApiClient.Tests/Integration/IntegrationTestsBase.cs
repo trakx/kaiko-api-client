@@ -2,23 +2,22 @@
 using Microsoft.Extensions.Configuration;
 using Serilog;
 
-namespace Trakx.Kaiko.ApiClient.Tests.Integration;
+namespace Trakx.Kaiko.ApiClient.Tests;
 
 [Collection(nameof(ApiTestCollection))]
-public class KaikoClientTestsBase
+public class IntegrationTestsBase
 {
     protected readonly ITestOutputHelper Output;
     protected readonly ILogger Logger;
     protected readonly IServiceProvider ServiceProvider;
 
-    public KaikoClientTestsBase(KaikoApiFixture apiFixture, ITestOutputHelper output)
+    public IntegrationTestsBase(KaikoApiFixture apiFixture, ITestOutputHelper output)
     {
         Output = output;
         ServiceProvider = apiFixture.ServiceProvider;
         Logger = new LoggerConfiguration().WriteTo.TestOutput(output).CreateLogger();
     }
 }
-
 
 [CollectionDefinition(nameof(ApiTestCollection))]
 public class ApiTestCollection : ICollectionFixture<KaikoApiFixture>
@@ -47,7 +46,8 @@ public class KaikoApiFixture : IDisposable
         return new KaikoApiConfiguration
         {
             ApiKey = aws?.ApiKey,
-            BaseUrl = json?.BaseUrl,
+            MarketDataBaseUrl = json?.MarketDataBaseUrl,
+            ReferenceDataBaseUrl = json?.ReferenceDataBaseUrl,
         };
     }
 

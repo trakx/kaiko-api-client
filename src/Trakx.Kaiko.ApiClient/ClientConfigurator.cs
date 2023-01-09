@@ -5,10 +5,10 @@ namespace Trakx.Kaiko.ApiClient;
 public class ClientConfigurator
 {
     public KaikoApiConfiguration ApiConfiguration { get; }
-    private readonly IKaikoCredentialsProvider _credentialsProvider;
+    private readonly IKaikoApiCredentialsProvider _credentialsProvider;
 
     public ClientConfigurator(KaikoApiConfiguration apiConfiguration,
-        IKaikoCredentialsProvider credentialsProvider)
+        IKaikoApiCredentialsProvider credentialsProvider)
     {
         ApiConfiguration = apiConfiguration;
         _credentialsProvider = credentialsProvider;
@@ -16,7 +16,7 @@ public class ClientConfigurator
 
     public ICredentialsProvider GetCredentialProvider(Type clientType)
     {
-        if (clientType.Name == nameof(ReferenceDataClient))
+        if (clientType.Name == nameof(ReferenceDataClientBase))
         {
             return new NoCredentialsProvider();
         }

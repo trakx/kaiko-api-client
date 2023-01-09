@@ -1,6 +1,6 @@
-﻿namespace Trakx.Kaiko.ApiClient.Tests.Integration;
+﻿namespace Trakx.Kaiko.ApiClient.Tests;
 
-public class OpenApiGeneratedCodeModifier : Trakx.Utils.Testing.OpenApiGeneratedCodeModifier
+public class OpenApiGeneratedCodeModifier : Utils.Testing.OpenApiGeneratedCodeModifier
 {
     public OpenApiGeneratedCodeModifier(ITestOutputHelper output) : base(output)
     {
