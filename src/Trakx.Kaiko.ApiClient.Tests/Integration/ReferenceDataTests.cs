@@ -67,13 +67,7 @@ public class ReferenceDataTests : IntegrationTestsBase
 
         using var writer = new StreamWriter("kaiko-legacy-symbols.csv");
 
-        void Write(params string[] items)
-        {
-            var line = string.Join(',', items); // .Select(p => $"'{p}")
-            writer.WriteLine(line);
-        }
-
-        Write("kaiko_legacy_symbol", "base_asset", "quote_asset");
+        WriteLineItems(writer, "kaiko_legacy_symbol", "base_asset", "quote_asset");
 
         var currencies = new[] { "usd", "usdc", "eur" };
 
@@ -87,11 +81,17 @@ public class ReferenceDataTests : IntegrationTestsBase
 
         foreach (var d in data)
         {
-            Write(d.Kaiko_legacy_symbol, d.Base_asset, d.Quote_asset);
+            WriteLineItems(writer, d.Kaiko_legacy_symbol, d.Base_asset, d.Quote_asset);
         }
 
         writer.Close();
 
         download.Should().BeTrue();
+    }
+
+    private static void WriteLineItems(StreamWriter writer, params string[] items)
+    {
+        var line = string.Join(',', items);
+        writer.WriteLine(line);
     }
 }
