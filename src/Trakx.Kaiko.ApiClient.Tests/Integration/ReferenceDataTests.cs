@@ -75,8 +75,6 @@ public class ReferenceDataTests : IntegrationTestsBase
 
         Write("kaiko_legacy_symbol", "base_asset", "quote_asset");
 
-        var seen = new HashSet<string>();
-
         var currencies = new[] { "usd", "usdc", "eur" };
 
         var data = response.Result.Data
@@ -89,7 +87,6 @@ public class ReferenceDataTests : IntegrationTestsBase
 
         foreach (var d in data)
         {
-            if (seen.Contains(d.Kaiko_legacy_symbol)) continue;
             Write(d.Kaiko_legacy_symbol, d.Base_asset, d.Quote_asset);
         }
 
