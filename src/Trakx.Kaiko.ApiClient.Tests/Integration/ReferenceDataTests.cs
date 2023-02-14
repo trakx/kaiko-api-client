@@ -1,6 +1,4 @@
-﻿using Serilog;
-
-namespace Trakx.Kaiko.ApiClient.Tests;
+﻿namespace Trakx.Kaiko.ApiClient.Tests;
 
 public class ReferenceDataTests : IntegrationTestsBase
 {
@@ -82,6 +80,35 @@ public class ReferenceDataTests : IntegrationTestsBase
         foreach (var d in data)
         {
             WriteLineItems(writer, d.Kaiko_legacy_symbol, d.Base_asset, d.Quote_asset);
+        }
+
+        writer.Close();
+
+        download.Should().BeTrue();
+    }
+
+    [InlineData(true)]
+    [Theory]
+    public async Task Download_exchanges(bool download)
+    {
+        if (!download)
+        {
+            download.Should().BeFalse();
+            return;
+        }
+
+        var client = ServiceProvider.GetRequiredService<IExchangesClient>();
+        var response = await client.GetAllExchangesAsync();
+
+        using var writer = new StreamWriter("kaiko-exchanges.csv");
+
+        WriteLineItems(writer, "legacy_slug", "code", "name");
+
+        var data = response.Result.Data.OrderBy(p => p.Name);
+
+        foreach (var d in data)
+        {
+            WriteLineItems(writer, d.Kaiko_legacy_slug, d.Code, d.Name);
         }
 
         writer.Close();
