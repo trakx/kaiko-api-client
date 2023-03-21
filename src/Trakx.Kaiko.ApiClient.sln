@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solutio
 		..\.gitignore = ..\.gitignore
 		Common.Projects.props = Common.Projects.props
 		..\LICENSE = ..\LICENSE
+		NuGet.Config = NuGet.Config
 		Packable.Projects.props = Packable.Projects.props
 		package-icon.png = package-icon.png
 		..\README.md = ..\README.md

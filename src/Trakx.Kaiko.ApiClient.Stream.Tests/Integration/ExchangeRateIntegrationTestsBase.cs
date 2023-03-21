@@ -80,8 +80,8 @@ public class ExchangeRateIntegrationTestsBase<TClient>
     protected void AssertResponse(ExchangeRateResponse response, string expectedSymbol, string expectedCurrency)
     {
         response.Should().NotBeNull();
-        response.Symbol.Should().Be(expectedSymbol);
-        response.Currency.Should().Be(expectedCurrency);
+        response.BaseSymbol.Should().Be(expectedSymbol);
+        response.QuoteSymbol.Should().Be(expectedCurrency);
         Output.WriteLine("{0:yyyy-MM-dd HH:mm:ss.fff}:{1}", response.Timestamp, response.Price);
     }
 }
