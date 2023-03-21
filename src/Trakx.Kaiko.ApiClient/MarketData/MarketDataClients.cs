@@ -496,11 +496,11 @@ namespace Trakx.Kaiko.ApiClient
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class DateRange
     {
-        [Newtonsoft.Json.JsonProperty("start_timestamp", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long Start_timestamp { get; set; }
+        [Newtonsoft.Json.JsonProperty("start_timestamp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? Start_timestamp { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("end_timestamp", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long End_timestamp { get; set; }
+        [Newtonsoft.Json.JsonProperty("end_timestamp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? End_timestamp { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 

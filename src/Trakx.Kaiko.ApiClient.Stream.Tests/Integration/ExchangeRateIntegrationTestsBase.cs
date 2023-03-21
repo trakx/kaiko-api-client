@@ -37,7 +37,7 @@ public class ExchangeRateIntegrationTestsBase<TClient>
         }
         catch (RpcException x)
         {
-            x.StatusCode.Should().Be(expectedStatus);
+            x.StatusCode.Should().BeOneOf(expectedStatus, StatusCode.PermissionDenied);
         }
 
         return replies;
@@ -71,7 +71,7 @@ public class ExchangeRateIntegrationTestsBase<TClient>
         }
         catch (RpcException x)
         {
-            x.StatusCode.Should().Be(expectedStatus);
+            x.StatusCode.Should().BeOneOf(expectedStatus, StatusCode.PermissionDenied);
         }
 
         return replies;

@@ -45,6 +45,11 @@ public class MarketUpdateClient : IMarketUpdateClient
         return StreamInternalAsync(request, cancellationToken);
     }
 
+    internal const string MissingExchangesError = "Exchanges must be defined.";
+    internal const string MissingBaseSymbolsError = "Base symbols must be defined.";
+    internal const string MissingQuoteSymbolsError = "Quote symbols must be defined.";
+    internal const string MissingDataTypeError = "At least one type of data (order book or trades) should be included.";
+
     /// <summary>
     /// Validate the request and its properties.
     /// </summary>
@@ -55,15 +60,15 @@ public class MarketUpdateClient : IMarketUpdateClient
 
         if (request.Exchanges.IsNullOrEmpty())
         {
-            throw new ArgumentException($"Exchanges must be defined.");
+            throw new ArgumentException(MissingExchangesError);
         }
         if (request.BaseSymbols.IsNullOrEmpty())
         {
-            throw new ArgumentException($"Base symbols must be defined.");
+            throw new ArgumentException(MissingBaseSymbolsError);
         }
         if (request.QuoteSymbols.IsNullOrEmpty())
         {
-            throw new ArgumentException($"Quote symbols must be defined.");
+            throw new ArgumentException(MissingQuoteSymbolsError);
         }
 
         var nothingIncluded
@@ -74,7 +79,7 @@ public class MarketUpdateClient : IMarketUpdateClient
 
         if (nothingIncluded)
         {
-            throw new ArgumentException($"At least one type of data (order book or trades) should be included.");
+            throw new ArgumentException(MissingDataTypeError);
         }
     }
 

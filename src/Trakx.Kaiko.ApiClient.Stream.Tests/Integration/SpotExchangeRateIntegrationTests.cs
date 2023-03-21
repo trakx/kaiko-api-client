@@ -1,6 +1,4 @@
 ﻿using System.Reactive.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
@@ -12,21 +10,36 @@ public class SpotExchangeRateIntegrationTests : ExchangeRateIntegrationTestsBase
     }
 
     [Theory]
-    [InlineData("btc")]
-    [InlineData("eth")]
-    public async Task Stream_should_return_prices(string symbol, string currency = "usd")
+    [InlineData(EnabledServices.SpotExchangeRate, "btc")]
+    [InlineData(EnabledServices.SpotExchangeRate, "eth")]
+    public async Task Stream_should_return_prices(bool serviceEnabled, string symbol, string currency = "usd")
     {
         var replies = await StreamAsync(symbol, currency, StatusCode.Cancelled);
-        replies.Should().BeGreaterThan(0);
+        if (serviceEnabled)
+        {
+            replies.Should().BeGreaterThan(0);
+        }
+        else
+        {
+            replies.Should().Be(0);
+        }
     }
 
     [Theory]
-    [InlineData("btc")]
-    [InlineData("eth")]
-    public async Task Observable_should_return_prices(string symbol, string currency = "usd")
+    [InlineData(EnabledServices.SpotExchangeRate, "btc")]
+    [InlineData(EnabledServices.SpotExchangeRate, "eth")]
+    public async Task Observable_should_return_prices(bool serviceEnabled, string symbol, string currency = "usd")
     {
         var replies = await ObserveAsync(symbol, currency, StatusCode.Cancelled);
-        replies.Should().BeGreaterThan(0);
+
+        if (serviceEnabled)
+        {
+            replies.Should().BeGreaterThan(0);
+        }
+        else
+        {
+            replies.Should().Be(0);
+        }
     }
 
     [Fact]
