@@ -84,6 +84,19 @@ public class ExchangeRateIntegrationTestsBase<TClient>
         response.QuoteSymbol.Should().Be(expectedCurrency);
         Output.WriteLine("{0:yyyy-MM-dd HH:mm:ss.fff}:{1}", response.Timestamp, response.Price);
     }
+
+    protected void AssertReplies(bool serviceEnabled, int replies)
+    {
+        if (serviceEnabled)
+        {
+            replies.Should().BeGreaterThan(0);
+        }
+        else
+        {
+            replies.Should().Be(0);
+        }
+    }
+
 }
 
 
