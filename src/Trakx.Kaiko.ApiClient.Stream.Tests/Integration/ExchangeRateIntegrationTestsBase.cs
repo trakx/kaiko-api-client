@@ -1,5 +1,4 @@
 ﻿using System.Reactive.Linq;
-using Serilog;
 
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
@@ -10,14 +9,12 @@ public class ExchangeRateIntegrationTestsBase<TClient>
     private const int RunSeconds = 3;
 
     protected readonly ITestOutputHelper Output;
-    protected readonly ILogger Logger;
     protected readonly ServiceProvider Services;
 
     public ExchangeRateIntegrationTestsBase(KaikoStreamFixture fixture, ITestOutputHelper output)
     {
         Output = output;
-        Logger = new LoggerConfiguration().WriteTo.TestOutput(output).CreateLogger();
-        Services = fixture.Services;
+        Services = fixture.ServiceProvider;
     }
 
     protected async Task<int> StreamAsync(string symbol, string currency, StatusCode expectedStatus)

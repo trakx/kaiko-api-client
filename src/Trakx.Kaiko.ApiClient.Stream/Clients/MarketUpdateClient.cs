@@ -71,13 +71,9 @@ public class MarketUpdateClient : IMarketUpdateClient
             throw new ArgumentException(MissingQuoteSymbolsError);
         }
 
-        var nothingIncluded
-             = !request.IncludeAllUpdates
-            && !request.IncludeTrades
-            && !request.IncludeTopOfBook
-            && !request.IncludeFullBook;
+        var somethingIncluded = request.IncludeTrades || request.IncludeTopOfBook || request.IncludeFullBook;
 
-        if (nothingIncluded)
+        if (!somethingIncluded!)
         {
             throw new ArgumentException(MissingDataTypeError);
         }
@@ -135,21 +131,16 @@ public class MarketUpdateClient : IMarketUpdateClient
 
         return new MarketUpdateResponse
         {
-            Price = (decimal)current.Price,
             BaseSymbol = codeParts[0],
             QuoteSymbol = codeParts[1],
+            Exchange = current.Exchange,
+            Price = (decimal)current.Price,
             Timestamp = current.TsExchange.Value.ToDateTimeOffset(),
         };
     }
 
     internal static IEnumerable<StreamMarketUpdateCommodity> DefineCommodities(MarketUpdateRequest request)
     {
-        if (request.IncludeAllUpdates)
-        {
-            yield return StreamMarketUpdateCommodity.SmucUnknown;
-            yield break;
-        }
-
         if (request.IncludeTrades) yield return StreamMarketUpdateCommodity.SmucTrade;
         if (request.IncludeTopOfBook) yield return StreamMarketUpdateCommodity.SmucTopOfBook;
         if (request.IncludeFullBook) yield return StreamMarketUpdateCommodity.SmucFullOrderBook;

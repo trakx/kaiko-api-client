@@ -4,7 +4,7 @@ namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
 public class KaikoStreamFixture : IDisposable
 {
-    public ServiceProvider Services { get; }
+    public ServiceProvider ServiceProvider { get; }
     public KaikoStreamConfiguration Config { get; }
 
     public KaikoStreamFixture()
@@ -12,7 +12,7 @@ public class KaikoStreamFixture : IDisposable
         Config = BuildConfiguration();
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddKaikoStream(Config);
-        Services = serviceCollection.BuildServiceProvider();
+        ServiceProvider = serviceCollection.BuildServiceProvider();
     }
 
     public static KaikoStreamConfiguration BuildConfiguration()
@@ -39,7 +39,7 @@ public class KaikoStreamFixture : IDisposable
     protected virtual void Dispose(bool disposing)
     {
         if (!disposing) return;
-        Services.Dispose();
+        ServiceProvider.Dispose();
     }
 
     public void Dispose()

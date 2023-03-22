@@ -14,9 +14,6 @@ public class MarketUpdateRequest
     [JsonPropertyName("exchanges")]
     public string[] Exchanges { get; set; } = Array.Empty<string>();
 
-    [JsonPropertyName("allUpdates")]
-    public bool IncludeAllUpdates { get; set; }
-
     [JsonPropertyName("topOfBook")]
     public bool IncludeTopOfBook { get; set; }
 

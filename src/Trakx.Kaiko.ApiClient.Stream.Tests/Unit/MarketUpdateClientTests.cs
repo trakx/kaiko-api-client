@@ -60,15 +60,13 @@ public class MarketUpdateClientTests
     }
 
     [Theory]
-    [InlineData(false, false, false, false, true)]
     [InlineData(false, false, false, true)]
-    [InlineData(false, false, true, false)]
-    [InlineData(false, true, false, false)]
-    [InlineData(true, false, false, false)]
-    [InlineData(true, true, true, true)]
-    public void StreamAsync_expects_at_least_one_flag(bool allUpdates, bool topBook, bool fullBook, bool includeTrades, bool expectException = false)
+    [InlineData(false, false, true)]
+    [InlineData(false, true, false)]
+    [InlineData(true, false, false)]
+    [InlineData(true, true, true)]
+    public void StreamAsync_expects_at_least_one_flag(bool topBook, bool fullBook, bool includeTrades, bool expectException = false)
     {
-        _request.IncludeAllUpdates = allUpdates;
         _request.IncludeTopOfBook = topBook;
         _request.IncludeFullBook = fullBook;
         _request.IncludeTrades = includeTrades;
