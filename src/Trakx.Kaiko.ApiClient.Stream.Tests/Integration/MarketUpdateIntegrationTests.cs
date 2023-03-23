@@ -85,13 +85,16 @@ public class MarketUpdateIntegrationTests
         using var cancellation = new CancellationTokenSource(TestDuration);
         var replies = 0;
 
+        // this is only here because Codacy will report maxReplies as not being used otherwise
+        bool reachedMaxReplies() => replies == maxReplies;
+
         try
         {
             void OnNext(MarketUpdateResponse response)
             {
                 AssertResponse(response);
                 replies++;
-                if (replies == maxReplies) cancellation.Cancel();
+                if (reachedMaxReplies()) cancellation.Cancel();
             }
 
             void OnError(Exception x)
