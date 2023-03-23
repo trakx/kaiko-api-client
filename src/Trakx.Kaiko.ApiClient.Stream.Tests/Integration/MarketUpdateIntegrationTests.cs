@@ -86,7 +86,7 @@ public class MarketUpdateIntegrationTests
         var replies = 0;
 
         // this is only here because Codacy will report maxReplies as not being used otherwise
-        bool reachedMaxReplies() => replies == maxReplies;
+        bool ReachedMaxReplies() => replies == maxReplies;
 
         try
         {
@@ -94,7 +94,7 @@ public class MarketUpdateIntegrationTests
             {
                 AssertResponse(response);
                 replies++;
-                if (reachedMaxReplies()) cancellation.Cancel();
+                if (ReachedMaxReplies()) cancellation.Cancel();
             }
 
             void OnError(Exception x)
