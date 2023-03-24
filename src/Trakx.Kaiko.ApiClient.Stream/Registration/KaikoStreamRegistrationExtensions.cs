@@ -25,6 +25,8 @@ namespace Trakx.Kaiko.ApiClient.Stream
             services.AddGrpcClients(config);
             services.AddSingleton<IDirectExchangeRatesClient, DirectExchangeRatesClient>();
             services.AddSingleton<ISpotExchangeRatesClient, SpotExchangeRatesClient>();
+            services.AddSingleton<IMarketUpdateClient, MarketUpdateClient>();
+
             return services;
         }
 
@@ -46,13 +48,13 @@ namespace Trakx.Kaiko.ApiClient.Stream
             return new ServiceConfig
             {
                 MethodConfigs =
-            {
-                new MethodConfig
                 {
-                    Names = { MethodName.Default },
-                    RetryPolicy = CreateRetryPolicy()
+                    new MethodConfig
+                    {
+                        Names = { MethodName.Default },
+                        RetryPolicy = CreateRetryPolicy()
+                    }
                 }
-            }
             };
         }
 
@@ -65,11 +67,11 @@ namespace Trakx.Kaiko.ApiClient.Stream
                 MaxBackoff = TimeSpan.FromSeconds(5),
                 BackoffMultiplier = 1.5,
                 RetryableStatusCodes =
-            {
-                StatusCode.Unavailable,
-                StatusCode.Internal,
-                StatusCode.ResourceExhausted,
-            }
+                {
+                    StatusCode.Unavailable,
+                    StatusCode.Internal,
+                    StatusCode.ResourceExhausted,
+                }
             };
         }
     }

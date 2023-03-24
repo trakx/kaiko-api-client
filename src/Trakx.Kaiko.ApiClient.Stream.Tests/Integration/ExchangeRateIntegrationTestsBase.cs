@@ -1,5 +1,4 @@
 ﻿using System.Reactive.Linq;
-using Serilog;
 
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
@@ -10,14 +9,12 @@ public class ExchangeRateIntegrationTestsBase<TClient>
     private const int RunSeconds = 3;
 
     protected readonly ITestOutputHelper Output;
-    protected readonly ILogger Logger;
     protected readonly ServiceProvider Services;
 
     public ExchangeRateIntegrationTestsBase(KaikoStreamFixture fixture, ITestOutputHelper output)
     {
         Output = output;
-        Logger = new LoggerConfiguration().WriteTo.TestOutput(output).CreateLogger();
-        Services = fixture.Services;
+        Services = fixture.ServiceProvider;
     }
 
     protected async Task<int> StreamAsync(string symbol, string currency, StatusCode expectedStatus)
@@ -37,7 +34,7 @@ public class ExchangeRateIntegrationTestsBase<TClient>
         }
         catch (RpcException x)
         {
-            x.StatusCode.Should().Be(expectedStatus);
+            x.StatusCode.Should().BeOneOf(expectedStatus, StatusCode.PermissionDenied);
         }
 
         return replies;
@@ -71,7 +68,7 @@ public class ExchangeRateIntegrationTestsBase<TClient>
         }
         catch (RpcException x)
         {
-            x.StatusCode.Should().Be(expectedStatus);
+            x.StatusCode.Should().BeOneOf(expectedStatus, StatusCode.PermissionDenied);
         }
 
         return replies;
@@ -80,10 +77,23 @@ public class ExchangeRateIntegrationTestsBase<TClient>
     protected void AssertResponse(ExchangeRateResponse response, string expectedSymbol, string expectedCurrency)
     {
         response.Should().NotBeNull();
-        response.Symbol.Should().Be(expectedSymbol);
-        response.Currency.Should().Be(expectedCurrency);
+        response.BaseSymbol.Should().Be(expectedSymbol);
+        response.QuoteSymbol.Should().Be(expectedCurrency);
         Output.WriteLine("{0:yyyy-MM-dd HH:mm:ss.fff}:{1}", response.Timestamp, response.Price);
     }
+
+    protected void AssertReplies(bool serviceEnabled, int replies)
+    {
+        if (serviceEnabled)
+        {
+            replies.Should().BeGreaterThan(0);
+        }
+        else
+        {
+            replies.Should().Be(0);
+        }
+    }
+
 }
 
 

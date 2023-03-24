@@ -208,8 +208,10 @@ components:
       type: object
       properties:
         start_timestamp:
+          nullable: true
           $ref: '#/components/schemas/Timestamp'
         end_timestamp:
+          nullable: true
           $ref: '#/components/schemas/Timestamp'
     Interval:
       type: string

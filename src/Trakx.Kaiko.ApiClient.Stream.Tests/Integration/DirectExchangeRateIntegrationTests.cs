@@ -1,7 +1,4 @@
 ﻿using System.Reactive.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Reactive.Testing;
 
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
@@ -13,21 +10,21 @@ public class DirectExchangeRateIntegrationTests : ExchangeRateIntegrationTestsBa
     }
 
     [Theory]
-    [InlineData("btc")]
-    [InlineData("eth")]
-    public async Task Stream_should_return_prices(string symbol, string currency = "usd")
+    [InlineData(EnabledServices.SpotExchangeRate, "btc")]
+    [InlineData(EnabledServices.SpotExchangeRate, "eth")]
+    public async Task Stream_should_return_prices(bool serviceEnabled, string symbol, string currency = "usd")
     {
         var replies = await StreamAsync(symbol, currency, StatusCode.Cancelled);
-        replies.Should().BeGreaterThan(0);
+        AssertReplies(serviceEnabled, replies);
     }
 
     [Theory]
-    [InlineData("btc")]
-    [InlineData("eth")]
-    public async Task Observable_should_return_prices(string symbol, string currency = "usd")
+    [InlineData(EnabledServices.SpotExchangeRate, "btc")]
+    [InlineData(EnabledServices.SpotExchangeRate, "eth")]
+    public async Task Observable_should_return_prices(bool serviceEnabled, string symbol, string currency = "usd")
     {
         var replies = await ObserveAsync(symbol, currency, StatusCode.Cancelled);
-        replies.Should().BeGreaterThan(0);
+        AssertReplies(serviceEnabled, replies);
     }
 
     [Fact]

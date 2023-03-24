@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Grpc.Core;
+﻿using Grpc.Core;
 using KaikoSdk.Stream.AggregatesDirectExchangeRateV1;
 using static KaikoSdk.StreamAggregatesDirectExchangeRateServiceV1;
 
@@ -36,12 +35,13 @@ public class DirectExchangeRatesClient : ExchangeRateClientBase<StreamAggregates
         if (price == null) return null;
 
         var codeParts = current.Code.Split('-');
+        if (codeParts.Length != 2) return null;
 
         return new ExchangeRateResponse
         {
             Price = price.Value,
-            Symbol = codeParts.ElementAtOrDefault(0),
-            Currency = codeParts.ElementAtOrDefault(1),
+            BaseSymbol = codeParts[0],
+            QuoteSymbol = codeParts[1],
             Timestamp = current.Timestamp.ToDateTimeOffset(),
         };
     }

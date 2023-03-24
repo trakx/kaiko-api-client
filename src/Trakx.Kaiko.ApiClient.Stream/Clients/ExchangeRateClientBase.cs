@@ -1,12 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Reactive.Linq;
-using System.Threading;
 using Grpc.Core;
-using Grpc.Net.Client;
-using KaikoSdk;
-using KaikoSdk.Stream.AggregatesSpotExchangeRateV1;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Trakx.Kaiko.ApiClient.Stream;
 
@@ -56,10 +50,8 @@ public abstract class ExchangeRateClientBase<TKaikoResponse> : IExchangeRateClie
     /// <param name="request"></param>
     protected virtual void ValidateRequest(ExchangeRateRequest request)
     {
-        if (request == null)
-        {
-            throw new ArgumentNullException(nameof(request));
-        }
+        ArgumentNullException.ThrowIfNull(request);
+
         if (string.IsNullOrWhiteSpace(request.Symbol))
         {
             throw new ArgumentException($"{nameof(request.Symbol)} property cannot be null or empty", nameof(request));

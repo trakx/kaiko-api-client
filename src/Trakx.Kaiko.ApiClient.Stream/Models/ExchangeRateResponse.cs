@@ -8,11 +8,11 @@ namespace Trakx.Kaiko.ApiClient.Stream;
 /// </summary>
 public class ExchangeRateResponse
 {
-    [JsonPropertyName("symbol")]
-    public string? Symbol { get; set; }
+    [JsonPropertyName("baseSymbol")]
+    public string? BaseSymbol { get; set; }
 
-    [JsonPropertyName("currency")]
-    public string? Currency { get; set; }
+    [JsonPropertyName("quoteSymbol")]
+    public string? QuoteSymbol { get; set; }
 
     [JsonPropertyName("price")]
     public decimal Price { get; set; }
