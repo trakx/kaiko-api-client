@@ -1,5 +1,5 @@
 ﻿{
-  "runtime": "NetCore31",
+  "runtime": "Net60",
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
@@ -9,22 +9,22 @@
   },
   "codeGenerators": {
     "openApiToCSharpClient": {
-      "clientBaseClass": "AuthorisedClient",
+      "clientBaseClass": "ReferenceDataClientBase",
       "configurationClass": "ClientConfigurator",
       "generateClientClasses": true,
       "generateClientInterfaces": true,
-      "clientBaseInterface": "IFavouriteExchangesClient",
+      "clientBaseInterface": null,
       "injectHttpClient": true,
       "disposeHttpClient": true,
       "protectedMethods": [],
-      "generateExceptionClasses": false,
+      "generateExceptionClasses": true,
       "exceptionClass": "ApiException",
       "wrapDtoExceptions": true,
       "useHttpClientCreationMethod": false,
       "httpClientType": "System.Net.Http.HttpClient",
-      "useHttpRequestMessageCreationMethod": true,
-      "useBaseUrl": true,
-      "generateBaseUrlProperty": true,
+      "useHttpRequestMessageCreationMethod": false,
+      "useBaseUrl": false,
+      "generateBaseUrlProperty": false,
       "generateSyncMethods": false,
       "exposeJsonSerializerSettings": false,
       "clientClassAccessModifier": "internal",
@@ -42,7 +42,8 @@
       "operationGenerationMode": "MultipleClientsFromFirstTagAndOperationId",
       "additionalNamespaceUsages": [
         "Microsoft.AspNetCore.Mvc",
-        "System.Threading"
+        "System.Threading",
+        "Trakx.Utils.Apis"
       ],
       "additionalContractNamespaceUsages": [],
       "generateOptionalParameters": true,
@@ -91,7 +92,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "ReferenceDataClients.cs"
+      "output": "ReferenceData/ReferenceDataClients.cs"
     }
   }
 }

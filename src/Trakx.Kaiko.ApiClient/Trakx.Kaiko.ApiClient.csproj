@@ -1,55 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <GenerateApiClient>False</GenerateApiClient>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateApiClient>false</GenerateApiClient>
   </PropertyGroup>
 
   <Import Project="../Common.Projects.props" />
   <Import Project="../Packable.Projects.props" />
 
   <ItemGroup>
-    <None Include="ClientRegistrations.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ClientRegistrations.tt</DependentUpon>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="3.1.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="6.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.10" />
     <PackageReference Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
-    <PackageReference Include="NSwag.MSBuild" Version="13.8.2">
+    <PackageReference Include="NSwag.MSBuild" Version="13.18.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Serilog" Version="2.10.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="ClientRegistrations.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ClientRegistrations.cs</LastGenOutput>
-    </None>
+    <PackageReference Include="Serilog" Version="2.12.0" />
+    <PackageReference Include="Trakx.Utils" Version="0.6.12" />
   </ItemGroup>
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="ClientRegistrations.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ClientRegistrations.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
   <Target Name="NSwag" BeforeTargets="Build" Condition="'$(GenerateApiClient)'=='True' ">
     <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
-    <Exec Command="$(NSwagExe_Core31) run marketData.nswag.json /variables:Configuration=$(Configuration) /runtime:NetCore31" />
-    <Exec Command="$(NSwagExe_Core31) run referenceData.nswag.json /variables:Configuration=$(Configuration) /runtime:NetCore31" />
+    
+    <Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net60) run referenceData.nswag.json /variables:Configuration=$(Configuration) /runtime:Net60" />
+    
+    <Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net60) run marketData.nswag.json /variables:Configuration=$(Configuration) /runtime:Net60" />
+    
     <RemoveDir Directories="$(OutDir)References" />
   </Target>
 
