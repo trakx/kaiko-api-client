@@ -42,8 +42,7 @@
             "operationGenerationMode": "MultipleClientsFromFirstTagAndOperationId",
             "additionalNamespaceUsages": [
                 "Microsoft.AspNetCore.Mvc",
-                "System.Threading",
-                "Trakx.Utils.Apis"
+                "System.Threading"
             ],
             "additionalContractNamespaceUsages": [],
             "generateOptionalParameters": true,

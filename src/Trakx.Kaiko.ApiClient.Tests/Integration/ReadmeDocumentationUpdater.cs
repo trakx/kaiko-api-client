@@ -1,4 +1,4 @@
-﻿using Trakx.Utils.Testing.ReadmeUpdater;
+﻿using Trakx.Common.Testing.Documentation.ReadmeUpdater;
 
 namespace Trakx.Kaiko.ApiClient.Tests;
 

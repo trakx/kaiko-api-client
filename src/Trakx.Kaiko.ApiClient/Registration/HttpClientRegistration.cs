@@ -1,12 +1,10 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
 using Polly.Extensions.Http;
 using Serilog;
-using Trakx.Utils.Apis;
 
 namespace Trakx.Kaiko.ApiClient;
 
@@ -21,7 +19,7 @@ internal static class HttpClientRegistration
         var name = typeof(TImplementation).FullName;
 
         services
-            .AddHttpClient<TClient, TImplementation>(name)
+            .AddHttpClient<TClient, TImplementation>(name!)
             .AddDecompression()
             .AddPolicyHandler<TImplementation>();
 
@@ -47,12 +45,34 @@ internal static class HttpClientRegistration
             .Or<HttpRequestException>()
             .OrTransientHttpStatusCode()
             .WaitAndRetryAsync(delay,
-                onRetry: (result, timeSpan, retryCount, context) =>
+                onRetry: async (result, timeSpan, retryCount, context) =>
                 {
                     var logger = Log.Logger.ForContext<TImplementation>();
-                    logger.LogApiFailure(result, timeSpan, retryCount, context);
+                    await logger.LogApiFailure(result, timeSpan, retryCount, context);
                 })
             .WithPolicyKey(typeof(TImplementation).FullName)
         );
+    }
+
+    private static async Task LogApiFailure(this Serilog.ILogger logger,
+        DelegateResult<HttpResponseMessage> result, TimeSpan timeSpan, int retryCount, Context context)
+    {
+        if (result.Exception != null)
+        {
+            logger.Warning(
+                result.Exception,
+                "An exception occurred on retry {RetryAttempt} for {PolicyKey} - Retrying in {SleepDuration}ms",
+                retryCount, context.PolicyKey, timeSpan.TotalMilliseconds);
+            return;
+        }
+
+        var message = result.Result;
+        if (message == null) return;
+
+        var content = await message.Content.ReadAsStringAsync();
+
+        logger.Warning(
+            "A non success code {StatusCode} with reason {Reason} and content {Content} was received on retry {RetryAttempt} for {PolicyKey} - Retrying in {SleepDuration}ms",
+            (int)message.StatusCode, message.ReasonPhrase, content, retryCount, context.PolicyKey, timeSpan.TotalMilliseconds);
     }
 }

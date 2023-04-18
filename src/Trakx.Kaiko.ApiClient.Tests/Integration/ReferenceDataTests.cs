@@ -1,6 +1,4 @@
-﻿using Serilog;
-
-namespace Trakx.Kaiko.ApiClient.Tests;
+﻿namespace Trakx.Kaiko.ApiClient.Tests;
 
 public class ReferenceDataTests : IntegrationTestsBase
 {
@@ -15,11 +13,11 @@ public class ReferenceDataTests : IntegrationTestsBase
         var client = ServiceProvider.GetRequiredService<IExchangesClient>();
         var response = await client.GetAllExchangesAsync();
         response.Should().NotBeNull();
-        response.Result.Should().NotBeNull();
-        response.Result.Data.Should().NotBeNull();
-        response.Result.Data.Should().HaveCountGreaterThan(0);
+        response.Content.Should().NotBeNull();
+        response.Content.Data.Should().NotBeNull();
+        response.Content.Data.Should().HaveCountGreaterThan(0);
 
-        foreach (var item in response.Result.Data.OrderBy(p => p.Name))
+        foreach (var item in response.Content.Data.OrderBy(p => p.Name))
         {
             Output.WriteLine($"[{item.Code}] {item.Name}");
         }
@@ -31,11 +29,11 @@ public class ReferenceDataTests : IntegrationTestsBase
         var client = ServiceProvider.GetRequiredService<IAssetsClient>();
         var response = await client.GetAllAssetsAsync();
         response.Should().NotBeNull();
-        response.Result.Should().NotBeNull();
-        response.Result.Data.Should().NotBeNull();
-        response.Result.Data.Should().HaveCountGreaterThan(0);
+        response.Content.Should().NotBeNull();
+        response.Content.Data.Should().NotBeNull();
+        response.Content.Data.Should().HaveCountGreaterThan(0);
 
-        foreach (var item in response.Result.Data.OrderBy(p => p.Name))
+        foreach (var item in response.Content.Data.OrderBy(p => p.Name))
         {
             Output.WriteLine($"[{item.Code}] {item.Name}");
         }
@@ -47,9 +45,9 @@ public class ReferenceDataTests : IntegrationTestsBase
         var client = ServiceProvider.GetRequiredService<IInstrumentsClient>();
         var response = await client.GetAllInstrumentsAsync();
         response.Should().NotBeNull();
-        response.Result.Should().NotBeNull();
-        response.Result.Data.Should().NotBeNull();
-        response.Result.Data.Should().HaveCountGreaterThan(0);
+        response.Content.Should().NotBeNull();
+        response.Content.Data.Should().NotBeNull();
+        response.Content.Data.Should().HaveCountGreaterThan(0);
     }
 
     [InlineData(false)]
@@ -71,7 +69,7 @@ public class ReferenceDataTests : IntegrationTestsBase
 
         var currencies = new[] { "usd", "usdc", "eur" };
 
-        var data = response.Result.Data
+        var data = response.Content.Data
             .Where(p => p.Class == "spot")
             .Where(p => !string.IsNullOrWhiteSpace(p.Kaiko_legacy_symbol))
             .Where(p => !p.Kaiko_legacy_symbol.StartsWith("0x"))

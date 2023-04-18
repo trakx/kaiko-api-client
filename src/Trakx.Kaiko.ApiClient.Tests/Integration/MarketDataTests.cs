@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Trakx.Utils.Apis;
+using Trakx.Common.ApiClient;
 
 namespace Trakx.Kaiko.ApiClient.Tests;
 
@@ -58,9 +58,9 @@ public class MarketDataTests : IntegrationTestsBase
         }
 
         response.Should().NotBeNull();
-        response.Result.Should().NotBeNull();
+        response.Content.Should().NotBeNull();
 
-        var data = response.Result.Data;
+        var data = response.Content.Data;
         data.Should().NotBeNull();
         data.Should().HaveCount(expectedResults);
 

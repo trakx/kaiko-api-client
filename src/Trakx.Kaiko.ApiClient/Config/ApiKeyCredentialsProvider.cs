@@ -1,5 +1,4 @@
 ﻿using Serilog;
-using Trakx.Utils.Apis;
 
 namespace Trakx.Kaiko.ApiClient;
 
