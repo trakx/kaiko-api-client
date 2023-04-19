@@ -1,7 +1,4 @@
-﻿using System.Text;
-using Trakx.Utils.Apis;
-
-namespace Trakx.Kaiko.ApiClient;
+﻿namespace Trakx.Kaiko.ApiClient;
 
 internal abstract class MarketDataClientBase : ClientBase
 {
