@@ -41,7 +41,7 @@
 
   <Target Name="OutputKaikoSdk">
     <ItemGroup>
-      <BuildOutputInPackage Include="$(PkgKaikoSdk)\lib\net5.0\KaikoSdk.dll" Exclude="$(TargetPath)" />
+      <BuildOutputInPackage Include="$(PkgKaikoSdk)\lib\net6.0\KaikoSdk.dll" Exclude="$(TargetPath)" />
     </ItemGroup>
   </Target>
 
