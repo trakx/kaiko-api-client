@@ -34,7 +34,7 @@ public class KaikoStreamFixture : IDisposable
             .Build();
 
         var result = config.GetRequiredSection("KaikoStreamConfiguration").Get<KaikoStreamConfiguration>();
-        return result;
+        return result!;
     }
 
     protected virtual void Dispose(bool disposing)
