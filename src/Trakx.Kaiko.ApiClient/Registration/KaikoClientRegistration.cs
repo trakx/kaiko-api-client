@@ -9,10 +9,7 @@ public static class KaikoClientRegistration
     public static IServiceCollection AddKaikoClient(this IServiceCollection services, IConfiguration configuration)
     {
         var config = configuration.GetSection(nameof(KaikoApiConfiguration)).Get<KaikoApiConfiguration>();
-        if (config != null)
-        {
-            services.AddKaikoClient(config);
-        }
+        services.AddKaikoClient(config!);
         return services;
     }
 
