@@ -1,7 +1,6 @@
 name: Publish Nuget Packages
 
 on:
-
   # the workflow run allows to not run the test suite twice for non release
   # branches, and should be used for all branches, but the reference branch
   # in workflow run is the default branch and we don't get the correct release
@@ -26,8 +25,10 @@ on:
         required: false
         default: "true"
 
-jobs:
+env:
+  ACTION_REF: feature/setup-dotnet-v3
 
+jobs:
   test:
     uses: ./.github/workflows/test.yml
     if: ${{ github.event_name != 'workflow_run' }}
@@ -44,6 +45,13 @@ jobs:
             && github.event.workflow_run.conclusion == 'success' ))
 
     steps:
+      - name: Checkout actions repo
+        uses: actions/checkout@v3
+        with:
+          repository: trakx/github-actions
+          path: github-actions
+          ref: ${{env.ACTION_REF}}
+        
       - name: Default input values
         id: default-inputs
         run: |
@@ -55,10 +63,11 @@ jobs:
           semverIncrementLevel=${semverIncrementLevel:-true}
           echo "semverIncrementLevel=$semverIncrementLevel" >> $GITHUB_OUTPUT
 
-      - name: Build and publish nuget packages
+      - name: Build and publish nuget with action from custom branch
         id: publish
-        uses: trakx/github-actions/publish-nuget@v10.0.11
+        uses: ./github-actions/publish-nuget
         with:
+          actionRef: ${{env.ACTION_REF}}
           packageReadonlyPat: ${{secrets.TRAKX_BOT_READONLY_PAT}}
           githubToken: ${{secrets.GITHUB_TOKEN}}
           debuggable: ${{steps.default-inputs.outputs.debuggable}}
