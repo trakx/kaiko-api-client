@@ -25,9 +25,6 @@ on:
         required: false
         default: "true"
 
-env:
-  ACTION_REF: feature/setup-dotnet-v3
-
 jobs:
   test:
     uses: ./.github/workflows/test.yml
@@ -45,13 +42,6 @@ jobs:
             && github.event.workflow_run.conclusion == 'success' ))
 
     steps:
-      - name: Checkout actions repo
-        uses: actions/checkout@v3
-        with:
-          repository: trakx/github-actions
-          path: github-actions
-          ref: ${{env.ACTION_REF}}
-        
       - name: Default input values
         id: default-inputs
         run: |
@@ -63,11 +53,10 @@ jobs:
           semverIncrementLevel=${semverIncrementLevel:-true}
           echo "semverIncrementLevel=$semverIncrementLevel" >> $GITHUB_OUTPUT
 
-      - name: Build and publish nuget with action from custom branch
+      - name: Build and publish nuget packages
         id: publish
-        uses: ./github-actions/publish-nuget
+        uses: trakx/github-actions/publish-nuget@v10.0.14
         with:
-          actionRef: ${{env.ACTION_REF}}
           packageReadonlyPat: ${{secrets.TRAKX_BOT_READONLY_PAT}}
           githubToken: ${{secrets.GITHUB_TOKEN}}
           debuggable: ${{steps.default-inputs.outputs.debuggable}}
