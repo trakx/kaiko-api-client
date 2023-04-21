@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Trakx.Common.Testing.Configuration;
 
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
@@ -17,7 +18,7 @@ public class KaikoStreamFixture : IDisposable
 
     public static KaikoStreamConfiguration BuildConfiguration()
     {
-        var aws = ConfigurationHelper.GetConfigurationFromAws<KaikoStreamConfiguration>();
+        var aws = AwsConfigurationHelper.GetConfigurationFromAws<KaikoStreamConfiguration>();
         var json = GetConfigurationFromAppSettings();
         return new KaikoStreamConfiguration
         {
@@ -33,7 +34,7 @@ public class KaikoStreamFixture : IDisposable
             .Build();
 
         var result = config.GetRequiredSection("KaikoStreamConfiguration").Get<KaikoStreamConfiguration>();
-        return result;
+        return result!;
     }
 
     protected virtual void Dispose(bool disposing)

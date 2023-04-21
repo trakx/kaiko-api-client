@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using Grpc.Core;
 using KaikoSdk.Stream.MarketUpdateV1;
-using Microsoft.IdentityModel.Tokens;
 using static KaikoSdk.StreamMarketUpdateServiceV1;
 
 namespace Trakx.Kaiko.ApiClient.Stream;
@@ -155,5 +154,13 @@ public class MarketUpdateClient : IMarketUpdateClient
                 yield return $"{baseSymbol}-{quoteSymbol}";
             }
         }
+    }
+}
+
+internal static class MarketUpdateClientExtensions
+{
+    internal static bool IsNullOrEmpty<T>(this IEnumerable<T> items)
+    {
+        return items == null || !items.Any();
     }
 }

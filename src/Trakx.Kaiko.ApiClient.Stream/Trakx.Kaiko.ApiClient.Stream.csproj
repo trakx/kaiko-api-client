@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <AddKaikoSdkToPackage>true</AddKaikoSdkToPackage>
@@ -11,24 +11,28 @@
   <Import Project="../Packable.Projects.props" />
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.22.1" />
+    <PackageReference Include="Google.Protobuf" Version="3.22.3" />
     <PackageReference Include="Grpc.Net.Client" Version="2.52.0" />
     <PackageReference Include="Grpc.Net.ClientFactory" Version="2.52.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.53.0">
+    <PackageReference Include="Grpc.Tools" Version="2.54.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Serilog" Version="2.12.0" />
-    <PackageReference Include="KaikoSdk" Version="1.6.0" GeneratePathProperty="true">
+    <PackageReference Include="KaikoSdk" Version="1.7.1" GeneratePathProperty="true">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Reactive" Version="5.0.0" />
-    <PackageReference Include="Trakx.Utils" Version="0.6.12" />
+    <PackageReference Include="Trakx.Common" Version="0.2.0" />
       
   </ItemGroup>
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Trakx.Common.Extensions" />
   </ItemGroup>
 
   <PropertyGroup Condition="$(AddKaikoSdkToPackage) != ''">
@@ -37,7 +41,7 @@
 
   <Target Name="OutputKaikoSdk">
     <ItemGroup>
-      <BuildOutputInPackage Include="$(PkgKaikoSdk)\lib\net5.0\KaikoSdk.dll" Exclude="$(TargetPath)" />
+      <BuildOutputInPackage Include="$(PkgKaikoSdk)\lib\net6.0\KaikoSdk.dll" Exclude="$(TargetPath)" />
     </ItemGroup>
   </Target>
 

@@ -1,7 +1,6 @@
 name: Publish Nuget Packages
 
 on:
-
   # the workflow run allows to not run the test suite twice for non release
   # branches, and should be used for all branches, but the reference branch
   # in workflow run is the default branch and we don't get the correct release
@@ -27,7 +26,6 @@ on:
         default: "true"
 
 jobs:
-
   test:
     uses: ./.github/workflows/test.yml
     if: ${{ github.event_name != 'workflow_run' }}
@@ -49,15 +47,15 @@ jobs:
         run: |
           debuggable="${{github.event.inputs.debuggable}}"
           debuggable=${debuggable:-true}
-          echo '::set-output name=debuggable::'$debuggable
+          echo "debuggable=$debuggable" >> $GITHUB_OUTPUT
           
           semverIncrementLevel="${{github.event.inputs.semverIncrementLevel}}"
           semverIncrementLevel=${semverIncrementLevel:-true}
-          echo '::set-output name=semverIncrementLevel::'$semverIncrementLevel
+          echo "semverIncrementLevel=$semverIncrementLevel" >> $GITHUB_OUTPUT
 
       - name: Build and publish nuget packages
         id: publish
-        uses: trakx/github-actions/publish-nuget@v9.1.5
+        uses: trakx/github-actions/publish-nuget@v10.0.14
         with:
           packageReadonlyPat: ${{secrets.TRAKX_BOT_READONLY_PAT}}
           githubToken: ${{secrets.GITHUB_TOKEN}}

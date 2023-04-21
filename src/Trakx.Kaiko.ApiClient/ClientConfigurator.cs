@@ -1,6 +1,4 @@
-﻿using Trakx.Utils.Apis;
-
-namespace Trakx.Kaiko.ApiClient;
+﻿namespace Trakx.Kaiko.ApiClient;
 
 public class ClientConfigurator
 {
@@ -18,7 +16,7 @@ public class ClientConfigurator
     {
         if (clientType.Name == nameof(ReferenceDataClientBase))
         {
-            return new NoCredentialsProvider();
+            return new NoCredentialProvider();
         }
 
         return _credentialsProvider;

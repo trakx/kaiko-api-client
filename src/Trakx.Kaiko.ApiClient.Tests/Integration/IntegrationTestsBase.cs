@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Serilog;
+using Trakx.Common.Testing.Configuration;
 
 namespace Trakx.Kaiko.ApiClient.Tests;
 
@@ -41,7 +41,7 @@ public class KaikoApiFixture : IDisposable
 
     public static KaikoApiConfiguration BuildConfiguration()
     {
-        var aws = ConfigurationHelper.GetConfigurationFromAws<KaikoApiConfiguration>();
+        var aws = AwsConfigurationHelper.GetConfigurationFromAws<KaikoApiConfiguration>();
         var json = GetConfigurationFromAppSettings();
         return new KaikoApiConfiguration
         {
@@ -58,7 +58,7 @@ public class KaikoApiFixture : IDisposable
             .Build();
 
         var result = config.GetRequiredSection("KaikoApiConfiguration").Get<KaikoApiConfiguration>();
-        return result;
+        return result!;
     }
 
     protected virtual void Dispose(bool disposing)

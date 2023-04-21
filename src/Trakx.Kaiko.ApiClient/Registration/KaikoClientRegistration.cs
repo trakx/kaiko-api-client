@@ -1,7 +1,6 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Trakx.Utils.DateTimeHelpers;
+using Trakx.Common.DateAndTime;
 
 namespace Trakx.Kaiko.ApiClient;
 
@@ -10,7 +9,7 @@ public static class KaikoClientRegistration
     public static IServiceCollection AddKaikoClient(this IServiceCollection services, IConfiguration configuration)
     {
         var config = configuration.GetSection(nameof(KaikoApiConfiguration)).Get<KaikoApiConfiguration>();
-        services.AddKaikoClient(config);
+        services.AddKaikoClient(config!);
         return services;
     }
 
