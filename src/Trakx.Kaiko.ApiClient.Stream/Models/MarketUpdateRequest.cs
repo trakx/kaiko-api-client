@@ -11,6 +11,9 @@ public class MarketUpdateRequest
     [JsonPropertyName("quoteSymbols")]
     public string[] QuoteSymbols { get; set; } = Array.Empty<string>();
 
+    /// <summary>
+    /// What exchanges to include in the response. If empty, all available exchanges will be included.
+    /// </summary>
     [JsonPropertyName("exchanges")]
     public string[] Exchanges { get; set; } = Array.Empty<string>();
 

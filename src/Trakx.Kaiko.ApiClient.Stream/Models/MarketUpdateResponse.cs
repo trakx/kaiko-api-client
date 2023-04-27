@@ -23,6 +23,12 @@ public class MarketUpdateResponse
     [JsonPropertyName("timestamp")]
     public DateTimeOffset Timestamp { get; set; }
 
+    [JsonPropertyName("timestampExchange")]
+    public DateTimeOffset? TimestampExchange { get; set; }
+
+    [JsonPropertyName("timestampCollection")]
+    public DateTimeOffset? TimestampCollection { get; set; }
+
     [JsonPropertyName("updateType")]
     public string UpdateType { get; set; } = string.Empty;
 
