@@ -1,6 +1,7 @@
 ﻿using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using Grpc.Core;
+using KaikoSdk.Core;
 using KaikoSdk.Stream.MarketUpdateV1;
 using static KaikoSdk.StreamMarketUpdateServiceV1;
 
@@ -12,6 +13,8 @@ namespace Trakx.Kaiko.ApiClient.Stream;
 public class MarketUpdateClient : IMarketUpdateClient
 {
     private readonly StreamMarketUpdateServiceV1Client _client;
+
+    internal const string AllExchangesWildcard = "*";
 
     public MarketUpdateClient(StreamMarketUpdateServiceV1Client client)
     {
@@ -44,7 +47,6 @@ public class MarketUpdateClient : IMarketUpdateClient
         return StreamInternalAsync(request, cancellationToken);
     }
 
-    internal const string MissingExchangesError = "Exchanges must be defined.";
     internal const string MissingBaseSymbolsError = "Base symbols must be defined.";
     internal const string MissingQuoteSymbolsError = "Quote symbols must be defined.";
     internal const string MissingDataTypeError = "At least one type of data (order book or trades) should be included.";
@@ -57,10 +59,6 @@ public class MarketUpdateClient : IMarketUpdateClient
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        if (request.Exchanges.IsNullOrEmpty())
-        {
-            throw new ArgumentException(MissingExchangesError);
-        }
         if (request.BaseSymbols.IsNullOrEmpty())
         {
             throw new ArgumentException(MissingBaseSymbolsError);
@@ -105,13 +103,15 @@ public class MarketUpdateClient : IMarketUpdateClient
     {
         var tradePairs = DefineTradePairs(request.BaseSymbols, request.QuoteSymbols);
 
+        var exchanges = DefineExchanges(request.Exchanges);
+
         var apiRequest = new StreamMarketUpdateRequestV1
         {
             InstrumentCriteria = new KaikoSdk.Core.InstrumentCriteria
             {
                 InstrumentClass = "spot",
                 Code = string.Join(',', tradePairs),
-                Exchange = string.Join(',', request.Exchanges),
+                Exchange = exchanges,
             }
         };
 
@@ -119,6 +119,12 @@ public class MarketUpdateClient : IMarketUpdateClient
 
         var subscription = _client.Subscribe(apiRequest, cancellationToken: cancellationToken);
         return subscription;
+    }
+
+    private static string DefineExchanges(string[] exchanges)
+    {
+        if (exchanges.IsNullOrEmpty()) return AllExchangesWildcard; // all supported exchanges
+        return string.Join(',', exchanges);
     }
 
     private MarketUpdateResponse? BuildResponse(StreamMarketUpdateResponseV1 current)
@@ -134,7 +140,10 @@ public class MarketUpdateClient : IMarketUpdateClient
             QuoteSymbol = codeParts[1],
             Exchange = current.Exchange,
             Price = (decimal)current.Price,
-            Timestamp = current.TsExchange.Value.ToDateTimeOffset(),
+
+            Timestamp = current.TsEvent.ToDateTimeOffset(),
+            TimestampExchange = GetTimestamp(current.TsExchange),
+            TimestampCollection = GetTimestamp(current.TsCollection),
         };
     }
 
@@ -154,6 +163,12 @@ public class MarketUpdateClient : IMarketUpdateClient
                 yield return $"{baseSymbol}-{quoteSymbol}";
             }
         }
+    }
+
+    private static DateTimeOffset? GetTimestamp(TimestampValue value)
+    {
+        if (value == null) return null;
+        return value.Value.ToDateTimeOffset();
     }
 }
 

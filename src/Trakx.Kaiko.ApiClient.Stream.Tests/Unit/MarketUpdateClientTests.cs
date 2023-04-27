@@ -1,10 +1,12 @@
-﻿using static KaikoSdk.StreamMarketUpdateServiceV1;
+﻿using KaikoSdk.Stream.MarketUpdateV1;
+using static KaikoSdk.StreamMarketUpdateServiceV1;
 
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
 public class MarketUpdateClientTests
 {
     private MarketUpdateRequest _request;
+    private readonly StreamMarketUpdateServiceV1Client _sdkClient;
     private readonly Func<IAsyncEnumerable<MarketUpdateResponse>> _streamAction;
 
     public MarketUpdateClientTests()
@@ -17,8 +19,9 @@ public class MarketUpdateClientTests
             IncludeTopOfBook = true,
         };
 
-        var sdkClient = Substitute.For<StreamMarketUpdateServiceV1Client>();
-        var client = new MarketUpdateClient(sdkClient);
+        _sdkClient = Substitute.For<StreamMarketUpdateServiceV1Client>();
+
+        var client = new MarketUpdateClient(_sdkClient);
 
         _streamAction = () => client.Stream(_request);
     }
@@ -33,12 +36,30 @@ public class MarketUpdateClientTests
     }
 
     [Fact]
-    public void StreamAsync_expects_exchanges()
+    public async Task Empty_exchanges_in_StreamAsync_requests_all_exchanges_from_sdk()
     {
+        SetupSubscribeResponse();
+
         _request.Exchanges = Array.Empty<string>();
-        _streamAction.Should()
-            .Throw<ArgumentException>()
-            .WithMessage(MarketUpdateClient.MissingExchangesError);
+
+        var action = async () => await _streamAction().AnyAsync();
+
+        await action.Should().NotThrowAsync();
+
+        var sdkCall = _sdkClient
+            .ReceivedCalls()
+            .FirstOrDefault(p => p.GetMethodInfo().Name == nameof(_sdkClient.Subscribe));
+
+        sdkCall.Should().NotBeNull();
+
+        var sdkRequest = sdkCall!
+            .GetArguments()
+            .FirstOrDefault(p => p is StreamMarketUpdateRequestV1)
+            as StreamMarketUpdateRequestV1;
+
+        sdkRequest.Should().NotBeNull();
+
+        sdkRequest!.InstrumentCriteria.Exchange.Should().Be(MarketUpdateClient.AllExchangesWildcard);
     }
 
     [Fact]
@@ -80,5 +101,29 @@ public class MarketUpdateClientTests
         _streamAction.Should()
             .Throw<ArgumentException>()
             .WithMessage(MarketUpdateClient.MissingDataTypeError);
+    }
+
+    private void SetupSubscribeResponse()
+    {
+        var response = new AsyncServerStreamingCall<StreamMarketUpdateResponseV1>(
+                     new TestMarketUpdateStreamReader(),
+                     Task.FromResult(new Metadata()),
+                     () => throw new NotImplementedException(),
+                     () => throw new NotImplementedException(),
+                     () => { });
+
+        _sdkClient
+            .Subscribe(Arg.Any<StreamMarketUpdateRequestV1>(), Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+            .Returns(response);
+    }
+}
+
+public class TestMarketUpdateStreamReader : IAsyncStreamReader<StreamMarketUpdateResponseV1>
+{
+    public StreamMarketUpdateResponseV1 Current => new();
+
+    public Task<bool> MoveNext(CancellationToken cancellationToken)
+    {
+        return Task.FromResult(false);
     }
 }
