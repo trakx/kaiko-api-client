@@ -183,7 +183,7 @@ public class MarketUpdateClientTests
 
 public class TestMarketUpdateStreamReader : IAsyncStreamReader<StreamMarketUpdateResponseV1>
 {
-    private int _currentIndex = 0;
+    private int _currentIndex;
     private readonly StreamMarketUpdateResponseV1[] _responses;
 
     public StreamMarketUpdateResponseV1 Current => _responses.ElementAtOrDefault(_currentIndex) ?? new();
