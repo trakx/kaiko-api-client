@@ -30,7 +30,7 @@ public class MarketUpdateResponse
     public DateTimeOffset? TimestampCollection { get; set; }
 
     [JsonPropertyName("updateType")]
-    public string UpdateType { get; set; } = string.Empty;
+    public StreamMarketUpdateType UpdateType { get; set; }
 
     [JsonPropertyName("sequenceId")]
     public string SequenceId { get; set; } = string.Empty;
