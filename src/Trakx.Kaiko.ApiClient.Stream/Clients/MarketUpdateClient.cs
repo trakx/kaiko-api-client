@@ -4,6 +4,7 @@ using Grpc.Core;
 using KaikoSdk.Core;
 using KaikoSdk.Stream.MarketUpdateV1;
 using static KaikoSdk.StreamMarketUpdateServiceV1;
+using SdkUpdateType = KaikoSdk.Stream.MarketUpdateV1.StreamMarketUpdateResponseV1.Types.StreamMarketUpdateType;
 
 namespace Trakx.Kaiko.ApiClient.Stream;
 
@@ -139,11 +140,16 @@ public class MarketUpdateClient : IMarketUpdateClient
             BaseSymbol = codeParts[0],
             QuoteSymbol = codeParts[1],
             Exchange = current.Exchange,
+
             Price = (decimal)current.Price,
+            Amount = (decimal)current.Amount,
 
             Timestamp = current.TsEvent.ToDateTimeOffset(),
             TimestampExchange = GetTimestamp(current.TsExchange),
             TimestampCollection = GetTimestamp(current.TsCollection),
+
+            UpdateType = current.UpdateType.ToClientEnum(),
+            SequenceId = current.SequenceId,
         };
     }
 
@@ -178,4 +184,22 @@ internal static class MarketUpdateClientExtensions
     {
         return items == null || !items.Any();
     }
+
+    internal static StreamMarketUpdateType ToClientEnum(this StreamMarketUpdateResponseV1.Types.StreamMarketUpdateType updateType)
+    {
+        return SdkUpdateTypesToClient.GetValueOrDefault(updateType, StreamMarketUpdateType.Unknown);
+    }
+
+    private static readonly Dictionary<SdkUpdateType, StreamMarketUpdateType> SdkUpdateTypesToClient = new()
+    {
+        [SdkUpdateType.Unknown] = StreamMarketUpdateType.Unknown,
+        [SdkUpdateType.TradeBuy] = StreamMarketUpdateType.TradeBuy,
+        [SdkUpdateType.TradeSell] = StreamMarketUpdateType.TradeSell,
+        [SdkUpdateType.BestAsk] = StreamMarketUpdateType.BestAsk,
+        [SdkUpdateType.BestBid] = StreamMarketUpdateType.BestBid,
+        [SdkUpdateType.UpdatedAsk] = StreamMarketUpdateType.UpdatedAsk,
+        [SdkUpdateType.UpdatedBid] = StreamMarketUpdateType.UpdatedBid,
+        [SdkUpdateType.Snapshot] = StreamMarketUpdateType.Snapshot,
+        [SdkUpdateType.ForceSnapshot] = StreamMarketUpdateType.ForceSnapshot,
+    };
 }
