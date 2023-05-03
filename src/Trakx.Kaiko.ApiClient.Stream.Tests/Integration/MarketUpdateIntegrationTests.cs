@@ -1,4 +1,5 @@
 ﻿using System.Reactive.Linq;
+using System.Text.Json;
 
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
@@ -21,7 +22,7 @@ public class MarketUpdateIntegrationTests
             Exchanges = new[] { "cbse" },
             BaseSymbols = new[] { "btc", "eth" },
             QuoteSymbols = new[] { "usd" },
-            IncludeTrades = true,
+            IncludeTopOfBook = true,
         };
     }
 
@@ -67,7 +68,8 @@ public class MarketUpdateIntegrationTests
             var stream = _client.Stream(_request, cancellation.Token);
             await foreach (var response in stream)
             {
-                _output.WriteLine($"{response.Timestamp}:{response.Price}");
+                var json = JsonSerializer.Serialize(response);
+                _output.WriteLine(json);
                 replies++;
                 if (replies == maxReplies) cancellation.Cancel();
             }
