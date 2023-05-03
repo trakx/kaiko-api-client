@@ -203,3 +203,11 @@ internal static class MarketUpdateClientExtensions
         [SdkUpdateType.ForceSnapshot] = StreamMarketUpdateType.ForceSnapshot,
     };
 }
+
+internal static class MarketUpdateClientExtensions
+{
+    internal static bool IsNullOrEmpty<T>(this IEnumerable<T> items)
+    {
+        return items == null || !items.Any();
+    }
+}
