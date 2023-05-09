@@ -72,6 +72,36 @@ paths:
               schema:
                 $ref: '#/components/schemas/AggregateVwapResponse'
 
+  "/v2/data/{commodity}.{data_version}/exchanges/{exchange}/{instrument_class}/{instrument}/aggregations/count_ohlcv_vwap":
+    get:
+      operationId: GetAggregateCountOhlcvVwap
+      tags:
+        - Aggregates
+      description: |
+        This endpoint retrieves the trade count, OHLCV and VWAP history for an instrument on an exchange.
+        The interval parameter is suffixed with s, m, h or d to specify seconds, minutes, hours or days, respectively.
+        By making use of the sort parameter, data can be returned in ascending asc (default) or descending desc order.
+      parameters:
+        - $ref: '#/components/parameters/commodity'
+        - $ref: '#/components/parameters/data_version'
+        - $ref: '#/components/parameters/exchange'
+        - $ref: '#/components/parameters/instrument_class'
+        - $ref: '#/components/parameters/instrument'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start_time'
+        - $ref: '#/components/parameters/end_time'
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/continuation_token'
+
+      responses:
+        "200":
+          description: Aggregate Count OHLC Volume VWAP Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AggregateCountOhlcvVwapResponse'
+
 components:
 
   parameters:
@@ -272,8 +302,6 @@ components:
           description: All handled query parameters echoed back.
           oneOf:
             - $ref: '#/components/schemas/AggregateQuery'
-        data:
-          type: array
 
     AggregateQuery:
       type: object
@@ -302,8 +330,6 @@ components:
         - $ref: '#/components/schemas/ApiResponse'
         - type: object
           properties:
-            query:
-              $ref: '#/components/schemas/AggregateQuery'
             data:
               type: array
               description: Response result data.
@@ -340,8 +366,6 @@ components:
         - $ref: '#/components/schemas/ApiResponse'
         - type: object
           properties:
-            query:
-              $ref: '#/components/schemas/AggregateQuery'
             data:
               type: array
               description: Response result data.
@@ -357,4 +381,44 @@ components:
           description: Volume-weighted average price. null when no trades reported.
           type: number
           format: float
+          nullable: true
+
+    AggregateCountOhlcvVwapResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              description: Response result data.
+              items:
+                $ref: '#/components/schemas/AggregateCountOhlcvVwapData'
+    AggregateCountOhlcvVwapData:
+      type: object
+      properties:
+        timestamp:
+          $ref: '#/components/schemas/Timestamp'
+        count:
+          type: integer
+          format: int64
+          nullable: true
+        open:
+          type: number
+          format: float
+          nullable: true
+        high:
+          type: number
+          format: float
+          nullable: true
+        low:
+          type: number
+          format: float
+          nullable: true
+        close:
+          type: number
+          format: float
+          nullable: true
+        volume:
+          type: number
+          format: double
           nullable: true
