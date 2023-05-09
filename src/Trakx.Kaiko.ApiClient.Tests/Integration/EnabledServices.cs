@@ -2,6 +2,7 @@
 
 internal static class EnabledServices
 {
-    internal const bool AggregateVwap = false;
-    internal const bool AggregateOhlcv = false;
+    internal const bool AggregateVwap = true;
+    internal const bool AggregateOhlcv = true;
+    internal const bool AggregateCountOhlcvVwap = true;
 }
