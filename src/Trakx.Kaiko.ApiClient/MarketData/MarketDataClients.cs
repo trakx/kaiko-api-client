@@ -839,16 +839,16 @@ namespace Trakx.Kaiko.ApiClient
         public long Timestamp { get; set; }
 
         [Newtonsoft.Json.JsonProperty("open", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? Open { get; set; }
+        public double? Open { get; set; }
 
         [Newtonsoft.Json.JsonProperty("high", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? High { get; set; }
+        public double? High { get; set; }
 
         [Newtonsoft.Json.JsonProperty("low", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? Low { get; set; }
+        public double? Low { get; set; }
 
         [Newtonsoft.Json.JsonProperty("close", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? Close { get; set; }
+        public double? Close { get; set; }
 
         [Newtonsoft.Json.JsonProperty("volume", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? Volume { get; set; }
@@ -888,7 +888,7 @@ namespace Trakx.Kaiko.ApiClient
         /// Volume-weighted average price. null when no trades reported.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? Price { get; set; }
+        public double? Price { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -922,16 +922,19 @@ namespace Trakx.Kaiko.ApiClient
         public long? Count { get; set; }
 
         [Newtonsoft.Json.JsonProperty("open", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? Open { get; set; }
+        public double? Open { get; set; }
 
         [Newtonsoft.Json.JsonProperty("high", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? High { get; set; }
+        public double? High { get; set; }
 
         [Newtonsoft.Json.JsonProperty("low", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? Low { get; set; }
+        public double? Low { get; set; }
 
         [Newtonsoft.Json.JsonProperty("close", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? Close { get; set; }
+        public double? Close { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Price { get; set; }
 
         [Newtonsoft.Json.JsonProperty("volume", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? Volume { get; set; }
