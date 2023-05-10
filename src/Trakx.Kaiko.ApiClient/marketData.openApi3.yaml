@@ -342,19 +342,19 @@ components:
           $ref: '#/components/schemas/Timestamp'
         open:
           type: number
-          format: float
+          format: double
           nullable: true
         high:
           type: number
-          format: float
+          format: double
           nullable: true
         low:
           type: number
-          format: float
+          format: double
           nullable: true
         close:
           type: number
-          format: float
+          format: double
           nullable: true
         volume:
           type: number
@@ -380,7 +380,7 @@ components:
         price:
           description: Volume-weighted average price. null when no trades reported.
           type: number
-          format: float
+          format: double
           nullable: true
 
     AggregateCountOhlcvVwapResponse:
@@ -404,19 +404,23 @@ components:
           nullable: true
         open:
           type: number
-          format: float
+          format: double
           nullable: true
         high:
           type: number
-          format: float
+          format: double
           nullable: true
         low:
           type: number
-          format: float
+          format: double
           nullable: true
         close:
           type: number
-          format: float
+          format: double
+          nullable: true
+        price:
+          type: number
+          format: double
           nullable: true
         volume:
           type: number
