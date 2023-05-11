@@ -9,7 +9,8 @@ public record KaikoApiConfiguration
 
     public Uri ReferenceDataBaseUrl { get; init; }
 
-    [AwsParameter]
+    [AwsParameter(AllowGlobal = true)]
+    [SecretEnvironmentVariable]
     public string ApiKey { get; init; }
 #nullable restore
 }

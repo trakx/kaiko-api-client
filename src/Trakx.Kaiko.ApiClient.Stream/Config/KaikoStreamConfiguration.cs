@@ -14,7 +14,7 @@ public record KaikoStreamConfiguration
     /// </summary>
     public Uri ChannelUrl { get; init; }
 
-    [AwsParameter]
+    [AwsParameter(AllowGlobal = true)]
     [SecretEnvironmentVariable]
     public string ApiKey { get; init; }
 #nullable restore
