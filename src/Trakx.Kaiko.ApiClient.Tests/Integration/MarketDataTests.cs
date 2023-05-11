@@ -6,6 +6,10 @@ namespace Trakx.Kaiko.ApiClient.Tests;
 public class MarketDataTests : IntegrationTestsBase
 {
     private const int PageSize = 3;
+    private const string Exchange = "cbse";
+    private const string InstrumentClass = "spot";
+    private const string TradePair = "btc-usd";
+
     private readonly DateTime _endTime;
     private readonly DateTime _startTime;
 
@@ -26,8 +30,10 @@ public class MarketDataTests : IntegrationTestsBase
 
         await Assert_response_and_data(async ()
             => await client.GetAggregateOhlcvAsync(
-                Commodity.Trades, DataVersion.V1, "cbse", "spot", "btc-usd",
-                Interval._1d, start_time: _startTime, end_time: _endTime, sort: SortOrder.Desc)
+                Commodity.Trades, DataVersion.V1,
+                Exchange, InstrumentClass, TradePair,
+                Interval._1d, start_time: _startTime, end_time: _endTime,
+                page_size: PageSize, sort: SortOrder.Desc)
 
             , content => content.Data);
     }
@@ -42,8 +48,10 @@ public class MarketDataTests : IntegrationTestsBase
 
         await Assert_response_and_data(
             async () => await client.GetAggregateVwapAsync(
-                Commodity.Trades, DataVersion.V1, "cbse", "spot", "btc-usd",
-                Interval._1d, start_time: _startTime, end_time: _endTime, sort: SortOrder.Desc)
+                Commodity.Trades, DataVersion.V1,
+                Exchange, InstrumentClass, TradePair,
+                Interval._1d, start_time: _startTime, end_time: _endTime,
+                page_size: PageSize, sort: SortOrder.Desc)
 
             , content => content.Data);
     }
@@ -58,7 +66,8 @@ public class MarketDataTests : IntegrationTestsBase
 
         await Assert_response_and_data(
             async () => await client.GetAggregateCountOhlcvVwapAsync(
-                Commodity.Trades, DataVersion.V1, "cbse", "spot", "btc-usd",
+                Commodity.Trades, DataVersion.V1,
+                Exchange, InstrumentClass, TradePair,
                 Interval._1d, start_time: _startTime, end_time: _endTime,
                 page_size: PageSize, sort: SortOrder.Desc)
 
@@ -77,7 +86,8 @@ public class MarketDataTests : IntegrationTestsBase
 
         await Assert_response_and_data(
             async () => await client.GetTradesAsync(
-                Commodity.Trades, DataVersion.V1, "cbse", "spot", "btc-usd",
+                Commodity.Trades, DataVersion.V1,
+                Exchange, InstrumentClass, TradePair,
                 start_time: startTime, end_time: _endTime,
                 page_size: PageSize, sort: SortOrder.Desc)
 

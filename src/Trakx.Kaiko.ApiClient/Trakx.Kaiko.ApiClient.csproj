@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <GenerateApiClient>true</GenerateApiClient>
+    <GenerateApiClient>false</GenerateApiClient>
   </PropertyGroup>
 
   <Import Project="../Common.Projects.props" />
