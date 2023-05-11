@@ -21,8 +21,14 @@ In order to be able to run some integration tests, you should ensure that you ha
 In order for the applications in this solution to run correctly on AWS, please ensure that variables starting in `/[environment]` 
  are defined for all 3 environments (_Production_, _Staging_, _Development_) :
 ```awsParams
+# REPOSITORY SECRETS
 /[environment]/Trakx/Kaiko/ApiClient/KaikoApiConfiguration/ApiKey
 /[environment]/Trakx/Kaiko/ApiClient/Stream/KaikoStreamConfiguration/ApiKey
+
+# GLOBAL SECRETS
+# Instead of creating a specific repository secret, can use the global one with the same [Key]
+/[environment]/Global/KaikoApiConfiguration/ApiKey
+/[environment]/Global/KaikoStreamConfiguration/ApiKey
 ```
 
 ## AWS Parameters for Stream Client
