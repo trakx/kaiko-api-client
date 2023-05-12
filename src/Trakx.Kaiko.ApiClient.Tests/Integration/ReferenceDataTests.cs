@@ -24,7 +24,6 @@ public class ReferenceDataTests : IntegrationTestsBase
             code = p.Code,
             name = p.Name,
             kaiko_legacy_slug = p.Kaiko_legacy_slug,
-            p.
         });
         var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
         Output.WriteLine(json);
