@@ -27,6 +27,7 @@ public static class KaikoClientRegistration
     {
         // market data
         services.ConfigureHttpClient<IAggregatesClient, AggregatesClient>();
+        services.ConfigureHttpClient<ITradesClient, TradesClient>();
 
         // reference data
         services.ConfigureHttpClient<IAssetsClient, AssetsClient>();
