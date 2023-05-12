@@ -1,4 +1,6 @@
-﻿namespace Trakx.Kaiko.ApiClient.Tests;
+﻿using System.Text.Json;
+
+namespace Trakx.Kaiko.ApiClient.Tests;
 
 public class ReferenceDataTests : IntegrationTestsBase
 {
@@ -17,10 +19,15 @@ public class ReferenceDataTests : IntegrationTestsBase
         response.Content.Data.Should().NotBeNull();
         response.Content.Data.Should().HaveCountGreaterThan(0);
 
-        foreach (var item in response.Content.Data.OrderBy(p => p.Name))
+        var data = response.Content.Data.Select(p => new
         {
-            Output.WriteLine($"[{item.Code}] {item.Name}");
-        }
+            code = p.Code,
+            name = p.Name,
+            kaiko_legacy_slug = p.Kaiko_legacy_slug,
+            p.
+        });
+        var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+        Output.WriteLine(json);
     }
 
     [Fact]
@@ -50,16 +57,9 @@ public class ReferenceDataTests : IntegrationTestsBase
         response.Content.Data.Should().HaveCountGreaterThan(0);
     }
 
-    [InlineData(false)]
-    [Theory]
-    public async Task Download_legacy_symbols(bool download)
+    [Fact(Skip = "run locally")]
+    public async Task Download_legacy_symbols()
     {
-        if (!download)
-        {
-            download.Should().BeFalse();
-            return;
-        }
-
         var client = ServiceProvider.GetRequiredService<IInstrumentsClient>();
         var response = await client.GetAllInstrumentsAsync();
 
@@ -77,14 +77,14 @@ public class ReferenceDataTests : IntegrationTestsBase
             .DistinctBy(p => p.Kaiko_legacy_symbol)
             .OrderBy(p => p.Kaiko_legacy_symbol);
 
+        data.Should().HaveCountGreaterThan(0);
+
         foreach (var d in data)
         {
             WriteLineItems(writer, d.Kaiko_legacy_symbol, d.Base_asset, d.Quote_asset);
         }
 
         writer.Close();
-
-        download.Should().BeTrue();
     }
 
     private static void WriteLineItems(StreamWriter writer, params string[] items)
