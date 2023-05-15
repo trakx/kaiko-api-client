@@ -15,7 +15,7 @@ internal abstract class ClientBase
 
     protected void PrepareRequestBase(HttpClient client, HttpRequestMessage request, StringBuilder _)
     {
-        client.BaseAddress = BaseUrl;
+        client.BaseAddress ??= BaseUrl;
         CredentialProvider.AddCredentials(request);
     }
 }
