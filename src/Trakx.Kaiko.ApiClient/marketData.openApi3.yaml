@@ -102,6 +102,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/AggregateCountOhlcvVwapResponse'
 
+  "/v2/data/{commodity}.{data_version}/exchanges/{exchange}/{instrument_class}/{instrument}/trades":
+    get:
+      operationId: GetTrades
+      tags:
+        - Trades
+      description: |
+        This endpoint retrieves trades for an instrument on a specific exchange.
+        Trades are sorted by time, in a descendingly order unless it is specified otherwise.
+        Note that taker_side_sell can be null in the cases where this information was not available at collection.
+      parameters:
+        - $ref: '#/components/parameters/commodity'
+        - $ref: '#/components/parameters/data_version'
+        - $ref: '#/components/parameters/exchange'
+        - $ref: '#/components/parameters/instrument_class'
+        - $ref: '#/components/parameters/instrument'
+        - $ref: '#/components/parameters/start_time'
+        - $ref: '#/components/parameters/end_time'
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/continuation_token'
+
+      responses:
+        "200":
+          description: Trades Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradesResponse'
+
 components:
 
   parameters:
@@ -301,9 +330,9 @@ components:
           type: object
           description: All handled query parameters echoed back.
           oneOf:
-            - $ref: '#/components/schemas/AggregateQuery'
+            - $ref: '#/components/schemas/MarketQuery'
 
-    AggregateQuery:
+    MarketQuery:
       type: object
       properties:
         commodity:
@@ -316,12 +345,8 @@ components:
           type: string
         instrument:
           type: string
-        interval:
-          $ref: '#/components/schemas/Interval'
         page_size:
           $ref: '#/components/schemas/PageSize'
-        aggregation:
-          $ref: '#/components/schemas/Aggregation'
         request_time:
           $ref: '#/components/schemas/DateTime'
 
@@ -425,4 +450,34 @@ components:
         volume:
           type: number
           format: double
+          nullable: true
+
+    TradesResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              description: Response result data.
+              items:
+                $ref: '#/components/schemas/TradesResponseData'
+    TradesResponseData:
+      type: object
+      properties:
+        timestamp:
+          $ref: '#/components/schemas/Timestamp'
+        trade_id:
+          type: string
+          nullable: true
+        price:
+          type: number
+          format: double
+          nullable: true
+        amount:
+          type: number
+          format: double
+          nullable: true
+        taker_side_sell:
+          type: boolean
           nullable: true
