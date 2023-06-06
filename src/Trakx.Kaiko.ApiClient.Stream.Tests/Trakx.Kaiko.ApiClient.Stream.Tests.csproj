@@ -27,7 +27,7 @@
     </PackageReference>
     <PackageReference Include="KaikoSdk" Version="1.8.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.2" />
-    <PackageReference Include="Microsoft.Reactive.Testing" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Reactive.Testing" Version="6.0.0" />
     <PackageReference Include="NSubstitute" Version="5.0.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
