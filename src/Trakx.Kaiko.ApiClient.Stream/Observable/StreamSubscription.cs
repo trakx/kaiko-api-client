@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Grpc.Core;
+﻿using Grpc.Core;
 
 namespace Trakx.Kaiko.ApiClient.Stream;
 
@@ -13,8 +8,6 @@ public class StreamSubscription<T> : IDisposable
     private readonly IObserver<T> _observer;
 
     private readonly CancellationTokenSource _cancellationSource;
-
-    private readonly Task _task;
 
     private bool _completed;
 
@@ -26,7 +19,7 @@ public class StreamSubscription<T> : IDisposable
         _cancellationSource = new CancellationTokenSource();
         token.Register(_cancellationSource.Cancel);
 
-        _task = Run(_cancellationSource.Token);
+        _ = Run(_cancellationSource.Token);
     }
 
     private async Task Run(CancellationToken token)
@@ -80,7 +73,6 @@ public class StreamSubscription<T> : IDisposable
                 _cancellationSource.Cancel();
             }
             _cancellationSource.Dispose();
-            _task.Dispose();
         }
         _wasDisposed = true;
     }
