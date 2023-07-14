@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -17,8 +17,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Serilog" Version="3.0.1" />
-    <PackageReference Include="Trakx.Common" Version="0.2.4" />
-    <PackageReference Include="Trakx.Common.ApiClient" Version="0.2.4" />
+    <PackageReference Include="Trakx.Common.ApiClient" Version="0.3.2-common-http-client-registration-tkx-1046-1226-240b0de" />
   </ItemGroup>
 
   <ItemGroup>
