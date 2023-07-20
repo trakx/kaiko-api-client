@@ -29,10 +29,7 @@ public class KaikoStreamFixture : IDisposable
 
     private static KaikoStreamConfiguration GetConfigurationFromAppSettings()
     {
-        var config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")
-            .Build();
-
+        var config = JsonConfigurationHelper.BuildConfiguration();
         var result = config.GetRequiredSection("KaikoStreamConfiguration").Get<KaikoStreamConfiguration>();
         return result!;
     }
