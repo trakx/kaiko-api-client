@@ -36,4 +36,19 @@ public static class KaikoClientRegistration
 
         return services;
     }
+
+    internal static IServiceCollection ConfigureHttpClient<TClient, TImplementation>(
+        this IServiceCollection services)
+        where TClient : class
+        where TImplementation : class, TClient
+    {
+        services
+            .AddHttpClientForApiClient<TClient, TImplementation>()
+            .WithDefaultDelays()
+            .WithDefaultPolicy<ApiException>()
+            .WithDecompression()
+            .Bind();
+
+        return services;
+    }
 }

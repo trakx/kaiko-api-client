@@ -1,6 +1,4 @@
-﻿using Serilog;
-
-namespace Trakx.Kaiko.ApiClient;
+﻿namespace Trakx.Kaiko.ApiClient;
 
 public interface IKaikoApiCredentialsProvider : ICredentialsProvider { }
 
@@ -9,8 +7,6 @@ public class ApiKeyCredentialsProvider : IKaikoApiCredentialsProvider
     private const string ApiKeyHeader = "X-Api-Key";
 
     private readonly KaikoApiConfiguration _configuration;
-
-    private static readonly ILogger Logger = Log.Logger.ForContext<ApiKeyCredentialsProvider>();
 
     public ApiKeyCredentialsProvider(KaikoApiConfiguration configuration)
     {
@@ -23,7 +19,6 @@ public class ApiKeyCredentialsProvider : IKaikoApiCredentialsProvider
     public void AddCredentials(HttpRequestMessage msg)
     {
         msg.Headers.Add(ApiKeyHeader, _configuration.ApiKey);
-        Logger.Verbose($"{ApiKeyHeader} Header added");
     }
 
     public Task AddCredentialsAsync(HttpRequestMessage msg)
