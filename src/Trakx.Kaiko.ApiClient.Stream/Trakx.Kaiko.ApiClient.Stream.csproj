@@ -11,19 +11,19 @@
   <Import Project="../Packable.Projects.props" />
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.23.3" />
+    <PackageReference Include="Google.Protobuf" Version="3.23.4" />
     <PackageReference Include="Grpc.Net.Client" Version="2.55.0" />
-    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.54.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.54.0">
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.55.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.56.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Serilog" Version="3.0.1" />
-    <PackageReference Include="KaikoSdk" Version="1.8.0" GeneratePathProperty="true">
+    <PackageReference Include="KaikoSdk" Version="1.9.0" GeneratePathProperty="true">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Reactive" Version="6.0.0" />
-    <PackageReference Include="Trakx.Common" Version="0.2.4" />
+    <PackageReference Include="Trakx.Common" Version="0.3.3" />
       
   </ItemGroup>
 

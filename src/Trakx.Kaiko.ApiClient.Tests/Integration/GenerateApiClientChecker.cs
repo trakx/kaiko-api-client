@@ -1,44 +1,10 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
+﻿using Trakx.Common.Testing.Documentation.GenerateApiClient;
 
 namespace Trakx.Kaiko.ApiClient.Tests;
 
-public class GenerateApiClientChecker
+public class GenerateApiClientChecker : GenerateApiClientCheckerBase<KaikoApiConfiguration>
 {
-    public ITestOutputHelper Output { get; }
-
-    public GenerateApiClientChecker(ITestOutputHelper output)
+    public GenerateApiClientChecker(ITestOutputHelper output) : base(output)
     {
-        Output = output;
     }
-
-    [Fact]
-    public async Task GenerateApiClient_should_be_disabled_before_commit()
-    {
-        var src = new DirectoryInfo(Environment.CurrentDirectory);
-        while (!IsNullOrSrc(src))
-        {
-            src = src!.Parent;
-        }
-        src.Should().NotBeNull(because: "src folder is always expected");
-
-        var projectFile = typeof(ClientBase).Assembly.GetName().Name! + ".csproj";
-        var csproj = src!
-            .EnumerateFiles(projectFile, SearchOption.AllDirectories)
-            .FirstOrDefault();
-        csproj.Should().NotBeNull(because: $"project {projectFile} should exist");
-
-        var content = await File.ReadAllTextAsync(csproj!.FullName);
-
-        var generateApiClient = content.Contains("<GenerateApiClient>true", StringComparison.OrdinalIgnoreCase);
-        generateApiClient.Should().BeFalse(because: "API client generation should be disabled when not needed");
-    }
-
-    private static bool IsNullOrSrc(DirectoryInfo? directory)
-    {
-        return directory == null
-            || directory.Name.Equals("src", StringComparison.OrdinalIgnoreCase);
-    }
-
 }
