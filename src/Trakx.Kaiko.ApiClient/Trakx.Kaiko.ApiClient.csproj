@@ -14,7 +14,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Trakx.Common.ApiClient" Version="0.4.3" />
+    <PackageReference Include="Trakx.Common.ApiClient" Version="0.4.4" />
   </ItemGroup>
 
   <ItemGroup>
