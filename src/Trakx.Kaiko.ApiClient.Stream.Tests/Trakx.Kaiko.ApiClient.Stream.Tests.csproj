@@ -17,7 +17,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="KaikoSdk" Version="1.12.0" />
+    <PackageReference Include="KaikoSdk" Version="1.13.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
     <PackageReference Include="Microsoft.Reactive.Testing" Version="6.0.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
