@@ -5,7 +5,7 @@ namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 public class SpotExchangeRateIntegrationTests : ExchangeRateIntegrationTestsBase<ISpotExchangeRatesClient>
 {
     public SpotExchangeRateIntegrationTests(KaikoStreamFixture fixture, ITestOutputHelper output)
-        : base(fixture, output)
+        : base(fixture, output, true)
     {
     }
 

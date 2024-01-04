@@ -5,7 +5,7 @@ namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 public class DirectExchangeRateIntegrationTests : ExchangeRateIntegrationTestsBase<IDirectExchangeRatesClient>
 {
     public DirectExchangeRateIntegrationTests(KaikoStreamFixture fixture, ITestOutputHelper output)
-        : base(fixture, output)
+        : base(fixture, output, true)
     {
     }
 

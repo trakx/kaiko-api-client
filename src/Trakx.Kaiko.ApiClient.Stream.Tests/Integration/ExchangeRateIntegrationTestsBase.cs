@@ -1,4 +1,5 @@
 ﻿using System.Reactive.Linq;
+using Trakx.Common.Extensions;
 
 namespace Trakx.Kaiko.ApiClient.Stream.Tests;
 
@@ -11,11 +12,18 @@ public class ExchangeRateIntegrationTestsBase<TClient>
     protected readonly ITestOutputHelper Output;
     protected readonly ServiceProvider Services;
 
-    public ExchangeRateIntegrationTestsBase(KaikoStreamFixture fixture, ITestOutputHelper output)
+    public ExchangeRateIntegrationTestsBase(KaikoStreamFixture fixture, ITestOutputHelper output, bool isDeprecated)
     {
         Output = output;
         Services = fixture.ServiceProvider;
+        _acceptedRpcExceptionStatusCodes =  isDeprecated
+            ? new[] { StatusCode.PermissionDenied, StatusCode.Unimplemented }
+            : new[] { StatusCode.PermissionDenied };
     }
+
+    private readonly StatusCode[] _acceptedRpcExceptionStatusCodes;
+    private StatusCode[] ExpectedStatusCodes(StatusCode statusCode) =>
+        _acceptedRpcExceptionStatusCodes.Union(statusCode.AsSingletonArray()).ToArray() ;
 
     protected async Task<int> StreamAsync(string symbol, string currency, StatusCode expectedStatus)
     {
@@ -34,7 +42,7 @@ public class ExchangeRateIntegrationTestsBase<TClient>
         }
         catch (RpcException x)
         {
-            x.StatusCode.Should().BeOneOf(expectedStatus, StatusCode.PermissionDenied);
+            x.StatusCode.Should().BeOneOf(ExpectedStatusCodes(expectedStatus));
         }
 
         return replies;
@@ -68,7 +76,7 @@ public class ExchangeRateIntegrationTestsBase<TClient>
         }
         catch (RpcException x)
         {
-            x.StatusCode.Should().BeOneOf(expectedStatus, StatusCode.PermissionDenied);
+            x.StatusCode.Should().BeOneOf(ExpectedStatusCodes(expectedStatus));
         }
 
         return replies;
