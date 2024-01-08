@@ -14,7 +14,7 @@ namespace Trakx.Kaiko.ApiClient.Stream
         public static IServiceCollection AddKaikoStream(this IServiceCollection services, IConfiguration configuration)
         {
             var config = configuration.GetSection(nameof(KaikoStreamConfiguration)).Get<KaikoStreamConfiguration>();
-            services.AddKaikoStream(config);
+            services.AddKaikoStream(config!);
             return services;
         }
 
@@ -23,8 +23,6 @@ namespace Trakx.Kaiko.ApiClient.Stream
         {
             services.AddSingleton(config);
             services.AddGrpcClients(config);
-            services.AddSingleton<IDirectExchangeRatesClient, DirectExchangeRatesClient>();
-            services.AddSingleton<ISpotExchangeRatesClient, SpotExchangeRatesClient>();
             services.AddSingleton<IMarketUpdateClient, MarketUpdateClient>();
 
             return services;
