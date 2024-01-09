@@ -26,9 +26,7 @@ namespace Trakx.Kaiko.ApiClient.Stream
             // https://stackoverflow.com/questions/60153842/using-net-core-assemblies-in-t4-templates
 
             Add<StreamAggregatedPriceServiceV1.StreamAggregatedPriceServiceV1Client>();
-            Add<StreamAggregatesDirectExchangeRateServiceV1.StreamAggregatesDirectExchangeRateServiceV1Client>();
             Add<StreamAggregatesOHLCVServiceV1.StreamAggregatesOHLCVServiceV1Client>();
-            Add<StreamAggregatesSpotExchangeRateServiceV1.StreamAggregatesSpotExchangeRateServiceV1Client>();
             Add<StreamAggregatesVWAPServiceV1.StreamAggregatesVWAPServiceV1Client>();
             Add<StreamIndexServiceV1.StreamIndexServiceV1Client>();
             Add<StreamMarketUpdateServiceV1.StreamMarketUpdateServiceV1Client>();
