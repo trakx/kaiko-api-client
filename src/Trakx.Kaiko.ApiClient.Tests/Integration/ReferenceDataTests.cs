@@ -19,7 +19,7 @@ public class ReferenceDataTests : IntegrationTestsBase
         response.Content.Data.Should().NotBeNull();
         response.Content.Data.Should().HaveCountGreaterThan(0);
 
-        var data = response.Content.Data.Select(p => new
+        var data = response.Content.Data.OrderBy(p => p.Name).Select(p => new
         {
             code = p.Code,
             name = p.Name,

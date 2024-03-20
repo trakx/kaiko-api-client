@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solutio
 		Packable.Projects.props = Packable.Projects.props
 		package-icon.png = package-icon.png
 		..\README.md = ..\README.md
+		Test.Projects.props = Test.Projects.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{02EBA6A7-CCC3-4919-A39B-8C9053F64C27}"
