@@ -21,9 +21,9 @@ public class MarketUpdateClientTests
     {
         _request = new MarketUpdateRequest
         {
-            Exchanges = new[] { ExchangeCode },
-            BaseSymbols = new[] { BaseSymbol1, BaseSymbol2 },
-            QuoteSymbols = new[] { QuoteSymbol },
+            Exchanges = [ExchangeCode],
+            BaseSymbols = [BaseSymbol1, BaseSymbol2],
+            QuoteSymbols = [QuoteSymbol],
             IncludeTopOfBook = true,
         };
 
@@ -48,7 +48,7 @@ public class MarketUpdateClientTests
     {
         SetupSubscribeResponse();
 
-        _request.Exchanges = Array.Empty<string>();
+        _request.Exchanges = [];
 
         var action = async () => await _streamAction().AnyAsync();
 
@@ -73,7 +73,7 @@ public class MarketUpdateClientTests
     [Fact]
     public void StreamAsync_expects_base_symbol()
     {
-        _request.BaseSymbols = Array.Empty<string>();
+        _request.BaseSymbols = [];
         _streamAction.Should()
             .Throw<ArgumentException>()
             .WithMessage(MarketUpdateClient.MissingBaseSymbolsError);
@@ -82,7 +82,7 @@ public class MarketUpdateClientTests
     [Fact]
     public void StreamAsync_expects_quote_symbol()
     {
-        _request.QuoteSymbols = Array.Empty<string>();
+        _request.QuoteSymbols = [];
         _streamAction.Should()
             .Throw<ArgumentException>()
             .WithMessage(MarketUpdateClient.MissingQuoteSymbolsError);

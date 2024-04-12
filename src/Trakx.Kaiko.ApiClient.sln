@@ -12,13 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solutio
 		..\.editorconfig = ..\.editorconfig
 		..\.gitattributes = ..\.gitattributes
 		..\.gitignore = ..\.gitignore
-		Common.Projects.props = Common.Projects.props
 		..\LICENSE = ..\LICENSE
 		NuGet.Config = NuGet.Config
-		Packable.Projects.props = Packable.Projects.props
 		package-icon.png = package-icon.png
 		..\README.md = ..\README.md
-		Test.Projects.props = Test.Projects.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{02EBA6A7-CCC3-4919-A39B-8C9053F64C27}"
@@ -40,6 +37,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7ADE6839-E6AB-42E2-99F2-14790A7CD1E5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{08C8469C-084B-4DF3-B2EF-109F9E4657B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{7B20B34D-8CDE-4025-B750-8423E9BB2D54}"
+	ProjectSection(SolutionItems) = preProject
+		Packable.Projects.props = Packable.Projects.props
+		Client.Projects.props = Client.Projects.props
+		Test.Projects.props = Test.Projects.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +78,7 @@ Global
 		{3E562CF2-591E-4389-BDE2-525C7BF583B3} = {02EBA6A7-CCC3-4919-A39B-8C9053F64C27}
 		{A3FA5159-EDA2-4B69-9708-318BE1458471} = {08C8469C-084B-4DF3-B2EF-109F9E4657B0}
 		{138A15DB-08BC-4AC6-B092-6E5CF121C8A9} = {7ADE6839-E6AB-42E2-99F2-14790A7CD1E5}
+		{7B20B34D-8CDE-4025-B750-8423E9BB2D54} = {F9183CBB-5B9E-4E27-A07E-261D68E1A66A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1B8CE014-A9EF-4AC3-B0EE-BE721274FA40}

@@ -4,6 +4,8 @@ namespace Trakx.Kaiko.ApiClient.Tests;
 
 public class ReferenceDataTests : IntegrationTestsBase
 {
+    private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
+
     public ReferenceDataTests(KaikoApiFixture fixture, ITestOutputHelper output)
         : base(fixture, output)
     {
@@ -25,7 +27,9 @@ public class ReferenceDataTests : IntegrationTestsBase
             name = p.Name,
             kaiko_legacy_slug = p.Kaiko_legacy_slug,
         });
-        var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+
+        var json = JsonSerializer.Serialize(data, JsonOptions);
+
         Output.WriteLine(json);
     }
 
