@@ -6,16 +6,16 @@ namespace Trakx.Kaiko.ApiClient.Stream;
 public class MarketUpdateRequest
 {
     [JsonPropertyName("baseSymbols")]
-    public string[] BaseSymbols { get; set; } = Array.Empty<string>();
+    public string[] BaseSymbols { get; set; } = [];
 
     [JsonPropertyName("quoteSymbols")]
-    public string[] QuoteSymbols { get; set; } = Array.Empty<string>();
+    public string[] QuoteSymbols { get; set; } = [];
 
     /// <summary>
     /// What exchanges to include in the response. If empty, all available exchanges will be included.
     /// </summary>
     [JsonPropertyName("exchanges")]
-    public string[] Exchanges { get; set; } = Array.Empty<string>();
+    public string[] Exchanges { get; set; } = [];
 
     [JsonPropertyName("topOfBook")]
     public bool IncludeTopOfBook { get; set; }

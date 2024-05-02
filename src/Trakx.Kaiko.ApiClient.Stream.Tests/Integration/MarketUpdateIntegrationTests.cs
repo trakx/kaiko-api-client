@@ -19,9 +19,9 @@ public class MarketUpdateIntegrationTests
 
         _request = new MarketUpdateRequest
         {
-            Exchanges = new[] { "cbse" },
-            BaseSymbols = new[] { "btc", "eth" },
-            QuoteSymbols = new[] { "usd" },
+            Exchanges = ["cbse"],
+            BaseSymbols = ["btc", "eth"],
+            QuoteSymbols = ["usd"],
             IncludeTopOfBook = true,
         };
     }
@@ -29,7 +29,7 @@ public class MarketUpdateIntegrationTests
     [Fact]
     public async Task Stream_should_handle_unknown_exchange()
     {
-        _request.Exchanges = new[] { "invalidExchange" };
+        _request.Exchanges = ["invalidExchange"];
         var replies = await StreamAsync(StatusCode.FailedPrecondition);
         replies.Should().Be(0);
     }
@@ -37,7 +37,7 @@ public class MarketUpdateIntegrationTests
     [Fact]
     public async Task Observe_should_handle_unknown_exchange()
     {
-        _request.Exchanges = new[] { "invalidExchange" };
+        _request.Exchanges = ["invalidExchange"];
         var replies = await ObserveAsync(StatusCode.FailedPrecondition);
         replies.Should().Be(0);
     }

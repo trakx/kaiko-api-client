@@ -4,6 +4,8 @@ namespace Trakx.Kaiko.ApiClient.Tests;
 
 public class ReferenceDataTests : IntegrationTestsBase
 {
+    private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
+
     public ReferenceDataTests(KaikoApiFixture fixture, ITestOutputHelper output)
         : base(fixture, output)
     {
@@ -19,13 +21,15 @@ public class ReferenceDataTests : IntegrationTestsBase
         response.Content.Data.Should().NotBeNull();
         response.Content.Data.Should().HaveCountGreaterThan(0);
 
-        var data = response.Content.Data.Select(p => new
+        var data = response.Content.Data.OrderBy(p => p.Name).Select(p => new
         {
             code = p.Code,
             name = p.Name,
             kaiko_legacy_slug = p.Kaiko_legacy_slug,
         });
-        var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+
+        var json = JsonSerializer.Serialize(data, JsonOptions);
+
         Output.WriteLine(json);
     }
 
