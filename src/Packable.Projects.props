@@ -15,6 +15,6 @@
     <None Include="$(MSBuildThisFileDirectory)package-icon.png" PackagePath="." Pack="true" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)LICENSE" PackagePath="." Pack="true" />
+    <None Include="$(MSBuildThisFileDirectory)../LICENSE" PackagePath="" Pack="true" />
   </ItemGroup>
 </Project>
