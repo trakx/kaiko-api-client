@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Trakx.Common.ApiClient.Exceptions;
+using Trakx.Common.Configuration;
 using Trakx.Common.DateAndTime;
 
 namespace Trakx.Kaiko.ApiClient;
@@ -8,7 +10,7 @@ public static class KaikoClientRegistration
 {
     public static IServiceCollection AddKaikoClient(this IServiceCollection services, IConfiguration configuration)
     {
-        var config = configuration.GetSection(nameof(KaikoApiConfiguration)).Get<KaikoApiConfiguration>();
+        var config = configuration.GetConfiguration<KaikoApiConfiguration>();
         services.AddKaikoClient(config!);
         return services;
     }
@@ -47,7 +49,8 @@ public static class KaikoClientRegistration
             .WithDefaultDelays()
             .WithDefaultPolicy<ApiException>()
             .WithDecompression()
-            .Bind();
+            .Bind()
+            .SetCustomLogger();
 
         return services;
     }

@@ -1,15 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../Test.Projects.props" />
-
   <ItemGroup>
     <PackageReference Include="Microsoft.Reactive.Testing" Version="6.0.1" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
-    <PackageReference Include="KaikoSdk" Version="1.21.0" />
+    <PackageReference Include="KaikoSdk" Version="1.22.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Trakx.Kaiko.ApiClient.Stream\Trakx.Kaiko.ApiClient.Stream.csproj" />
+    <ProjectReference Include="..\..\src\Trakx.Kaiko.ApiClient.Stream\Trakx.Kaiko.ApiClient.Stream.csproj" />
   </ItemGroup>
 
   <ItemGroup>
