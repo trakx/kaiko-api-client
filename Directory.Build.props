@@ -35,4 +35,9 @@
       <_Parameter1>$(AssemblyName).Tests</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
+	
+	<ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)LICENSE" PackagePath="" Pack="true" />
+  </ItemGroup>
+		
 </Project>
