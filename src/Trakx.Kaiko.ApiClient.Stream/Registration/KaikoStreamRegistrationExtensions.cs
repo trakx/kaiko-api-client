@@ -2,6 +2,7 @@
 using Grpc.Net.Client.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Trakx.Common.Configuration;
 
 namespace Trakx.Kaiko.ApiClient.Stream
 {
@@ -13,8 +14,8 @@ namespace Trakx.Kaiko.ApiClient.Stream
         /// <inheritdoc/>
         public static IServiceCollection AddKaikoStream(this IServiceCollection services, IConfiguration configuration)
         {
-            var config = configuration.GetSection(nameof(KaikoStreamConfiguration)).Get<KaikoStreamConfiguration>();
-            services.AddKaikoStream(config!);
+            var config = configuration.GetConfiguration<KaikoStreamConfiguration>();
+            services.AddKaikoStream(config);
             return services;
         }
 

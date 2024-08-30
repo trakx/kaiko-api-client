@@ -1,13 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../Test.Projects.props" />
-
   <ItemGroup>
     <PackageReference Include="Serilog.Sinks.XUnit" Version="3.0.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Trakx.Kaiko.ApiClient\Trakx.Kaiko.ApiClient.csproj" />
+    <ProjectReference Include="..\..\src\Trakx.Kaiko.ApiClient\Trakx.Kaiko.ApiClient.csproj" />
   </ItemGroup>
 
   <ItemGroup>
