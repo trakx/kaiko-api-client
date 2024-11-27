@@ -3,7 +3,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Reactive.Testing" Version="6.0.1" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
-    <PackageReference Include="KaikoSdk" Version="1.24.0" />
+    <PackageReference Include="KaikoSdk" Version="1.24.1" />
   </ItemGroup>
 
   <ItemGroup>
