@@ -10,11 +10,11 @@
     <PackageReference Include="Google.Protobuf" Version="3.30.2" />
     <PackageReference Include="Grpc.Net.Client" Version="2.71.0" />
     <PackageReference Include="Grpc.Net.ClientFactory" Version="2.71.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.71.0">
+    <PackageReference Include="Grpc.Tools" Version="2.72.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="KaikoSdk" Version="1.27.0" GeneratePathProperty="true">
+    <PackageReference Include="KaikoSdk" Version="1.27.2" GeneratePathProperty="true">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Reactive" Version="6.0.1" />
