@@ -14,12 +14,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="KaikoSdk" Version="1.28.0" GeneratePathProperty="true">
+    <PackageReference Include="KaikoSdk" Version="1.29.0" GeneratePathProperty="true">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Reactive" Version="6.0.1" />
-    <PackageReference Include="Trakx.Common" Version="1.6.3" />
-    <PackageReference Include="Trakx.Common.Configuration" Version="1.6.3" />
+    <PackageReference Include="Trakx.Common" Version="1.7.1" />
+    <PackageReference Include="Trakx.Common.Configuration" Version="1.7.1" />
   </ItemGroup>
 
   <ItemGroup>
