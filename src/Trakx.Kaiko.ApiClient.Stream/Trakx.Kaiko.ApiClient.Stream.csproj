@@ -18,8 +18,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Reactive" Version="6.1.0" />
-    <PackageReference Include="Trakx.Common" Version="1.7.7" />
-    <PackageReference Include="Trakx.Common.Configuration" Version="1.7.7" />
+    <PackageReference Include="Trakx.Common" Version="1.7.8" />
+    <PackageReference Include="Trakx.Common.Configuration" Version="1.7.8" />
   </ItemGroup>
 
   <ItemGroup>
