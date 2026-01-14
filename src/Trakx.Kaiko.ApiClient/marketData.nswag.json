@@ -1,5 +1,5 @@
 ﻿{
-  "runtime": "Net80",
+  "runtime": "Net100",
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
@@ -22,7 +22,7 @@
       "wrapDtoExceptions": true,
       "useHttpClientCreationMethod": false,
       "httpClientType": "System.Net.Http.HttpClient",
-      "useHttpRequestMessageCreationMethod": false,
+      "useHttpRequestMessageCreationMethod": true,
       "useBaseUrl": false,
       "generateBaseUrlProperty": false,
       "generateSyncMethods": false,

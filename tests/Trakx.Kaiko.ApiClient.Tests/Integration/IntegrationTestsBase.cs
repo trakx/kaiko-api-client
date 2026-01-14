@@ -45,9 +45,9 @@ public class KaikoApiFixture : IDisposable
         var json = GetConfigurationFromAppSettings();
         return new KaikoApiConfiguration
         {
-            ApiKey = aws?.ApiKey,
-            MarketDataBaseUrl = json?.MarketDataBaseUrl,
-            ReferenceDataBaseUrl = json?.ReferenceDataBaseUrl,
+            ApiKey = aws.ApiKey,
+            MarketDataBaseUrl = json.MarketDataBaseUrl,
+            ReferenceDataBaseUrl = json.ReferenceDataBaseUrl
         };
     }
 

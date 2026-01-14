@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Company>Trakx</Company>
-    <Copyright>Copyright © 2025 Trakx</Copyright>
+    <Copyright>Copyright © 2026 Trakx</Copyright>
     <RepositoryUrl>https://github.com/trakx/kaiko-api-client</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Deterministic>true</Deterministic>
@@ -15,7 +15,7 @@
     <ReportAnalyzer>true</ReportAnalyzer>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Version)' == '' ">

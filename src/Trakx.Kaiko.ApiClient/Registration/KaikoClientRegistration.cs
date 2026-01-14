@@ -21,31 +21,32 @@ public static class KaikoClientRegistration
         services.AddSingleton<IKaikoApiCredentialsProvider, ApiKeyCredentialsProvider>();
         services.AddSingleton(apiConfiguration);
         services.AddSingleton<ClientConfigurator>();
-        services.ConfigureApiClients();
+        services.ConfigureApiClients(apiConfiguration);
         return services;
     }
 
-    private static IServiceCollection ConfigureApiClients(this IServiceCollection services)
+    private static IServiceCollection ConfigureApiClients(this IServiceCollection services, KaikoApiConfiguration apiConfiguration)
     {
         // market data
-        services.ConfigureHttpClient<IAggregatesClient, AggregatesClient>();
-        services.ConfigureHttpClient<ITradesClient, TradesClient>();
+        services.ConfigureHttpClient<IAggregatesClient, AggregatesClient>(apiConfiguration.MarketDataBaseUrl);
+        services.ConfigureHttpClient<ITradesClient, TradesClient>(apiConfiguration.MarketDataBaseUrl);
 
         // reference data
-        services.ConfigureHttpClient<IAssetsClient, AssetsClient>();
-        services.ConfigureHttpClient<IExchangesClient, ExchangesClient>();
-        services.ConfigureHttpClient<IInstrumentsClient, InstrumentsClient>();
+        services.ConfigureHttpClient<IAssetsClient, AssetsClient>(apiConfiguration.ReferenceDataBaseUrl);
+        services.ConfigureHttpClient<IExchangesClient, ExchangesClient>(apiConfiguration.ReferenceDataBaseUrl);
+        services.ConfigureHttpClient<IInstrumentsClient, InstrumentsClient>(apiConfiguration.ReferenceDataBaseUrl);
 
         return services;
     }
 
     internal static IServiceCollection ConfigureHttpClient<TClient, TImplementation>(
-        this IServiceCollection services)
+        this IServiceCollection services,
+        Uri baseUrl)
         where TClient : class
         where TImplementation : class, TClient
     {
         services
-            .AddHttpClientForApiClient<TClient, TImplementation>()
+            .AddHttpClientForApiClient<TClient, TImplementation>(baseUrl)
             .WithDefaultDelays()
             .WithDefaultPolicy<ApiException>()
             .WithDecompression()
