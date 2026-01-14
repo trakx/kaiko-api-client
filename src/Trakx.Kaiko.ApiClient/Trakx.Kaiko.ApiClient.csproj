@@ -7,13 +7,13 @@
   <Import Project="../Packable.Projects.props" />
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.20" />
-    <PackageReference Include="NSwag.MSBuild" Version="14.0.2">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.2" />
+    <PackageReference Include="NSwag.MSBuild" Version="14.6.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Trakx.Common.ApiClient" Version="1.7.6" />
-    <PackageReference Include="Trakx.Common.Configuration" Version="1.7.6" />
+    <PackageReference Include="Trakx.Common.ApiClient" Version="2.0.3" />
+    <PackageReference Include="Trakx.Common.Configuration" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,8 +27,8 @@
 
   <Target Name="NSwag" BeforeTargets="Build" Condition="'$(GenerateApiClient)'=='True' ">
     <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
-    <Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net80) run referenceData.nswag.json /variables:Configuration=$(Configuration)" />
-    <Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net80) run marketData.nswag.json /variables:Configuration=$(Configuration)" />
+    <Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net100) run referenceData.nswag.json /variables:Configuration=$(Configuration)" />
+    <Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net100) run marketData.nswag.json /variables:Configuration=$(Configuration)" />
     <RemoveDir Directories="$(OutDir)References" />
   </Target>
 

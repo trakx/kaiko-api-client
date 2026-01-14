@@ -1,22 +1,18 @@
-﻿using System.Text;
-
-namespace Trakx.Kaiko.ApiClient;
+﻿namespace Trakx.Kaiko.ApiClient;
 
 internal abstract class ClientBase
 {
-    protected readonly ICredentialsProvider CredentialProvider;
-    protected Uri BaseUrl { get; }
+    private readonly ICredentialsProvider _credentialProvider;
 
-    protected ClientBase(ClientConfigurator configurator, Uri baseUrl)
+    protected ClientBase(ClientConfigurator configurator)
     {
-        CredentialProvider = configurator.GetCredentialProvider(GetType());
-        BaseUrl = baseUrl;
+        _credentialProvider = configurator.GetCredentialProvider(GetType());
     }
 
-    protected void PrepareRequestBase(HttpClient client, HttpRequestMessage request, StringBuilder _)
+    protected async Task<HttpRequestMessage> CreateHttpRequestMessageAsync(CancellationToken cancellationToken)
     {
-        client.BaseAddress ??= BaseUrl;
-        CredentialProvider.AddCredentials(request);
+        HttpRequestMessage httpRequestMessage = new();
+        await _credentialProvider.AddCredentialsAsync(httpRequestMessage);
+        return httpRequestMessage;
     }
 }
-

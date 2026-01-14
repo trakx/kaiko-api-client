@@ -7,19 +7,19 @@
   <Import Project="../Packable.Projects.props" />
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.32.0" />
-    <PackageReference Include="Grpc.Net.Client" Version="2.71.0" />
-    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.71.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.72.0">
+    <PackageReference Include="Google.Protobuf" Version="3.33.4" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.76.0" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.76.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.76.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="KaikoSdk" Version="1.29.0" GeneratePathProperty="true">
+    <PackageReference Include="KaikoSdk" Version="1.32.1" GeneratePathProperty="true">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="System.Reactive" Version="6.0.2" />
-    <PackageReference Include="Trakx.Common" Version="1.7.6" />
-    <PackageReference Include="Trakx.Common.Configuration" Version="1.7.6" />
+    <PackageReference Include="System.Reactive" Version="6.1.0" />
+    <PackageReference Include="Trakx.Common" Version="2.0.3" />
+    <PackageReference Include="Trakx.Common.Configuration" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>
