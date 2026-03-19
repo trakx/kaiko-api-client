@@ -102,7 +102,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/AggregateCountOhlcvVwapResponse'
 
-  "/v2/data/{commodity}.{data_version}/exchanges/{exchange}/{instrument_class}/{instrument}/trades":
+  "/v3/data/{commodity}.{data_version}/exchanges/{exchange}/{instrument_class}/{instrument}/trades":
     get:
       operationId: GetTrades
       tags:
