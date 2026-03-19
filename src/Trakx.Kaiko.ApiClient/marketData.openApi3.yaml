@@ -233,7 +233,7 @@ components:
       type: string
       description: >
         The chosen commodity.
-        For the trades and order_book_snapshots commodities the latest version is currently v3.
+        For the trades and order_book_snapshots commodities the latest version is currently v1.
       enum:
         - trades
         - instrument_metrics
@@ -243,7 +243,7 @@ components:
       type: string
       description: >
         The data version of the commodity.
-        For the trades and order_book_snapshots commodities the latest version is currently v3.
+        For the trades and order_book_snapshots commodities the latest version is currently v1.
       enum:
         - v1
         - v2
