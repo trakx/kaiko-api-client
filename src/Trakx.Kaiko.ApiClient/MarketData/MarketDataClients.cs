@@ -664,8 +664,8 @@ namespace Trakx.Kaiko.ApiClient
 
                     var urlBuilder_ = new System.Text.StringBuilder();
 
-                    // Operation Path: "v2/data/{commodity}.{data_version}/exchanges/{exchange}/{instrument_class}/{instrument}/trades"
-                    urlBuilder_.Append("v2/data/");
+                    // Operation Path: "v3/data/{commodity}.{data_version}/exchanges/{exchange}/{instrument_class}/{instrument}/trades"
+                    urlBuilder_.Append("v3/data/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(commodity, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append('.');
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(data_version, System.Globalization.CultureInfo.InvariantCulture)));
