@@ -103,7 +103,7 @@ namespace Trakx.Kaiko.ApiClient
     }
 
     /// <summary>
-    /// The chosen commodity. For the trades and order_book_snapshots commodities the latest version is currently v1.
+    /// The chosen commodity. For the trades and order_book_snapshots commodities the latest version is currently v3.
     /// <br/>
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -122,7 +122,7 @@ namespace Trakx.Kaiko.ApiClient
     }
 
     /// <summary>
-    /// The data version of the commodity. For the trades and order_book_snapshots commodities the latest version is currently v1.
+    /// The data version of the commodity. For the trades and order_book_snapshots commodities the latest version is currently v3.
     /// <br/>
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -537,11 +537,11 @@ namespace Trakx.Kaiko.ApiClient
 
 }
 
-#pragma warning restore 108
-#pragma warning restore 114
-#pragma warning restore 472
-#pragma warning restore 612
-#pragma warning restore 649
+#pragma warning restore  108
+#pragma warning restore  114
+#pragma warning restore  472
+#pragma warning restore  612
+#pragma warning restore  649
 #pragma warning restore 1573
 #pragma warning restore 1591
 #pragma warning restore 8073
